@@ -16,9 +16,9 @@
     content="End-to-end recruitment, hiring consultancy, AI agents &amp; chatbots, and outsourcing services based in Gurugram, India." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.bpoxcel.com/" />
-  <link rel="icon" type="image/png" href="favicon.png" />
-  <link rel="shortcut icon" href="favicon.png" />
-  <link rel="apple-touch-icon" href="favicon.png" />
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <link rel="shortcut icon" href="images/favicon.png" />
+  <link rel="apple-touch-icon" href="images/favicon.png" />
   <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -44,155 +44,7 @@
       }
     }
   </script>
-  <style>
-    * {
-      font-family: 'Poppins', sans-serif;
-      scroll-behavior: smooth;
-    }
-
-    /* Navbar scroll shadow */
-    .navbar-scrolled {
-      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
-    }
-
-    /* Fade-in animation */
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(28px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .fade-up { animation: fadeUp 0.75s ease both; }
-    .delay-1 { animation-delay: 0.15s; }
-    .delay-2 { animation-delay: 0.30s; }
-    .delay-3 { animation-delay: 0.45s; }
-    .delay-4 { animation-delay: 0.60s; }
-    .delay-5 { animation-delay: 0.75s; }
-
-    /* Card hover lift */
-    .card-hover {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .card-hover:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 40px rgba(8, 145, 178, 0.14);
-    }
-
-    /* Hero gradient blob */
-    .hero-blob {
-      background: radial-gradient(ellipse at 70% 50%, rgba(6, 182, 212, 0.12) 0%, rgba(30, 58, 95, 0.06) 60%, transparent 80%);
-    }
-
-    /* Gradient text */
-    .gradient-text {
-      background: linear-gradient(135deg, #0891b2 0%, #1e3a5f 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* Section divider accent */
-    .section-accent::after {
-      content: '';
-      display: block;
-      width: 56px;
-      height: 4px;
-      background: linear-gradient(90deg, #0891b2, #1e3a5f);
-      border-radius: 2px;
-      margin: 14px auto 0;
-    }
-
-    /* Industry chip */
-    .industry-card {
-      transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .industry-card:hover {
-      background: linear-gradient(135deg, #0891b2, #1e3a5f);
-      color: #fff;
-      transform: translateY(-3px);
-      box-shadow: 0 12px 28px rgba(8, 145, 178, 0.18);
-    }
-
-    /* Form focus */
-    .form-input:focus {
-      outline: none;
-      border-color: #0891b2;
-      box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.12);
-    }
-
-    /* WhatsApp button */
-    .wa-btn { background: #25d366; }
-    .wa-btn:hover { background: #1ebe5d; }
-
-    /* Hamburger */
-    #nav-menu.open { display: flex; }
-
-    /* Mobile nav overlay */
-    @media (max-width: 767px) {
-      #nav-menu {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: #fff;
-        padding: 1.5rem 2rem;
-        gap: 1rem;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-        z-index: 100;
-      }
-    }
-
-    /* Smooth link underline */
-    .nav-link { position: relative; }
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: linear-gradient(90deg, #0891b2, #1e3a5f);
-      border-radius: 1px;
-      transition: width 0.3s ease;
-    }
-    .nav-link:hover::after,
-    .nav-link.active::after { width: 100%; }
-
-    /* Service icon circle */
-    .icon-circle {
-      width: 56px;
-      height: 56px;
-      background: linear-gradient(135deg, rgba(8, 145, 178, 0.12), rgba(30, 58, 95, 0.08));
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1rem;
-      transition: background 0.3s ease;
-    }
-    .icon-circle svg {
-      width: 26px;
-      height: 26px;
-    }
-
-    /* Apply Job CTA button */
-    .apply-job-btn {
-      background: linear-gradient(135deg, #0891b2 0%, #1e3a5f 100%);
-      transition: opacity 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-    }
-    .apply-job-btn:hover {
-      opacity: 0.92;
-      box-shadow: 0 12px 32px rgba(8, 145, 178, 0.28);
-      transform: translateY(-2px);
-    }
-  </style>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body class="bg-white text-gray-800 antialiased">
@@ -204,7 +56,7 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-[84px] relative">
       <!-- Logo -->
       <a href="#home" class="flex items-center">
-        <img src="logo.png" alt="BPOXCEL - Empowering Talent, Accelerating Growth" class="h-20 w-auto object-contain" />
+        <img src="images/logo.png" alt="BPOXCEL - Empowering Talent, Accelerating Growth" class="h-20 w-auto object-contain" />
       </a>
       <!-- Desktop nav -->
       <nav class="hidden md:flex items-center gap-8">
@@ -317,13 +169,13 @@
         </div>
         <!-- Illustration -->
         <div class="fade-up delay-2 flex justify-center lg:justify-end">
-          <div class="relative">
+          <div class="relative animate-float-slow">
             <!-- Decorative rings -->
-            <div class="absolute -inset-6 rounded-full border-2 border-brand-cyan/15 animate-pulse"></div>
-            <div class="absolute -inset-12 rounded-full border border-brand-blue/8"></div>
+            <div class="absolute -inset-6 rounded-full border-2 border-brand-cyan/15 animate-spin-slow"></div>
+            <div class="absolute -inset-12 rounded-full border border-brand-blue/8 animate-spin-slow" style="animation-direction: reverse; animation-duration: 20s;"></div>
             <div
               class="w-72 h-72 sm:w-96 sm:h-96 rounded-3xl overflow-hidden bg-gradient-to-br from-brand-light to-white shadow-2xl flex items-center justify-center p-8">
-              <img src="logo.png" alt="BPOXCEL - Recruitment and Workforce Solutions"
+              <img src="images/logo.png" alt="BPOXCEL - Recruitment and Workforce Solutions"
                 class="w-full h-auto object-contain drop-shadow-xl" />
             </div>
             <!-- Floating badges -->
@@ -367,7 +219,7 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       <div class="grid lg:grid-cols-2 gap-16 items-center">
         <!-- Visual card -->
-        <div class="relative">
+        <div class="relative reveal reveal-left">
           <div class="bg-white rounded-3xl shadow-xl p-10 border border-gray-100">
             <div class="flex items-center gap-4 mb-8">
               <div
@@ -446,7 +298,7 @@
           </div>
         </div>
         <!-- Text -->
-        <div>
+        <div class="reveal reveal-right">
           <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand-cyan mb-4">About
             BPOXCEL</span>
           <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 section-accent text-left leading-tight">
@@ -494,7 +346,7 @@
       </div>
     </div>
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative">
-      <div class="text-center mb-14">
+      <div class="text-center mb-14 reveal reveal-up">
         <span class="inline-block text-xs font-semibold tracking-widest uppercase text-cyan-300 mb-4">Our Vision</span>
         <h2 class="text-3xl sm:text-4xl font-bold text-white mb-6">The Future We Are Building</h2>
         <p class="text-cyan-100 max-w-2xl mx-auto text-base leading-relaxed">
@@ -503,7 +355,7 @@
         </p>
       </div>
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-7 border border-white/15 card-hover">
+        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-7 border border-white/15 card-hover reveal reveal-up delay-100">
           <div class="w-11 h-11 rounded-xl bg-white/15 flex items-center justify-center mb-5">
             <svg class="w-5 h-5 text-cyan-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -513,7 +365,7 @@
           <p class="text-cyan-200/80 text-sm leading-relaxed">Helping organizations of all sizes build scalable,
             efficient teams — delivering workforce solutions that grow with your business ambitions.</p>
         </div>
-        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-7 border border-white/15 card-hover">
+        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-7 border border-white/15 card-hover reveal reveal-up delay-200">
           <div class="w-11 h-11 rounded-xl bg-white/15 flex items-center justify-center mb-5">
             <svg class="w-5 h-5 text-cyan-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -524,7 +376,7 @@
           <p class="text-cyan-200/80 text-sm leading-relaxed">Bridging the gap between exceptional candidates and
             forward-thinking companies — creating placements that are mutually transformative and lasting.</p>
         </div>
-        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-7 border border-white/15 card-hover">
+        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-7 border border-white/15 card-hover reveal reveal-up delay-300">
           <div class="w-11 h-11 rounded-xl bg-white/15 flex items-center justify-center mb-5">
             <svg class="w-5 h-5 text-cyan-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -536,7 +388,7 @@
             chatbots to transform how businesses recruit, engage candidates, and serve customers round the clock.
           </p>
         </div>
-        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-7 border border-white/15 card-hover">
+        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-7 border border-white/15 card-hover reveal reveal-up delay-100">
           <div class="w-11 h-11 rounded-xl bg-white/15 flex items-center justify-center mb-5">
             <svg class="w-5 h-5 text-cyan-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -548,7 +400,7 @@
             commitment to understanding client goals ensures we remain a reliable strategic advisor for the long haul.
           </p>
         </div>
-        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-7 border border-white/15 card-hover">
+        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-7 border border-white/15 card-hover reveal reveal-up delay-200">
           <div class="w-11 h-11 rounded-xl bg-white/15 flex items-center justify-center mb-5">
             <svg class="w-5 h-5 text-cyan-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -560,7 +412,7 @@
             align with market dynamics — keeping our clients ahead with innovative hiring strategies and talent
             pipelines.</p>
         </div>
-        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-7 border border-white/15 card-hover">
+        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-7 border border-white/15 card-hover reveal reveal-up delay-300">
           <div class="w-11 h-11 rounded-xl bg-white/15 flex items-center justify-center mb-5">
             <svg class="w-5 h-5 text-cyan-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -581,7 +433,7 @@
   ============================================================ -->
   <section id="services" class="py-24 bg-white">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="text-center mb-16">
+      <div class="text-center mb-16 reveal reveal-up">
         <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand-cyan mb-4">What We
           Offer</span>
         <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 section-accent">Our Core Services</h2>
@@ -590,7 +442,7 @@
       </div>
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Service 1 -->
-        <article class="bg-white rounded-2xl p-7 border border-gray-100 shadow-sm card-hover">
+        <article class="bg-white rounded-2xl p-7 border border-gray-100 shadow-sm card-hover reveal reveal-up delay-100">
           <div class="icon-circle">
             <svg class="text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -602,7 +454,7 @@
             industry and growth stage. We identify, assess, and secure the right candidates efficiently.</p>
         </article>
         <!-- Service 2 -->
-        <article class="bg-white rounded-2xl p-7 border border-gray-100 shadow-sm card-hover">
+        <article class="bg-white rounded-2xl p-7 border border-gray-100 shadow-sm card-hover reveal reveal-up delay-200">
           <div class="icon-circle">
             <svg class="text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -614,7 +466,7 @@
             automate candidate screening, customer service, and lead engagement — available 24/7 without interruption.</p>
         </article>
         <!-- Service 3 -->
-        <article class="bg-white rounded-2xl p-7 border border-gray-100 shadow-sm card-hover">
+        <article class="bg-white rounded-2xl p-7 border border-gray-100 shadow-sm card-hover reveal reveal-up delay-300">
           <div class="icon-circle">
             <svg class="text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -626,7 +478,7 @@
             team. From BPO functions to back-office support, we deliver with precision and accountability.</p>
         </article>
         <!-- Service 4 -->
-        <article class="bg-white rounded-2xl p-7 border border-gray-100 shadow-sm card-hover">
+        <article class="bg-white rounded-2xl p-7 border border-gray-100 shadow-sm card-hover reveal reveal-up delay-400">
           <div class="icon-circle">
             <svg class="text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -647,7 +499,7 @@
   ============================================================ -->
   <section id="industries" class="py-24 bg-gray-50">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="text-center mb-16">
+      <div class="text-center mb-16 reveal reveal-up">
         <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand-cyan mb-4">Our
           Domain</span>
         <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 section-accent">Industries We Serve</h2>
@@ -655,7 +507,7 @@
           precise, every solution is relevant.</p>
       </div>
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        <div class="industry-card bg-white rounded-2xl p-6 text-center border border-gray-100 shadow-sm cursor-default">
+        <div class="industry-card bg-white rounded-2xl p-6 text-center border border-gray-100 shadow-sm cursor-default reveal reveal-up delay-100">
           <div class="w-12 h-12 rounded-xl bg-brand-light mx-auto flex items-center justify-center mb-4">
             <svg class="w-6 h-6 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -665,7 +517,7 @@
           <h3 class="font-semibold text-gray-800 text-sm">BPO</h3>
           <p class="text-xs text-gray-400 mt-1">Business Process</p>
         </div>
-        <div class="industry-card bg-white rounded-2xl p-6 text-center border border-gray-100 shadow-sm cursor-default">
+        <div class="industry-card bg-white rounded-2xl p-6 text-center border border-gray-100 shadow-sm cursor-default reveal reveal-up delay-150">
           <div class="w-12 h-12 rounded-xl bg-brand-light mx-auto flex items-center justify-center mb-4">
             <svg class="w-6 h-6 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -675,7 +527,7 @@
           <h3 class="font-semibold text-gray-800 text-sm">Information Technology</h3>
           <p class="text-xs text-gray-400 mt-1">Tech &amp; Software</p>
         </div>
-        <div class="industry-card bg-white rounded-2xl p-6 text-center border border-gray-100 shadow-sm cursor-default">
+        <div class="industry-card bg-white rounded-2xl p-6 text-center border border-gray-100 shadow-sm cursor-default reveal reveal-up delay-200">
           <div class="w-12 h-12 rounded-xl bg-brand-light mx-auto flex items-center justify-center mb-4">
             <svg class="w-6 h-6 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -685,7 +537,7 @@
           <h3 class="font-semibold text-gray-800 text-sm">Hospitality</h3>
           <p class="text-xs text-gray-400 mt-1">Hotels &amp; Leisure</p>
         </div>
-        <div class="industry-card bg-white rounded-2xl p-6 text-center border border-gray-100 shadow-sm cursor-default">
+        <div class="industry-card bg-white rounded-2xl p-6 text-center border border-gray-100 shadow-sm cursor-default reveal reveal-up delay-250">
           <div class="w-12 h-12 rounded-xl bg-brand-light mx-auto flex items-center justify-center mb-4">
             <svg class="w-6 h-6 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -695,7 +547,7 @@
           <h3 class="font-semibold text-gray-800 text-sm">Aviation</h3>
           <p class="text-xs text-gray-400 mt-1">Airlines &amp; Airports</p>
         </div>
-        <div class="industry-card bg-white rounded-2xl p-6 text-center border border-gray-100 shadow-sm cursor-default">
+        <div class="industry-card bg-white rounded-2xl p-6 text-center border border-gray-100 shadow-sm cursor-default reveal reveal-up delay-100">
           <div class="w-12 h-12 rounded-xl bg-brand-light mx-auto flex items-center justify-center mb-4">
             <svg class="w-6 h-6 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -705,7 +557,7 @@
           <h3 class="font-semibold text-gray-800 text-sm">Banking</h3>
           <p class="text-xs text-gray-400 mt-1">Retail &amp; Corporate</p>
         </div>
-        <div class="industry-card bg-white rounded-2xl p-6 text-center border border-gray-100 shadow-sm cursor-default">
+        <div class="industry-card bg-white rounded-2xl p-6 text-center border border-gray-100 shadow-sm cursor-default reveal reveal-up delay-150">
           <div class="w-12 h-12 rounded-xl bg-brand-light mx-auto flex items-center justify-center mb-4">
             <svg class="w-6 h-6 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -715,7 +567,7 @@
           <h3 class="font-semibold text-gray-800 text-sm">Finance</h3>
           <p class="text-xs text-gray-400 mt-1">NBFC &amp; Fintech</p>
         </div>
-        <div class="industry-card bg-white rounded-2xl p-6 text-center border border-gray-100 shadow-sm cursor-default">
+        <div class="industry-card bg-white rounded-2xl p-6 text-center border border-gray-100 shadow-sm cursor-default reveal reveal-up delay-200">
           <div class="w-12 h-12 rounded-xl bg-brand-light mx-auto flex items-center justify-center mb-4">
             <svg class="w-6 h-6 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -727,7 +579,7 @@
         </div>
         <!-- CTA card -->
         <div
-          class="bg-gradient-to-br from-brand-cyan to-brand-blue rounded-2xl p-6 text-center cursor-default flex flex-col items-center justify-center">
+          class="bg-gradient-to-br from-brand-cyan to-brand-blue rounded-2xl p-6 text-center cursor-default flex flex-col items-center justify-center reveal reveal-up delay-250">
           <p class="text-white font-semibold text-sm mb-1">Your Industry?</p>
           <p class="text-cyan-200 text-xs mb-3">We expand to new verticals</p>
           <a href="#contact"
@@ -742,7 +594,7 @@
   ============================================================ -->
   <section id="why-us" class="py-24 bg-white">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="text-center mb-16">
+      <div class="text-center mb-16 reveal reveal-up">
         <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand-cyan mb-4">Our
           Advantage</span>
         <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 section-accent">Why Choose BPOXCEL?</h2>
@@ -750,7 +602,7 @@
           technology, and dedicated partnership to every engagement.</p>
       </div>
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <div class="group bg-white rounded-2xl p-6 border border-gray-100 shadow-sm card-hover">
+        <div class="group bg-white rounded-2xl p-6 border border-gray-100 shadow-sm card-hover reveal reveal-up delay-100">
           <div
             class="w-11 h-11 rounded-xl bg-brand-light flex items-center justify-center mb-4 group-hover:bg-gradient-to-br group-hover:from-brand-cyan group-hover:to-brand-blue transition-all duration-300">
             <svg class="w-5 h-5 text-brand-cyan group-hover:text-white transition-colors duration-300" fill="none"
@@ -763,7 +615,7 @@
           <p class="text-xs text-gray-500 leading-relaxed">Proven track record in recruitment and workforce solutions
             across multiple sectors in India.</p>
         </div>
-        <div class="group bg-white rounded-2xl p-6 border border-gray-100 shadow-sm card-hover">
+        <div class="group bg-white rounded-2xl p-6 border border-gray-100 shadow-sm card-hover reveal reveal-up delay-200">
           <div
             class="w-11 h-11 rounded-xl bg-brand-light flex items-center justify-center mb-4 group-hover:bg-gradient-to-br group-hover:from-brand-cyan group-hover:to-brand-blue transition-all duration-300">
             <svg class="w-5 h-5 text-brand-cyan group-hover:text-white transition-colors duration-300" fill="none"
@@ -776,7 +628,7 @@
           <p class="text-xs text-gray-500 leading-relaxed">Agile hiring pipelines that minimize time-to-fill, keeping
             your business operations uninterrupted.</p>
         </div>
-        <div class="group bg-white rounded-2xl p-6 border border-gray-100 shadow-sm card-hover">
+        <div class="group bg-white rounded-2xl p-6 border border-gray-100 shadow-sm card-hover reveal reveal-up delay-300">
           <div
             class="w-11 h-11 rounded-xl bg-brand-light flex items-center justify-center mb-4 group-hover:bg-gradient-to-br group-hover:from-brand-cyan group-hover:to-brand-blue transition-all duration-300">
             <svg class="w-5 h-5 text-brand-cyan group-hover:text-white transition-colors duration-300" fill="none"
@@ -789,7 +641,7 @@
           <p class="text-xs text-gray-500 leading-relaxed">Whether you need 5 or 500 professionals, our infrastructure
             scales effortlessly with your demand.</p>
         </div>
-        <div class="group bg-white rounded-2xl p-6 border border-gray-100 shadow-sm card-hover">
+        <div class="group bg-white rounded-2xl p-6 border border-gray-100 shadow-sm card-hover reveal reveal-up delay-400">
           <div
             class="w-11 h-11 rounded-xl bg-brand-light flex items-center justify-center mb-4 group-hover:bg-gradient-to-br group-hover:from-brand-cyan group-hover:to-brand-blue transition-all duration-300">
             <svg class="w-5 h-5 text-brand-cyan group-hover:text-white transition-colors duration-300" fill="none"
@@ -811,7 +663,7 @@
   ============================================================ -->
   <section id="contact" class="py-24 bg-gray-50">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="text-center mb-16">
+      <div class="text-center mb-16 reveal reveal-up">
         <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand-cyan mb-4">Get in
           Touch</span>
         <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 section-accent">Contact BPOXCEL</h2>
@@ -820,7 +672,7 @@
       </div>
       <div class="grid lg:grid-cols-2 gap-12 items-start">
         <!-- Info -->
-        <div class="space-y-8">
+        <div class="space-y-8 reveal reveal-left">
           <div class="flex items-start gap-5">
             <div
               class="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-cyan to-brand-blue flex items-center justify-center flex-shrink-0 shadow-md">
@@ -880,9 +732,9 @@
           </a>
         </div>
         <!-- Form -->
-        <div class="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
+        <div class="bg-white rounded-3xl shadow-xl p-8 border border-gray-100 reveal reveal-right">
           <h3 class="font-bold text-gray-900 text-lg mb-6">Send Us a Message</h3>
-          <form id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="space-y-4"
+          <form id="contact-form" action="https://formspree.io/f/xqenrjwk" method="POST" class="space-y-4"
             novalidate>
             <div class="grid sm:grid-cols-2 gap-4">
               <div>
@@ -950,7 +802,7 @@
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
         <!-- Brand -->
         <div class="lg:col-span-1">
-          <img src="logo.png" alt="BPOXCEL Logo" class="h-20 w-auto mb-4 brightness-200 contrast-75" />
+          <img src="images/logo.png" alt="BPOXCEL Logo" class="h-20 w-auto mb-4 brightness-200 contrast-75" />
           <p class="text-sm text-gray-500 leading-relaxed mb-5">Empowering Talent, Accelerating Growth — your trusted
             recruitment and workforce solutions partner in Gurugram, India.</p>
           <!-- Social links -->
@@ -1044,61 +896,17 @@
     </div>
   </footer>
 
+  <!-- Back to Top Button -->
+  <button id="back-to-top" aria-label="Back to top" class="back-to-top">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7" />
+    </svg>
+  </button>
+
   <!-- ============================================================
      JAVASCRIPT
   ============================================================ -->
-  <script>
-    // Sticky navbar shadow
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('navbar-scrolled', window.scrollY > 20);
-    });
-
-    // Hamburger toggle
-    const hamburger = document.getElementById('hamburger');
-    const navMenu = document.getElementById('nav-menu');
-    hamburger.addEventListener('click', () => navMenu.classList.toggle('open'));
-    navMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => navMenu.classList.remove('open'));
-    });
-
-    // Form submission (Formspree)
-    const form = document.getElementById('contact-form');
-    const success = document.getElementById('form-success');
-    const btn = document.getElementById('submit-btn');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const required = form.querySelectorAll('[required]');
-      let valid = true;
-      required.forEach(el => {
-        if (!el.value.trim()) { el.style.borderColor = '#f87171'; valid = false; }
-        else el.style.borderColor = '';
-      });
-      if (!valid) return;
-
-      btn.textContent = 'Sending…';
-      btn.disabled = true;
-
-      try {
-        const data = new FormData(form);
-        const res = await fetch(form.action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
-        if (res.ok) {
-          form.reset();
-          success.classList.remove('hidden');
-          success.style.display = 'flex';
-          setTimeout(() => { success.classList.add('hidden'); success.style.display = ''; }, 6000);
-        }
-      } catch (_) { }
-
-      btn.textContent = 'Send Message';
-      btn.disabled = false;
-    });
-
-    form.querySelectorAll('input,select,textarea').forEach(el => {
-      el.addEventListener('input', () => { el.style.borderColor = ''; });
-    });
-  </script>
+  <script src="js/main.js"></script>
 
 </body>
 </html>
