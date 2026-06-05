@@ -30,6 +30,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   revealElements.forEach(el => observer.observe(el));
+
+  // Careers Filtering Click Delegate
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('filter-btn')) {
+      const filter = e.target.getAttribute('data-filter');
+      applyJobFilter(filter);
+    }
+  });
 });
 
 /* =====================================================
@@ -100,6 +108,9 @@ function safeParseDate(dateStr) {
   return isNaN(d.getTime()) ? new Date(0) : d;
 }
 
+let allJobsList = [];
+let currentFilter = 'all';
+
 async function fetchJobs() {
   const grid    = document.getElementById('jobs-grid');
   const loading = document.getElementById('loading-state');
@@ -132,6 +143,8 @@ async function fetchJobs() {
       return dateB - dateA;
     });
 
+    allJobsList = activeJobs;
+
     // Hide loading
     loading.classList.add('hidden');
 
@@ -161,6 +174,67 @@ async function fetchJobs() {
     error.classList.remove('hidden');
     // Show technical details in console for debugging
     console.log('Error details:', err.message);
+  }
+}
+
+function applyJobFilter(filterType) {
+  currentFilter = filterType;
+  
+  // Update button classes to highlight active filter
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  filterButtons.forEach(btn => {
+    if (btn.getAttribute('data-filter') === filterType) {
+      btn.className = 'filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-gradient-to-r from-brand-cyan to-brand-blue text-white shadow-sm hover:shadow-md transition-all';
+    } else {
+      btn.className = 'filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-white border border-gray-200 text-gray-600 hover:border-brand-cyan hover:text-brand-cyan transition-all';
+    }
+  });
+
+  const grid = document.getElementById('jobs-grid');
+  const noJobs = document.getElementById('no-jobs');
+  
+  if (!grid) return;
+
+  let filtered = allJobsList;
+  if (filterType !== 'all') {
+    filtered = allJobsList.filter(job => {
+      const role = getValue(job, 'Role', '').toLowerCase();
+      const desc = getValue(job, 'Description', '').toLowerCase();
+      const exp = getValue(job, 'Experience', '').toLowerCase();
+      const category = getValue(job, 'Category', '').toLowerCase();
+
+      if (filterType === 'bpo') {
+        return category.includes('bpo') || category.includes('call') || category.includes('voice') ||
+               role.includes('bpo') || role.includes('voice') || role.includes('customer') || role.includes('support') || role.includes('telecaller') || role.includes('back office') ||
+               desc.includes('bpo') || desc.includes('voice') || desc.includes('customer') || desc.includes('support') || desc.includes('telecaller');
+      }
+      if (filterType === 'it') {
+        return category.includes('it') || category.includes('tech') || category.includes('software') ||
+               role.includes('it') || role.includes('developer') || role.includes('software') || role.includes('tech') || role.includes('engineer') || role.includes('sales') ||
+               desc.includes('it') || desc.includes('developer') || desc.includes('software') || desc.includes('tech') || desc.includes('engineer') || desc.includes('sales');
+      }
+      if (filterType === 'fresher') {
+        return exp.includes('0') || exp.includes('fresher') || exp.includes('entry') ||
+               (!exp.includes('1') && !exp.includes('2') && !exp.includes('3') && !exp.includes('4') && !exp.includes('5') && !exp.includes('6') && !exp.includes('7') && !exp.includes('8') && !exp.includes('9'));
+      }
+      if (filterType === 'experienced') {
+        return exp.includes('1') || exp.includes('2') || exp.includes('3') || exp.includes('4') || exp.includes('5') || exp.includes('6') || exp.includes('7') || exp.includes('8') || exp.includes('9') || exp.includes('experience');
+      }
+      return true;
+    });
+  }
+
+  if (filtered.length === 0) {
+    noJobs.classList.remove('hidden');
+    grid.innerHTML = '';
+  } else {
+    noJobs.classList.add('hidden');
+    grid.innerHTML = filtered.map((job, index) => createJobCard(job, index)).join('');
+    
+    // Observe dynamic reveal elements inside grid
+    if (observer) {
+      grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
   }
 }
 
