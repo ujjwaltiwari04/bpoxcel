@@ -204,14 +204,14 @@ function applyJobFilter(filterType) {
       const category = getValue(job, 'Category', '').toLowerCase();
 
       if (filterType === 'bpo') {
-        return category.includes('bpo') || category.includes('call') || category.includes('voice') ||
-               role.includes('bpo') || role.includes('voice') || role.includes('customer') || role.includes('support') || role.includes('telecaller') || role.includes('back office') ||
-               desc.includes('bpo') || desc.includes('voice') || desc.includes('customer') || desc.includes('support') || desc.includes('telecaller');
+        return category.includes('bpo') || category.includes('call') || category.includes('voice') || category.includes('sales') ||
+               role.includes('bpo') || role.includes('voice') || role.includes('customer') || role.includes('support') || role.includes('telecaller') || role.includes('back office') || role.includes('sales') ||
+               desc.includes('bpo') || desc.includes('voice') || desc.includes('customer') || desc.includes('support') || desc.includes('telecaller') || desc.includes('sales');
       }
       if (filterType === 'it') {
         return category.includes('it') || category.includes('tech') || category.includes('software') ||
-               role.includes('it') || role.includes('developer') || role.includes('software') || role.includes('tech') || role.includes('engineer') || role.includes('sales') ||
-               desc.includes('it') || desc.includes('developer') || desc.includes('software') || desc.includes('tech') || desc.includes('engineer') || desc.includes('sales');
+               role.includes('it') || role.includes('developer') || role.includes('software') || role.includes('tech') || role.includes('engineer') ||
+               desc.includes('it') || desc.includes('developer') || desc.includes('software') || desc.includes('tech') || desc.includes('engineer');
       }
       if (filterType === 'fresher') {
         return exp.includes('0') || exp.includes('fresher') || exp.includes('entry') ||
