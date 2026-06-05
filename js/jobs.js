@@ -79,7 +79,8 @@ function getValue(job, key, defaultValue = '') {
   const targetKey = key.toLowerCase();
   const actualKey = Object.keys(job).find(k => k.toLowerCase() === targetKey);
   if (actualKey !== undefined && job[actualKey] !== undefined) {
-    return job[actualKey];
+    const val = job[actualKey];
+    return typeof val === 'string' ? val.trim() : val;
   }
   return defaultValue;
 }
@@ -226,22 +227,28 @@ function applyJobFilter(filterType) {
       const desc = getValue(job, 'Description', '').toLowerCase();
       const exp = getValue(job, 'Experience', '').toLowerCase();
       const category = getValue(job, 'Category', '').toLowerCase();
+      const industry = getValue(job, 'Industry', '').toLowerCase();
+      const expLevel = getValue(job, 'Experience Level', '').toLowerCase();
 
       if (filterType === 'bpo') {
+        if (industry) return industry.includes('bpo') || industry.includes('call') || industry.includes('voice') || industry.includes('sales');
         return category.includes('bpo') || category.includes('call') || category.includes('voice') || category.includes('sales') ||
                role.includes('bpo') || role.includes('voice') || role.includes('customer') || role.includes('support') || role.includes('telecaller') || role.includes('back office') || role.includes('sales') ||
                desc.includes('bpo') || desc.includes('voice') || desc.includes('customer') || desc.includes('support') || desc.includes('telecaller') || desc.includes('sales');
       }
       if (filterType === 'it') {
+        if (industry) return industry.includes('it') || industry.includes('tech') || industry.includes('software');
         return category.includes('it') || category.includes('tech') || category.includes('software') ||
                role.includes('it') || role.includes('developer') || role.includes('software') || role.includes('tech') || role.includes('engineer') ||
                desc.includes('it') || desc.includes('developer') || desc.includes('software') || desc.includes('tech') || desc.includes('engineer');
       }
       if (filterType === 'fresher') {
+        if (expLevel) return expLevel.includes('fresher') || expLevel.includes('entry') || expLevel === '0';
         return exp.includes('0') || exp.includes('fresher') || exp.includes('entry') ||
                (!exp.includes('1') && !exp.includes('2') && !exp.includes('3') && !exp.includes('4') && !exp.includes('5') && !exp.includes('6') && !exp.includes('7') && !exp.includes('8') && !exp.includes('9'));
       }
       if (filterType === 'experienced') {
+        if (expLevel) return expLevel.includes('experienced') || expLevel.includes('experience') || (expLevel.includes('exp') && !expLevel.includes('no'));
         return exp.includes('1') || exp.includes('2') || exp.includes('3') || exp.includes('4') || exp.includes('5') || exp.includes('6') || exp.includes('7') || exp.includes('8') || exp.includes('9') || exp.includes('experience');
       }
       return true;
@@ -361,8 +368,8 @@ function createJobCard(job, index = 0) {
   const exp      = getValue(job, 'Experience', 'Freshers / Experienced').trim();
   const desc     = getValue(job, 'Description', 'Please contact us for full job details and requirements.').trim();
   
-  // Support category default if missing or empty
-  let category   = getValue(job, 'Category', '').trim();
+  // Support category/industry default if missing or empty
+  let category   = getValue(job, 'Industry', '') || getValue(job, 'Category', '');
   if (!category) {
     category = 'BPO / Call Centre';
   }
