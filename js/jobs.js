@@ -38,6 +38,30 @@ document.addEventListener('DOMContentLoaded', () => {
       applyJobFilter(filter);
     }
   });
+
+  // Read More / Read Less Click Delegate
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('read-more-btn')) {
+      const btn = e.target;
+      const card = btn.closest('article');
+      if (!card) return;
+      const descText = card.querySelector('.job-desc-text');
+      if (!descText) return;
+
+      const isExpanded = btn.getAttribute('data-expanded') === 'true';
+      if (isExpanded) {
+        // Collapse description
+        descText.classList.add('line-clamp-3');
+        btn.textContent = 'Read More';
+        btn.setAttribute('data-expanded', 'false');
+      } else {
+        // Expand description
+        descText.classList.remove('line-clamp-3');
+        btn.textContent = 'Read Less';
+        btn.setAttribute('data-expanded', 'true');
+      }
+    }
+  });
 });
 
 /* =====================================================
@@ -387,9 +411,18 @@ function createJobCard(job, index = 0) {
             <span class="truncate">${category}</span>
           </div>
         </div>
-        <p class="text-sm text-gray-500 leading-relaxed mb-6 line-clamp-3">
-          ${desc}
-        </p>
+        ${desc.length > 150 ? `
+          <p class="text-sm text-gray-500 leading-relaxed mb-1 line-clamp-3 job-desc-text">
+            ${desc}
+          </p>
+          <button class="read-more-btn text-xs font-semibold text-brand-cyan hover:text-brand-blue mb-5 focus:outline-none transition-colors" data-expanded="false">
+            Read More
+          </button>
+        ` : `
+          <p class="text-sm text-gray-500 leading-relaxed mb-6">
+            ${desc}
+          </p>
+        `}
         <div class="mt-auto">
           <a href="${applyLink}"
              target="_blank" rel="noopener noreferrer"
