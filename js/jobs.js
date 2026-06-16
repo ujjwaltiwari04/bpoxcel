@@ -451,37 +451,133 @@ function generateJobSchema(activeJobs) {
   const existingSchema = document.getElementById('dynamic-job-schema');
   if (existingSchema) existingSchema.remove();
 
+  function parseSalary(salaryStr) {
+    if (!salaryStr || salaryStr.toLowerCase().includes('best') || salaryStr.toLowerCase().includes('competitive')) {
+      return null;
+    }
+    const numbers = salaryStr.replace(/,/g, '').match(/\d+/g);
+    if (!numbers || numbers.length === 0) return null;
+    
+    const minVal = parseFloat(numbers[0]);
+    const maxVal = numbers.length > 1 ? parseFloat(numbers[1]) : minVal;
+    
+    let unit = 'MONTH';
+    let minSalary = minVal;
+    let maxSalary = maxVal;
+    
+    const salLower = salaryStr.toLowerCase();
+    if (salLower.includes('lpa') || salLower.includes('lacs') || salLower.includes('lakh') || minVal < 100) {
+      unit = 'YEAR';
+      if (minVal < 100) {
+        minSalary = minVal * 100000;
+        maxSalary = maxVal * 100000;
+      }
+    }
+    
+    return {
+      "@type": "MonetaryAmount",
+      "currency": "INR",
+      "value": {
+        "@type": "QuantitativeValue",
+        "minValue": minSalary,
+        "maxValue": maxSalary,
+        "unitText": unit
+      }
+    };
+  }
+
   const schemas = activeJobs.map(job => {
     const parsedDate = safeParseDate(getValue(job, 'Date Added'));
     const datePostedISO = parsedDate.getTime() > 0 ? parsedDate.toISOString() : new Date().toISOString();
 
-    return {
+    const validThroughDate = new Date(parsedDate.getTime() > 0 ? parsedDate.getTime() : Date.now());
+    validThroughDate.setDate(validThroughDate.getDate() + 60);
+    const validThroughISO = validThroughDate.toISOString();
+
+    const loc = getValue(job, 'Location', 'Gurugram').trim();
+    let region = 'Haryana';
+    const locLower = loc.toLowerCase();
+    if (locLower.includes('delhi')) {
+      region = 'Delhi';
+    } else if (locLower.includes('noida')) {
+      region = 'Uttar Pradesh';
+    } else if (locLower.includes('ghaziabad')) {
+      region = 'Uttar Pradesh';
+    } else if (locLower.includes('faridabad')) {
+      region = 'Haryana';
+    }
+
+    const desc = getValue(job, 'Description', 'BPOXCEL Job Opportunity').trim();
+    let empType = 'FULL_TIME';
+    const descLower = desc.toLowerCase();
+    if (descLower.includes('part-time') || descLower.includes('part time')) {
+      empType = 'PART_TIME';
+    } else if (descLower.includes('intern') || descLower.includes('internship')) {
+      empType = 'INTERN';
+    } else if (descLower.includes('contract')) {
+      empType = 'CONTRACTOR';
+    }
+
+    const salaryObj = parseSalary(getValue(job, 'Salary'));
+    const expText = getValue(job, 'Experience', '').trim();
+    let monthsOfExperience = 0;
+    const expMatch = expText.match(/(\d+)\s*(?:-|to)?/);
+    if (expMatch) {
+      monthsOfExperience = parseInt(expMatch[1], 10) * 12;
+    }
+
+    const isRemote = locLower.includes('remote') || locLower.includes('work from home') || locLower.includes('wfh');
+
+    const jobSchema = {
       "@context": "https://schema.org/",
       "@type": "JobPosting",
       "title": getValue(job, 'Role', 'BPO Job'),
-      "description": getValue(job, 'Description', 'BPOXCEL Job Opportunity'),
+      "description": desc,
       "identifier": {
         "@type": "PropertyValue",
         "name": "BPOXCEL",
         "value": getValue(job, 'JobNo', 'N/A')
       },
       "datePosted": datePostedISO,
+      "validThrough": validThroughISO,
+      "employmentType": empType,
+      "directApply": true,
       "hiringOrganization": {
         "@type": "Organization",
         "name": "BPOXCEL",
         "sameAs": "https://www.bpoxcel.com",
         "logo": "https://www.bpoxcel.com/images/logo.png"
       },
-      "jobLocation": {
+      "industry": getValue(job, 'Industry', 'BPO / Call Centre'),
+      "experienceRequirements": {
+        "@type": "OccupationalExperienceRequirements",
+        "monthsOfExperience": monthsOfExperience
+      },
+      "applicantLocationRequirements": {
+        "@type": "Country",
+        "name": "IN"
+      }
+    };
+
+    if (isRemote) {
+      jobSchema["jobLocationType"] = "TELECOMMUTE";
+    } else {
+      jobSchema["jobLocation"] = {
         "@type": "Place",
         "address": {
           "@type": "PostalAddress",
-          "addressLocality": getValue(job, 'Location', 'Gurugram'),
-          "addressRegion": "Haryana",
+          "addressLocality": loc,
+          "addressRegion": region,
           "addressCountry": "IN"
         }
-      }
-    };
+      };
+    }
+
+    if (salaryObj) {
+      jobSchema["baseSalary"] = salaryObj;
+    }
+
+    return jobSchema;
   });
 
   const script = document.createElement('script');

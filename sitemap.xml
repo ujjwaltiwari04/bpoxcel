@@ -5,73 +5,69 @@
   <!-- Main Page -->
   <url>
     <loc>https://www.bpoxcel.com/</loc>
-    <lastmod>2026-05-16</lastmod>
+    <lastmod>2026-06-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
-  </url>
-
-  <!-- Home Section -->
-  <url>
-    <loc>https://www.bpoxcel.com/#home</loc>
-    <lastmod>2026-05-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- About Section -->
-  <url>
-    <loc>https://www.bpoxcel.com/#about</loc>
-    <lastmod>2026-05-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Vision Section -->
-  <url>
-    <loc>https://www.bpoxcel.com/#vision</loc>
-    <lastmod>2026-05-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- Services Section -->
-  <url>
-    <loc>https://www.bpoxcel.com/#services</loc>
-    <lastmod>2026-05-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Industries Section -->
-  <url>
-    <loc>https://www.bpoxcel.com/#industries</loc>
-    <lastmod>2026-05-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Why Choose Us Section -->
-  <url>
-    <loc>https://www.bpoxcel.com/#why-us</loc>
-    <lastmod>2026-05-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Contact Section -->
-  <url>
-    <loc>https://www.bpoxcel.com/#contact</loc>
-    <lastmod>2026-05-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
   </url>
 
   <!-- Careers Page -->
   <url>
     <loc>https://www.bpoxcel.com/jobs.html</loc>
-    <lastmod>2026-06-04</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-06-16</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.9</priority>
+  </url>
+
+  <!-- Location Pages -->
+  <url>
+    <loc>https://www.bpoxcel.com/jobs-gurugram.html</loc>
+    <lastmod>2026-06-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.bpoxcel.com/jobs-delhi.html</loc>
+    <lastmod>2026-06-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.bpoxcel.com/jobs-noida.html</loc>
+    <lastmod>2026-06-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.bpoxcel.com/jobs-faridabad.html</loc>
+    <lastmod>2026-06-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bpoxcel.com/jobs-ghaziabad.html</loc>
+    <lastmod>2026-06-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Blog Pages -->
+  <url>
+    <loc>https://www.bpoxcel.com/blog/bpo-jobs-delhi-ncr-2025.html</loc>
+    <lastmod>2026-06-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.bpoxcel.com/blog/bpo-salary-guide-gurugram.html</loc>
+    <lastmod>2026-06-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.bpoxcel.com/blog/fresher-jobs-delhi-ncr.html</loc>
+    <lastmod>2026-06-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
 
 </urlset>
