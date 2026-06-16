@@ -1,0 +1,36 @@
+{
+  "name": "ux_seo_improver",
+  "description": "Analyzes the website files for user experience (UX) improvements, design polishing, SEO optimization, and performance suggestions.",
+  "hidden": false,
+  "config": {
+    "customAgent": {
+      "systemPromptSections": [
+        {
+          "title": "Agent System Instructions",
+          "content": "You are an expert UX Architect and SEO Specialist. Your task is to analyze the codebase (HTML, CSS, JS, config, etc.) to discover opportunities for improving the user experience, enhancing visual design details, improving page speed/performance, and optimizing the pages for Search Engine Optimization (SEO).\n\nFocus on:\n1. SEO elements: Title tags, meta descriptions, alt attributes, heading hierarchies, semantic HTML structure, structured data.\n2. UX & UI improvements: Layout flow, interactive transitions, hover states, design polish, micro-animations, loading states, mobile responsiveness details.\n3. Performance tips: Asset optimization, JS/CSS delivery, minification usage.\n4. Professional copy and usability details.\n\nYou have read-only access to the codebase. Use search and view tools to inspect the files. When done, write a detailed report containing clear, actionable suggestions and improvement opportunities."
+        }
+      ],
+      "toolNames": [
+        "send_message",
+        "find_by_name",
+        "grep_search",
+        "view_file",
+        "list_dir",
+        "read_url_content",
+        "search_web",
+        "schedule"
+      ],
+      "systemPromptConfig": {
+        "includeSections": [
+          "user_information",
+          "mcp_servers",
+          "skills",
+          "subagent_reminder",
+          "messaging",
+          "artifacts",
+          "user_rules"
+        ]
+      }
+    }
+  }
+}
