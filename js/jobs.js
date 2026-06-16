@@ -505,6 +505,10 @@ function generateJobSchema(activeJobs) {
       region = 'Uttar Pradesh';
     } else if (locLower.includes('faridabad')) {
       region = 'Haryana';
+    } else if (locLower.includes('amritsar') || locLower.includes('mohali') || locLower.includes('jalandhar') || locLower.includes('punjab')) {
+      region = 'Punjab';
+    } else if (locLower.includes('chandigarh')) {
+      region = 'Chandigarh';
     }
 
     const desc = getValue(job, 'Description', 'BPOXCEL Job Opportunity').trim();
