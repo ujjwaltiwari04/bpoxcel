@@ -1,16 +1,26 @@
 // Sticky navbar shadow on scroll
 const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('navbar-scrolled', window.scrollY > 20);
-});
+if (navbar) {
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('navbar-scrolled', window.scrollY > 20);
+  });
+}
 
 // Hamburger toggle for mobile menu
 const hamburger = document.getElementById('hamburger');
-const navMenu   = document.getElementById('nav-menu');
-hamburger.addEventListener('click', () => navMenu.classList.toggle('open'));
-navMenu.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => navMenu.classList.remove('open'));
-});
+const navMenu = document.getElementById('nav-menu');
+if (hamburger && navMenu) {
+  hamburger.addEventListener('click', () => {
+    navMenu.classList.toggle('open');
+    hamburger.classList.toggle('open');
+  });
+  navMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navMenu.classList.remove('open');
+      hamburger.classList.remove('open');
+    });
+  });
+}
 
 // Intersection Observer for scroll-reveal animations
 let observer;
@@ -120,9 +130,9 @@ function safeParseDate(dateStr) {
       month = part1 - 1;
       day = part2;
     } else {
-      // Default to dd/mm/yyyy (Indian standard format)
-      day = part1;
-      month = part2 - 1;
+      // Default to mm/dd/yyyy
+      month = part1 - 1;
+      day = part2;
     }
     const date = new Date(year, month, day);
     return isNaN(date.getTime()) ? new Date(0) : date;
@@ -142,6 +152,8 @@ async function fetchJobs() {
   const error   = document.getElementById('error-state');
   const noJobs  = document.getElementById('no-jobs');
   const counter = document.getElementById('job-count');
+
+  if (!grid || !loading || !error || !noJobs || !counter) return;
 
   try {
     // Reset state
@@ -231,25 +243,27 @@ function applyJobFilter(filterType) {
       const expLevel = getValue(job, 'Experience Level', '').toLowerCase();
 
       if (filterType === 'bpo') {
-        if (industry) return industry.includes('bpo') || industry.includes('call') || industry.includes('voice') || industry.includes('sales');
-        return category.includes('bpo') || category.includes('call') || category.includes('voice') || category.includes('sales') ||
+        return (industry && (industry.includes('bpo') || industry.includes('call') || industry.includes('voice') || industry.includes('sales'))) ||
+               category.includes('bpo') || category.includes('call') || category.includes('voice') || category.includes('sales') ||
                role.includes('bpo') || role.includes('voice') || role.includes('customer') || role.includes('support') || role.includes('telecaller') || role.includes('back office') || role.includes('sales') ||
                desc.includes('bpo') || desc.includes('voice') || desc.includes('customer') || desc.includes('support') || desc.includes('telecaller') || desc.includes('sales');
       }
       if (filterType === 'it') {
-        if (industry) return industry.includes('it') || industry.includes('tech') || industry.includes('software');
-        return category.includes('it') || category.includes('tech') || category.includes('software') ||
+        return (industry && (industry.includes('it') || industry.includes('tech') || industry.includes('software'))) ||
+               category.includes('it') || category.includes('tech') || category.includes('software') ||
                role.includes('it') || role.includes('developer') || role.includes('software') || role.includes('tech') || role.includes('engineer') ||
                desc.includes('it') || desc.includes('developer') || desc.includes('software') || desc.includes('tech') || desc.includes('engineer');
       }
       if (filterType === 'fresher') {
-        if (expLevel) return expLevel.includes('fresher') || expLevel.includes('entry') || expLevel === '0';
-        return exp.includes('0') || exp.includes('fresher') || exp.includes('entry') ||
-               (!exp.includes('1') && !exp.includes('2') && !exp.includes('3') && !exp.includes('4') && !exp.includes('5') && !exp.includes('6') && !exp.includes('7') && !exp.includes('8') && !exp.includes('9'));
+        const fromLevel = expLevel ? (expLevel.includes('fresher') || expLevel.includes('entry') || expLevel === '0') : false;
+        const fromExp = exp.includes('0') || exp.includes('fresher') || exp.includes('entry') ||
+                       (!exp.includes('1') && !exp.includes('2') && !exp.includes('3') && !exp.includes('4') && !exp.includes('5') && !exp.includes('6') && !exp.includes('7') && !exp.includes('8') && !exp.includes('9'));
+        return fromLevel || fromExp;
       }
       if (filterType === 'experienced') {
-        if (expLevel) return expLevel.includes('experienced') || expLevel.includes('experience') || (expLevel.includes('exp') && !expLevel.includes('no'));
-        return exp.includes('1') || exp.includes('2') || exp.includes('3') || exp.includes('4') || exp.includes('5') || exp.includes('6') || exp.includes('7') || exp.includes('8') || exp.includes('9') || exp.includes('experience');
+        const fromLevel = expLevel ? (expLevel.includes('experienced') || expLevel.includes('experience') || (expLevel.includes('exp') && !expLevel.includes('no'))) : false;
+        const fromExp = exp.includes('1') || exp.includes('2') || exp.includes('3') || exp.includes('4') || exp.includes('5') || exp.includes('6') || exp.includes('7') || exp.includes('8') || exp.includes('9') || exp.includes('experience');
+        return fromLevel || fromExp;
       }
       return true;
     });
@@ -584,10 +598,18 @@ function generateJobSchema(activeJobs) {
     return jobSchema;
   });
 
+  const graphSchema = {
+    "@context": "https://schema.org",
+    "@graph": schemas.map(schema => {
+      delete schema["@context"];
+      return schema;
+    })
+  };
+
   const script = document.createElement('script');
   script.id = 'dynamic-job-schema';
   script.type = 'application/ld+json';
-  script.text = JSON.stringify(schemas);
+  script.text = JSON.stringify(graphSchema);
   document.head.appendChild(script);
 }
 

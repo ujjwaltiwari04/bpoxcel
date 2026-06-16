@@ -1,0 +1,23 @@
+{
+  "name": "bpoxcel-website",
+  "version": "1.0.0",
+  "description": "BPOXCEL Website - Recruitment & BPO Workforce Partners",
+  "main": "index.html",
+  "scripts": {
+    "build:tailwind": "tailwindcss -i css/tailwind-src.css -o css/tailwind.min.css --minify",
+    "build:css": "cleancss -o css/style.min.css css/style.css",
+    "build:js": "terser js/main.js -o js/main.min.js --mangle --compress && terser js/jobs.js -o js/jobs.min.js --mangle --compress",
+    "build": "npm run build:tailwind && npm run build:css && npm run build:js",
+    "watch:tailwind": "tailwindcss -i css/tailwind-src.css -o css/tailwind.min.css --watch",
+    "watch:css": "onchange \"css/style.css\" -- npm run build:css",
+    "watch:js": "onchange \"js/main.js\" \"js/jobs.js\" -- npm run build:js",
+    "dev": "concurrently \"npm run watch:tailwind\" \"npm run watch:css\" \"npm run watch:js\""
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.0",
+    "clean-css-cli": "^5.6.3",
+    "concurrently": "^8.2.2",
+    "onchange": "^7.1.0",
+    "terser": "^5.31.1"
+  }
+}

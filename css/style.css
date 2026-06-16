@@ -208,7 +208,7 @@
 /* Mobile nav overlay */
 @media (max-width: 767px) {
   #nav-menu {
-    display: none;
+    display: flex;
     flex-direction: column;
     position: absolute;
     top: 100%;
@@ -219,9 +219,28 @@
     gap: 1rem;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     z-index: 100;
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  #nav-menu.open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
 }
-#nav-menu.open { display: flex; }
+
+/* Hamburger active animation */
+#hamburger.open span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+#hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+#hamburger.open span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
 
 /* Form focus */
 .form-input:focus {

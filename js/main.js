@@ -1,20 +1,78 @@
 // Sticky navbar shadow on scroll
 const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('navbar-scrolled', window.scrollY > 20);
-});
+if (navbar) {
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('navbar-scrolled', window.scrollY > 20);
+  });
+}
+
+// Scroll spy logic for homepage navigation active states
+const spySections = ['home', 'services'].map(id => document.getElementById(id)).filter(el => el !== null);
+const spyDesktopLinks = document.querySelectorAll('nav:not(#nav-menu) a[href^="#"]');
+const spyMobileLinks = document.querySelectorAll('nav#nav-menu a[href^="#"]');
+
+if (spySections.length > 0) {
+  const handleScrollSpy = () => {
+    let activeId = 'home';
+    const scrollPos = window.scrollY + 120; // Offset for navbar height
+
+    spySections.forEach(sec => {
+      const top = sec.offsetTop;
+      const height = sec.offsetHeight;
+      if (scrollPos >= top && scrollPos < top + height) {
+        activeId = sec.getAttribute('id');
+      }
+    });
+
+    // Update Desktop nav classes
+    spyDesktopLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href === `#${activeId}`) {
+        link.classList.add('active', 'text-brand-cyan');
+        link.classList.remove('text-gray-700');
+      } else {
+        link.classList.remove('active', 'text-brand-cyan');
+        link.classList.add('text-gray-700');
+      }
+    });
+
+    // Update Mobile nav classes
+    spyMobileLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href === `#${activeId}`) {
+        link.classList.add('text-brand-cyan', 'font-semibold');
+        link.classList.remove('text-gray-700', 'font-medium');
+      } else {
+        link.classList.remove('text-brand-cyan', 'font-semibold');
+        link.classList.add('text-gray-700', 'font-medium');
+      }
+    });
+  };
+
+  window.addEventListener('scroll', handleScrollSpy);
+  handleScrollSpy(); // Run initially
+}
 
 // Hamburger menu toggle for mobile navigation
 const hamburger = document.getElementById('hamburger');
 const navMenu = document.getElementById('nav-menu');
-hamburger.addEventListener('click', () => navMenu.classList.toggle('open'));
-navMenu.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => navMenu.classList.remove('open'));
-});
+if (hamburger && navMenu) {
+  hamburger.addEventListener('click', () => {
+    navMenu.classList.toggle('open');
+    hamburger.classList.toggle('open');
+  });
+  navMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navMenu.classList.remove('open');
+      hamburger.classList.remove('open');
+    });
+  });
+}
 
 // Form submission AJAX handler (using Formspree)
 const form = document.getElementById('contact-form');
 const success = document.getElementById('form-success');
+const errorBanner = document.getElementById('form-error');
 const btn = document.getElementById('submit-btn');
 
 if (form) {
@@ -22,6 +80,8 @@ if (form) {
     e.preventDefault();
     const required = form.querySelectorAll('[required]');
     let valid = true;
+    
+    // Check required fields
     required.forEach(el => {
       if (!el.value.trim()) {
         el.style.borderColor = '#f87171';
@@ -30,7 +90,24 @@ if (form) {
         el.style.borderColor = '';
       }
     });
+
+    // Validate email format if populated
+    const emailEl = form.querySelector('input[name="email"]');
+    if (emailEl && emailEl.value.trim()) {
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(emailEl.value.trim())) {
+        emailEl.style.borderColor = '#f87171';
+        valid = false;
+      } else {
+        emailEl.style.borderColor = '';
+      }
+    }
+
     if (!valid) return;
+
+    // Reset status banners
+    if (success) { success.classList.add('hidden'); success.style.display = ''; }
+    if (errorBanner) { errorBanner.classList.add('hidden'); errorBanner.style.display = ''; }
 
     btn.textContent = 'Sending…';
     btn.disabled = true;
@@ -44,21 +121,37 @@ if (form) {
       });
       if (res.ok) {
         form.reset();
-        success.classList.remove('hidden');
-        success.style.display = 'flex';
+        if (success) {
+          success.classList.remove('hidden');
+          success.style.display = 'flex';
+          setTimeout(() => {
+            success.classList.add('hidden');
+            success.style.display = '';
+          }, 6000);
+        }
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch (_) {
+      if (errorBanner) {
+        errorBanner.classList.remove('hidden');
+        errorBanner.style.display = 'flex';
         setTimeout(() => {
-          success.classList.add('hidden');
-          success.style.display = '';
+          errorBanner.classList.add('hidden');
+          errorBanner.style.display = '';
         }, 6000);
       }
-    } catch (_) { }
+    }
 
     btn.textContent = 'Send Message';
     btn.disabled = false;
   });
 
-  form.querySelectorAll('input,select,textarea').forEach(el => {
+  form.querySelectorAll('input,textarea').forEach(el => {
     el.addEventListener('input', () => { el.style.borderColor = ''; });
+  });
+  form.querySelectorAll('select').forEach(el => {
+    el.addEventListener('change', () => { el.style.borderColor = ''; });
   });
 }
 
