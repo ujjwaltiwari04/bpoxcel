@@ -82,7 +82,7 @@ This runs the following build pipeline:
 
 ## 📊 Google Sheets Jobs Database Integration
 
-The careers board on `pages/jobs.html` dynamically fetches current openings from a Google Sheet.
+The careers board on `jobs.html` dynamically fetches current openings from a Google Sheet.
 
 ### Configuration Details
 - **Spreadsheet ID**: `1B96_0hldq1BLyAsoyWmpIO5TTDmuDgt43MKzb_vIuIY`
@@ -112,7 +112,7 @@ The `js/jobs.js` file automatically generates [Schema.org JSON-LD JobPosting](ht
 ---
 
 ## ✉️ Contact Forms (Formspree)
-The contact form on `pages/contact.html` and `index.html` submits queries to a Formspree endpoint. If you need to change the recipient inbox, replace the form action attribute:
+The contact form on `contact.html` and `index.html` submits queries to a Formspree endpoint. If you need to change the recipient inbox, replace the form action attribute:
 ```html
 <form id="contact-form" action="https://formspree.io/f/YOUR_ENDPOINT_ID" method="POST">
 ```
@@ -121,4 +121,4 @@ The contact form on `pages/contact.html` and `index.html` submits queries to a F
 
 ## 📝 Best Practices for Future Maintenance
 - **Keep SEO tags in sync**: When adding new pages, ensure you update metadata, Open Graph tags, canonical links, and register them in the `sitemap.xml`.
-- **Maintain No-JS support**: The `pages/jobs.html` file contains a `<noscript>` block with static fallback job cards so crawlers (like Googlebot) can index the site layout even if JavaScript execution is disabled. Ensure these fallbacks remain representative of core listings.
+- **Maintain No-JS support**: The `jobs.html` file contains a `<noscript>` block with static fallback job cards so crawlers (like Googlebot) can index the site layout even if JavaScript execution is disabled. Ensure these fallbacks remain representative of core listings.
