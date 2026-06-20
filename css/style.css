@@ -4,7 +4,12 @@
 
 * {
   font-family: 'Poppins', sans-serif;
-  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 /* Base header transitions */
@@ -67,25 +72,12 @@
 .delay-5 { animation-delay: 0.60s; }
 
 /* Hero logo entrance spin — single 360° Y-axis rotation on load */
-@keyframes heroLogoSpin {
-  0% {
-    transform: perspective(800px) rotateY(-180deg) scale(0.85);
-    opacity: 0;
-  }
-  60% {
-    transform: perspective(800px) rotateY(20deg) scale(1.02);
-    opacity: 1;
-  }
-  80% {
-    transform: perspective(800px) rotateY(-5deg) scale(1);
-  }
-  100% {
-    transform: perspective(800px) rotateY(0deg) scale(1);
-    opacity: 1;
-  }
+@keyframes heroLogoIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
 }
 .hero-logo-spin {
-  animation: heroLogoSpin 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+  animation: heroLogoIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
 }
 
 /* Scroll Reveal Utilities */
@@ -153,7 +145,13 @@
   }
   .animate-spin-slow {
     animation: spinSlow 30s linear infinite;
+    will-change: transform;
+    transform: translateZ(0);
   }
+}
+
+@media (max-width: 767px) {
+  .animate-spin-slow { display: none; }
 }
 
 /* Card hover lift - updated to be smoother and use modern bezier curves */
@@ -355,4 +353,44 @@
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
+}
+
+/* Align section accent line based on text alignment classes */
+.text-left.section-accent::after,
+.text-left .section-accent::after {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.text-center.section-accent::after,
+.text-center .section-accent::after {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Button press feedback */
+.apply-job-btn:active,
+.apply-btn:active {
+  transform: scale(0.97);
+  transition-duration: 0.1s;
+}
+
+/* Skeleton loader for jobs cards */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 8px;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Accessibility / prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

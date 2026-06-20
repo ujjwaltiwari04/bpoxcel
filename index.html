@@ -199,17 +199,17 @@
           <!-- Stats row -->
           <div class="fade-up delay-5 mt-12 flex flex-wrap gap-8">
             <div>
-              <p class="text-3xl font-bold gradient-text">6+</p>
+              <p class="text-3xl font-bold gradient-text" data-target="6" data-suffix="+">0+</p>
               <p class="text-xs text-gray-500 font-medium mt-0.5">Years Experience</p>
             </div>
             <div class="w-px bg-gray-200 hidden sm:block"></div>
             <div>
-              <p class="text-3xl font-bold gradient-text">7</p>
+              <p class="text-3xl font-bold gradient-text" data-target="7">0</p>
               <p class="text-xs text-gray-500 font-medium mt-0.5">Industries Served</p>
             </div>
             <div class="w-px bg-gray-200 hidden sm:block"></div>
             <div>
-              <p class="text-3xl font-bold gradient-text">4</p>
+              <p class="text-3xl font-bold gradient-text" data-target="4">0</p>
               <p class="text-xs text-gray-500 font-medium mt-0.5">Core Services</p>
             </div>
           </div>
@@ -738,8 +738,10 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
-              <a href="mailto:sudhanshuvats@bpoxcel.com"
-                class="hover:text-brand-accent transition-colors break-all">sudhanshuvats@bpoxcel.com</a>
+              <a href="#"
+                data-user="sudhanshuvats"
+                data-domain="bpoxcel.com"
+                class="hover:text-brand-accent transition-colors break-all"></a>
             </li>
           </ul>
         </div>
@@ -762,6 +764,7 @@
   <!-- ============================================================
      JAVASCRIPT
   ============================================================ -->
+  <script src="js/common.min.js" defer></script>
   <script src="js/main.min.js" defer></script>
 
 </body>

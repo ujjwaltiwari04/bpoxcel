@@ -1,11 +1,3 @@
-// Sticky navbar shadow on scroll
-const navbar = document.getElementById('navbar');
-if (navbar) {
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('navbar-scrolled', window.scrollY > 20);
-  });
-}
-
 // Scroll spy logic for homepage navigation active states
 const spySections = ['home', 'services'].map(id => document.getElementById(id)).filter(el => el !== null);
 const spyDesktopLinks = document.querySelectorAll('nav:not(#nav-menu) a[href^="#"]');
@@ -51,22 +43,6 @@ if (spySections.length > 0) {
 
   window.addEventListener('scroll', handleScrollSpy);
   handleScrollSpy(); // Run initially
-}
-
-// Hamburger menu toggle for mobile navigation
-const hamburger = document.getElementById('hamburger');
-const navMenu = document.getElementById('nav-menu');
-if (hamburger && navMenu) {
-  hamburger.addEventListener('click', () => {
-    navMenu.classList.toggle('open');
-    hamburger.classList.toggle('open');
-  });
-  navMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      navMenu.classList.remove('open');
-      hamburger.classList.remove('open');
-    });
-  });
 }
 
 // Form submission AJAX handler (using Formspree)
@@ -155,32 +131,48 @@ if (form) {
   });
 }
 
-// Intersection Observer for scroll-reveal animations
+// Counter animation for stats
 document.addEventListener('DOMContentLoaded', () => {
-  const revealElements = document.querySelectorAll('.reveal');
-  
-  const observer = new IntersectionObserver((entries) => {
+  function animateCounter(el) {
+    const target = parseInt(el.dataset.target, 10);
+    const duration = 1200;
+    const start = performance.now();
+    const suffix = el.dataset.suffix || '';
+    const update = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      el.textContent = Math.floor(eased * target) + suffix;
+      if (progress < 1) requestAnimationFrame(update);
+    };
+    requestAnimationFrame(update);
+  }
+
+  const counterObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('active');
-        observer.unobserve(entry.target); // Stop observing once revealed
+        animateCounter(entry.target);
+        counterObserver.unobserve(entry.target);
       }
     });
-  }, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -40px 0px'
-  });
-  
-  revealElements.forEach(el => observer.observe(el));
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('[data-target]').forEach(el => counterObserver.observe(el));
 });
 
-// Floating Back to Top Button
-const backToTopBtn = document.getElementById('back-to-top');
-if (backToTopBtn) {
-  window.addEventListener('scroll', () => {
-    backToTopBtn.classList.toggle('show', window.scrollY > 300);
-  });
-  backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-}
+// Form submission status handler for Google Form apply links
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.apply-btn');
+  if (btn) {
+    const url = btn.getAttribute('href');
+    if (url && url.includes('docs.google.com/forms')) {
+      e.preventDefault();
+      window.open(url, '_blank');
+      
+      const msg = document.createElement('div');
+      msg.className = "text-xs text-center font-medium bg-brand-light text-brand-blue border border-brand-cyan/20 px-4 py-3 rounded-xl transition-all animate-fade-in";
+      msg.innerHTML = "Please complete the application form in the open tab.<br>We will get back to you if your profile matches our needs.";
+      btn.replaceWith(msg);
+    }
+  }
+});
+
