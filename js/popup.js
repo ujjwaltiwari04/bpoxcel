@@ -12,7 +12,7 @@
 
   // ── Constants ──
   var POPUP_DELAY = 3000; // 3 seconds
-  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx7Nc4zIYi3VJBfijRWzlJDEoroidY4r4nOsQQThIyNoUpQ4VzWRkmAhHB-d1nhDovg/exec';
+  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxZoRoWRtkCUsbeF6nJitMkT5oSD1OxlAe6UENK7O48GSpthY63xD5C_AhhFe1VTVx0/exec';
   var PHONE_REGEX = /^[\+]?[\d\s\-\(\)]{7,15}$/;
   var EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
