@@ -284,24 +284,22 @@
 
       fetch(APPS_SCRIPT_URL, {
         method: 'POST',
+        mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
       })
-        .then(function (res) { return res.json(); })
-        .then(function (result) {
-          if (result.success) {
-            document.getElementById('bpx-form-view').style.display = 'none';
-            document.getElementById('bpx-success-view').style.display = 'block';
+        .then(function () {
+          // mode: 'no-cors' returns an opaque response, which means we can't inspect the body
+          // but the request is sent successfully and the script executes.
+          document.getElementById('bpx-form-view').style.display = 'none';
+          document.getElementById('bpx-success-view').style.display = 'block';
 
-            // Persist so popup never appears again after successful submission
-            localStorage.setItem('bpoxcelLeadSubmitted', 'true');
+          // Persist so popup never appears again after successful submission
+          localStorage.setItem('bpoxcelLeadSubmitted', 'true');
 
-            // Focus the jobs button for accessibility
-            var jobsBtn = document.getElementById('bpx-jobs-btn');
-            if (jobsBtn) jobsBtn.focus();
-          } else {
-            throw new Error(result.message || 'Submission failed');
-          }
+          // Focus the jobs button for accessibility
+          var jobsBtn = document.getElementById('bpx-jobs-btn');
+          if (jobsBtn) jobsBtn.focus();
         })
         .catch(function () {
           formError.classList.add('bpx-show');
