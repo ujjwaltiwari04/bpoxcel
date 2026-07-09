@@ -5,12 +5,12 @@
   "main": "index.html",
   "scripts": {
     "build:tailwind": "tailwindcss -i css/tailwind-src.css -o css/tailwind.min.css --minify",
-    "build:css": "cleancss -o css/style.min.css css/style.css",
-    "build:js": "terser js/common.js -o js/common.min.js --mangle --compress && terser js/main.js -o js/main.min.js --mangle --compress && terser js/jobs.js -o js/jobs.min.js --mangle --compress",
+    "build:css": "cleancss -o css/style.min.css css/style.css && cleancss -o css/popup.min.css css/popup.css",
+    "build:js": "terser js/common.js -o js/common.min.js --mangle --compress && terser js/main.js -o js/main.min.js --mangle --compress && terser js/jobs.js -o js/jobs.min.js --mangle --compress && terser js/popup.js -o js/popup.min.js --mangle --compress",
     "build": "npm run build:tailwind && npm run build:css && npm run build:js",
     "watch:tailwind": "tailwindcss -i css/tailwind-src.css -o css/tailwind.min.css --watch",
-    "watch:css": "onchange \"css/style.css\" -- npm run build:css",
-    "watch:js": "onchange \"js/common.js\" \"js/main.js\" \"js/jobs.js\" -- npm run build:js",
+    "watch:css": "onchange \"css/style.css\" \"css/popup.css\" -- npm run build:css",
+    "watch:js": "onchange \"js/common.js\" \"js/main.js\" \"js/jobs.js\" \"js/popup.js\" -- npm run build:js",
     "dev": "concurrently \"npm run watch:tailwind\" \"npm run watch:css\" \"npm run watch:js\""
   },
   "devDependencies": {
