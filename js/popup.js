@@ -273,21 +273,23 @@
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span class="bpx-spinner"></span> Submitting\u2026';
 
-      var formData = new FormData();
-      formData.append('name', nameEl.value.trim());
-      formData.append('location', locEl.value.trim());
-      formData.append('phone', phoneEl.value.trim());
-      formData.append('email', emailEl.value.trim());
-      formData.append('lookingFor', lookingEl.value);
-      formData.append('sourcePage', 'Homepage');
+      var payload = {
+        name: nameEl.value.trim(),
+        location: locEl.value.trim(),
+        phone: phoneEl.value.trim(),
+        email: emailEl.value.trim(),
+        lookingFor: lookingEl.value,
+        sourcePage: 'Homepage'
+      };
 
       fetch(APPS_SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors',
-        body: formData
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
       })
-        .then(function () {
-            // no-cors returns opaque response; treat as success
+        .then(function (res) { return res.json(); })
+        .then(function (result) {
+          if (result.success) {
             document.getElementById('bpx-form-view').style.display = 'none';
             document.getElementById('bpx-success-view').style.display = 'block';
 
@@ -297,6 +299,9 @@
             // Focus the jobs button for accessibility
             var jobsBtn = document.getElementById('bpx-jobs-btn');
             if (jobsBtn) jobsBtn.focus();
+          } else {
+            throw new Error(result.message || 'Submission failed');
+          }
         })
         .catch(function () {
           formError.classList.add('bpx-show');
