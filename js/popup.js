@@ -273,20 +273,18 @@
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span class="bpx-spinner"></span> Submitting\u2026';
 
-      var payload = {
-        name: nameEl.value.trim(),
-        location: locEl.value.trim(),
-        phone: phoneEl.value.trim(),
-        email: emailEl.value.trim(),
-        lookingFor: lookingEl.value,
-        sourcePage: 'Homepage'
-      };
+      var formData = new FormData();
+      formData.append('name', nameEl.value.trim());
+      formData.append('location', locEl.value.trim());
+      formData.append('phone', phoneEl.value.trim());
+      formData.append('email', emailEl.value.trim());
+      formData.append('lookingFor', lookingEl.value);
+      formData.append('sourcePage', 'Homepage');
 
       fetch(APPS_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(payload)
+        body: formData
       })
         .then(function () {
             // no-cors returns opaque response; treat as success
