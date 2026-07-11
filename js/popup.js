@@ -74,7 +74,7 @@
                   '<option value="Looking for a Job">Looking for a Job</option>' +
                   '<option value="Hiring Talent">Hiring Talent</option>' +
                   '<option value="Outsourcing Services">Outsourcing Services</option>' +
-                  '<option value="AI Agents & Chatbots">AI Agents &amp; Chatbots</option>' +
+                  '<option value="Smart Hiring">Smart Hiring</option>' +
                   '<option value="General Inquiry">General Inquiry</option>' +
                 '</select>' +
               '</div>' +

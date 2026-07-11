@@ -23,6 +23,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Search Input Event
+  const searchInput = document.getElementById('job-search-input');
+  const clearBtn = document.getElementById('clear-search-btn');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      currentSearchQuery = e.target.value.toLowerCase().trim();
+      
+      // Show/hide clear button
+      if (clearBtn) {
+        if (currentSearchQuery) {
+          clearBtn.classList.remove('hidden');
+        } else {
+          clearBtn.classList.add('hidden');
+        }
+      }
+      
+      applyFilters();
+    });
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (searchInput) {
+        searchInput.value = '';
+      }
+      currentSearchQuery = '';
+      clearBtn.classList.add('hidden');
+      applyFilters();
+    });
+  }
+
   // Read More / Read Less Click Delegate
   document.addEventListener('click', (e) => {
     if (e.target.classList.contains('read-more-btn')) {
@@ -44,6 +75,37 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.textContent = 'Read Less';
         btn.setAttribute('data-expanded', 'true');
       }
+    }
+  });
+
+  // Browse other Jobs Click Delegate
+  document.addEventListener('click', (e) => {
+    if (e.target.id === 'browse-all-jobs-btn') {
+      const searchInput = document.getElementById('job-search-input');
+      const clearBtn = document.getElementById('clear-search-btn');
+      
+      // Reset search query
+      if (searchInput) {
+        searchInput.value = '';
+      }
+      currentSearchQuery = '';
+      if (clearBtn) {
+        clearBtn.classList.add('hidden');
+      }
+
+      // Reset filter buttons active classes to 'all'
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      filterButtons.forEach(btn => {
+        if (btn.getAttribute('data-filter') === 'all') {
+          btn.className = 'filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-gradient-to-r from-brand-cyan to-brand-blue text-white shadow-sm hover:shadow-md transition-all';
+        } else {
+          btn.className = 'filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-white border border-gray-200 text-gray-600 hover:border-brand-cyan hover:text-brand-cyan transition-all';
+        }
+      });
+      currentFilter = 'all';
+
+      // Re-apply filters (will show all jobs)
+      applyFilters();
     }
   });
 });
@@ -119,6 +181,7 @@ function safeParseDate(dateStr) {
 
 let allJobsList = [];
 let currentFilter = 'all';
+let currentSearchQuery = '';
 
 async function fetchJobs() {
   const grid    = document.getElementById('jobs-grid');
@@ -233,40 +296,8 @@ async function fetchJobs() {
       return;
     }
 
-    // Update counter dynamically if present
-    if (counter) {
-      counter.textContent = `${locationJobs.length}+`;
-    }
-
-    // Render cards
-    const cardsHTML = locationJobs.map((job, index) => createJobCard(job, index)).join('');
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = cardsHTML;
-    
-    // Remove previous job cards just in case
-    grid.querySelectorAll('.job-card').forEach(el => el.remove());
-    
-    // Append real cards
-    Array.from(tempDiv.children).forEach(el => grid.appendChild(el));
-
-    // Staggered entrance animation
-    grid.querySelectorAll('.job-card').forEach((card, i) => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(20px)';
-      card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-      card.style.transitionDelay = `${Math.min(i * 60, 400)}ms`;
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
-        });
-      });
-    });
-
-    // Observe dynamic reveal elements inside grid (if any are left)
-    if (window.revealObserver) {
-      grid.querySelectorAll('.reveal').forEach(el => window.revealObserver.observe(el));
-    }
+    // Render filtered cards initially
+    applyFilters();
     
     generateJobSchema(locationJobs);
 
@@ -293,13 +324,18 @@ function applyJobFilter(filterType) {
     }
   });
 
+  applyFilters();
+}
+
+function applyFilters() {
   const grid = document.getElementById('jobs-grid');
   const noJobs = document.getElementById('no-jobs');
   
   if (!grid) return;
 
+  // 1. Filter by category/experience tab (currentFilter)
   let filtered = allJobsList;
-  if (filterType !== 'all') {
+  if (currentFilter !== 'all') {
     filtered = allJobsList.filter(job => {
       const role = getValue(job, 'Role', '').toLowerCase();
       const desc = getValue(job, 'Description', '').toLowerCase();
@@ -308,19 +344,19 @@ function applyJobFilter(filterType) {
       const industry = getValue(job, 'Industry', '').toLowerCase();
       const expLevel = getValue(job, 'Experience Level', '').toLowerCase();
 
-      if (filterType === 'bpo') {
+      if (currentFilter === 'bpo') {
         return (industry && (industry.includes('bpo') || industry.includes('call') || industry.includes('voice') || industry.includes('sales'))) ||
                category.includes('bpo') || category.includes('call') || category.includes('voice') || category.includes('sales') ||
                role.includes('bpo') || role.includes('voice') || role.includes('customer') || role.includes('support') || role.includes('telecaller') || role.includes('back office') || role.includes('sales') ||
                desc.includes('bpo') || desc.includes('voice') || desc.includes('customer') || desc.includes('support') || desc.includes('telecaller') || desc.includes('sales');
       }
-      if (filterType === 'it') {
+      if (currentFilter === 'it') {
         return (industry && (industry.includes('it') || industry.includes('tech') || industry.includes('software'))) ||
                category.includes('it') || category.includes('tech') || category.includes('software') ||
                role.includes('it') || role.includes('developer') || role.includes('software') || role.includes('tech') || role.includes('engineer') ||
                desc.includes('it') || desc.includes('developer') || desc.includes('software') || desc.includes('tech') || desc.includes('engineer');
       }
-      if (filterType === 'fresher') {
+      if (currentFilter === 'fresher') {
         const fromLevel = expLevel ? (expLevel.includes('fresher') || expLevel.includes('entry') || expLevel.includes('0')) : false;
         if (expLevel) return fromLevel;
         
@@ -336,7 +372,7 @@ function applyJobFilter(filterType) {
         if (cleanExp.toLowerCase().includes('fresher')) return true;
         return false;
       }
-      if (filterType === 'experienced') {
+      if (currentFilter === 'experienced') {
         const fromLevel = expLevel ? (expLevel.includes('experienced') || expLevel.includes('experience') || (expLevel.includes('exp') && !expLevel.includes('no'))) : false;
         if (expLevel) return fromLevel;
         
@@ -354,11 +390,61 @@ function applyJobFilter(filterType) {
     });
   }
 
+  // 2. Filter by search query (currentSearchQuery)
+  if (currentSearchQuery) {
+    filtered = filtered.filter(job => {
+      const role = getValue(job, 'Role', '').toLowerCase();
+      const desc = getValue(job, 'Description', '').toLowerCase();
+      const loc = getValue(job, 'Location', '').toLowerCase();
+      const locDup = getValue(job, 'Location_duplicate', '').toLowerCase();
+      const category = getValue(job, 'Category', '').toLowerCase();
+      const industry = getValue(job, 'Industry', '').toLowerCase();
+      const exp = getValue(job, 'Experience', '').toLowerCase();
+      const salary = getValue(job, 'Salary', '').toLowerCase();
+      const jobNo = getValue(job, 'Job No', '').toLowerCase();
+
+      return role.includes(currentSearchQuery) ||
+             desc.includes(currentSearchQuery) ||
+             loc.includes(currentSearchQuery) ||
+             locDup.includes(currentSearchQuery) ||
+             category.includes(currentSearchQuery) ||
+             industry.includes(currentSearchQuery) ||
+             exp.includes(currentSearchQuery) ||
+             salary.includes(currentSearchQuery) ||
+             jobNo.includes(currentSearchQuery);
+    });
+  }
+
+  // Update counter dynamically
+  const counter = document.getElementById('job-count');
+  if (counter) {
+    counter.textContent = `${filtered.length}+`;
+  }
+
   if (filtered.length === 0) {
-    noJobs.classList.remove('hidden');
+    if (noJobs) {
+      noJobs.classList.remove('hidden');
+      if (currentSearchQuery || currentFilter !== 'all') {
+        noJobs.innerHTML = `
+          <p class="text-gray-500 text-sm">There are no relevant jobs according to your needs/skills.</p>
+          <button id="browse-all-jobs-btn" class="mt-4 inline-flex items-center gap-1.5 px-6 py-3 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-brand-cyan to-brand-blue hover:opacity-90 transition-opacity shadow-sm hover:shadow-md cursor-pointer">
+            Browse other Jobs &rarr;
+          </button>
+        `;
+      } else {
+        // Default empty page fallback
+        noJobs.innerHTML = `
+          <p class="text-gray-400 text-sm">No openings at the moment. Check back soon or send your CV on WhatsApp.</p>
+          <a href="https://wa.me/918588931044?text=Hi%20BPOXCEL%2C%20I%20want%20to%20share%20my%20CV%20for%20future%20openings."
+             class="mt-4 inline-block px-6 py-3 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-brand-cyan to-brand-blue">
+            Send CV on WhatsApp
+          </a>
+        `;
+      }
+    }
     grid.querySelectorAll('.job-card, .skeleton-card').forEach(el => el.remove());
   } else {
-    noJobs.classList.add('hidden');
+    if (noJobs) noJobs.classList.add('hidden');
     
     // Remove previous cards and skeletons
     grid.querySelectorAll('.job-card, .skeleton-card').forEach(el => el.remove());

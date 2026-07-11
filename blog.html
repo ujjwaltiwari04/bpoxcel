@@ -54,7 +54,7 @@
 
     <!-- Logo -->
     <a href="index.html" class="flex items-center">
-      <img src="images/logo.webp" alt="BPOXCEL – Empowering Talent, Accelerating Growth" class="h-20 w-auto object-contain" />
+      <img src="images/logo.webp" alt="BPOXCEL – Empowering Talent, Accelerating Growth" class="h-16 w-auto object-contain" />
     </a>
 
     <!-- Desktop Navigation -->
@@ -62,7 +62,20 @@
       <a href="index.html"           class="nav-link text-sm font-medium text-gray-700 hover:text-brand-cyan transition-colors">Home</a>
       <a href="services.html"        class="nav-link text-sm font-medium text-gray-700 hover:text-brand-cyan transition-colors">Our Services</a>
       <a href="jobs.html"            class="nav-link text-sm font-medium text-gray-700 hover:text-brand-cyan transition-colors">Jobs</a>
-      <a href="blog.html"            class="nav-link active text-sm font-semibold text-brand-cyan transition-colors">Blog</a>
+      <a href="employers.html"       class="nav-link text-sm font-medium text-gray-700 hover:text-brand-cyan transition-colors">For Employers</a>
+      <!-- Dropdown "More" (Active) -->
+      <div class="relative group">
+        <button class="nav-link active text-sm font-semibold text-brand-cyan transition-colors flex items-center gap-1">
+          <span>More</span>
+          <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="absolute left-0 mt-2 w-60 rounded-2xl bg-white shadow-xl border border-gray-100 p-1.5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+          <a href="blog.html" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-brand-light hover:text-brand-cyan transition-colors rounded-xl">Blog &amp; Resources</a>
+          <a href="success-stories.html" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-brand-light hover:text-brand-cyan transition-colors rounded-xl">Success Stories</a>
+        </div>
+      </div>
       <a href="contact.html"         class="ml-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-brand-cyan to-brand-blue hover:opacity-90 transition-opacity shadow-sm hover:shadow-md">Contact Us</a>
     </nav>
 
@@ -78,8 +91,21 @@
       <a href="index.html"           class="text-sm font-medium text-gray-700 hover:text-brand-cyan transition-colors py-1">Home</a>
       <a href="services.html"        class="text-sm font-medium text-gray-700 hover:text-brand-cyan transition-colors py-1">Our Services</a>
       <a href="jobs.html"            class="text-sm font-medium text-gray-700 hover:text-brand-cyan transition-colors py-1">Jobs</a>
-      <a href="blog.html"            class="text-sm font-semibold text-brand-cyan py-1">Blog</a>
-      <a href="contact.html"         class="text-sm font-semibold text-brand-cyan border border-brand-cyan rounded-full px-4 py-2 text-center hover:bg-brand-cyan hover:text-white transition-colors">Contact Us</a>
+      <a href="employers.html"       class="text-sm font-medium text-gray-700 hover:text-brand-cyan transition-colors py-1">For Employers</a>
+      <!-- Mobile Dropdown (Active) -->
+      <div class="relative w-full">
+        <button class="mobile-more-btn text-sm font-semibold text-brand-cyan transition-colors py-1 w-full text-left flex items-center justify-between">
+          <span>More</span>
+          <svg class="mobile-more-arrow w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="hidden pl-4 flex flex-col gap-2 mt-2 border-l border-gray-200">
+          <a href="blog.html" class="text-sm font-semibold text-brand-cyan transition-colors py-1">Blog &amp; Resources</a>
+          <a href="success-stories.html" class="text-sm font-medium text-gray-700 hover:text-brand-cyan transition-colors py-1">Success Stories</a>
+        </div>
+      </div>
+      <a href="contact.html"         class="text-sm font-semibold text-brand-cyan border border-brand-cyan rounded-full px-4 py-2 text-center hover:bg-brand-cyan hover:text-white transition-colors mt-2">Contact Us</a>
     </nav>
   </div>
 </header>
@@ -220,6 +246,7 @@
           <li><a href="services.html#industries" class="hover:text-brand-accent transition-colors">Industries</a></li>
           <li><a href="jobs.html" class="hover:text-brand-accent transition-colors">Job Openings</a></li>
           <li><a href="blog.html" class="text-brand-accent font-semibold">Blog &amp; Resources</a></li>
+          <li><a href="success-stories.html" class="hover:text-brand-accent transition-colors">Success Stories</a></li>
           <li><a href="contact.html" class="hover:text-brand-accent transition-colors">Contact Us</a></li>
         </ul>
       </div>
@@ -229,8 +256,9 @@
         <ul class="space-y-3 text-sm">
           <li><a href="services.html" class="hover:text-brand-accent transition-colors">End-to-End Recruitment</a></li>
           <li><a href="services.html" class="hover:text-brand-accent transition-colors">Hiring Consultancy</a></li>
-          <li><a href="services.html" class="hover:text-brand-accent transition-colors">AI Agents &amp; Chatbots</a></li>
-          <li><a href="services.html" class="hover:text-brand-accent transition-colors">Outsourcing Projects</a></li>
+          <li><a href="services.html" class="hover:text-brand-accent transition-colors">Smart Hiring</a></li>
+          <li><a href="services.html" class="hover:text-brand-accent transition-colors">Outsourcing</a></li>
+          <li><a href="services.html" class="hover:text-brand-accent transition-colors">AI &amp; Digital Solutions</a></li>
           <li><a href="services.html#industries" class="hover:text-brand-accent transition-colors">BPO Staffing</a></li>
           <li><a href="services.html#industries" class="hover:text-brand-accent transition-colors">IT Recruitment</a></li>
         </ul>
@@ -256,7 +284,7 @@
             <svg class="w-4 h-4 text-brand-cyan flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
-            <a href="#" data-user="sudhanshuvats" data-domain="bpoxcel.com" class="hover:text-brand-accent transition-colors break-all"></a>
+            <a href="#" data-user="info" data-domain="bpoxcel.com" class="hover:text-brand-accent transition-colors break-all"></a>
           </li>
         </ul>
       </div>

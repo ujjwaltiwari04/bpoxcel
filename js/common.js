@@ -20,6 +20,21 @@ if (hamburger && navMenu) {
       hamburger.classList.remove('open');
     });
   });
+
+  // Mobile navigation "More" dropdown toggle
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.mobile-more-btn');
+    if (btn) {
+      const dropdown = btn.nextElementSibling;
+      const arrow = btn.querySelector('.mobile-more-arrow');
+      if (dropdown) {
+        dropdown.classList.toggle('hidden');
+        if (arrow) {
+          arrow.classList.toggle('rotate-180');
+        }
+      }
+    }
+  });
 }
 
 // Floating Back to Top Button
