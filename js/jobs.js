@@ -833,7 +833,7 @@ if (document.readyState === 'loading') {
 (function () {
   'use strict';
 
-  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbymry09A-4-LJQzIzVnAeylTBItA5KPCL8hA6YN4Ax9TPapKA2bBHldyojegq2Scs7c/exec';
+  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl6JxvEgx2ACSnGp3FmKYTzqD5GVbVTI73LDLeZ9hcLKj47vX4tKCWmk8fOFnpA8_i/exec';
   var PHONE_REGEX = /^[\+]?[\d\s\-\(\)]{7,15}$/;
   var EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
