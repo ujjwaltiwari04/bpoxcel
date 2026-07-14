@@ -1,5 +1,5 @@
 # ==============================================================
-# robots.txt for BPOXCEL — https://www.bpoxcel.com
+# robots.txt for BPOXCEL — https://bpoxcel.com
 # Empowering Talent, Accelerating Growth
 # Last updated: 2026-06-16
 # ==============================================================
@@ -149,4 +149,4 @@ Disallow: /
 # --------------------------------------------------------------
 # Sitemap location
 # --------------------------------------------------------------
-Sitemap: https://www.bpoxcel.com/sitemap.xml
+Sitemap: https://bpoxcel.com/sitemap.xml

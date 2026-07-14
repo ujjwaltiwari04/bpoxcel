@@ -772,8 +772,8 @@ function generateJobSchema(activeJobs) {
       "hiringOrganization": {
         "@type": "Organization",
         "name": "BPOXCEL",
-        "sameAs": "https://www.bpoxcel.com",
-        "logo": "https://www.bpoxcel.com/images/logo.webp"
+        "sameAs": "https://bpoxcel.com",
+        "logo": "https://bpoxcel.com/images/logo.webp"
       },
       "industry": getValue(job, 'Industry', 'BPO / Call Centre'),
       "experienceRequirements": {
