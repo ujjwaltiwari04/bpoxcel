@@ -377,6 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
         phone: phoneEl.value.trim(),
         email: emailEl.value.trim(),
         lookingFor: 'Job ID: ' + jobNo,
+        looking_for: 'Job ID: ' + jobNo, // Dual key for backend compatibility
         sourcePage: 'Job Board - ' + (window.location.pathname.split('/').pop() || 'JobsPage')
       };
 

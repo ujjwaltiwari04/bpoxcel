@@ -279,6 +279,7 @@
         phone: phoneEl.value.trim(),
         email: emailEl.value.trim(),
         lookingFor: lookingEl.value,
+        looking_for: lookingEl.value, // Dual key for backend compatibility
         sourcePage: 'Homepage'
       };
 
