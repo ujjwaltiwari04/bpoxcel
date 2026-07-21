@@ -284,12 +284,49 @@
 /* Landing Page Specific: Apply Job CTA button */
 .apply-job-btn {
   background: linear-gradient(135deg, #0891b2 0%, #1e3a5f 100%);
-  transition: opacity 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 8px 24px -4px rgba(8, 145, 178, 0.35);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .apply-job-btn:hover {
-  opacity: 0.92;
-  box-shadow: 0 12px 32px rgba(8, 145, 178, 0.28);
+  opacity: 0.95;
+  box-shadow: 0 14px 32px -4px rgba(8, 145, 178, 0.45);
   transform: translateY(-2px);
+}
+.apply-job-btn:active {
+  transform: scale(0.98);
+}
+
+/* Landing Page Specific: Partner with Us CTA button */
+.partner-employer-btn {
+  background: #ffffff;
+  border: 2px solid rgba(8, 145, 178, 0.35);
+  color: #1e3a5f;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.partner-employer-btn:hover {
+  background-color: #ecfeff;
+  border-color: #0891b2;
+  color: #0891b2;
+  box-shadow: 0 12px 28px -4px rgba(8, 145, 178, 0.22);
+  transform: translateY(-2px);
+}
+.partner-employer-btn:active {
+  transform: scale(0.98);
+}
+
+/* Hero Portal CTA Wrapper spacing */
+.portal-btn-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+@media (min-width: 640px) {
+  .portal-btn-wrapper {
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+  }
 }
 
 /* Jobs Page Specific: Job badge tags & statuses */
