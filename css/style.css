@@ -6,6 +6,13 @@
   font-family: 'Poppins', sans-serif;
 }
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
@@ -213,14 +220,17 @@
     left: 0;
     right: 0;
     background: #fff;
-    padding: 1.5rem 2rem;
-    gap: 1rem;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    padding: 1.25rem 1.5rem;
+    gap: 0.875rem;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
     z-index: 100;
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-16px);
     pointer-events: none;
     transition: transform 0.3s ease, opacity 0.3s ease;
+    max-height: calc(100vh - 84px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   #nav-menu.open {
     opacity: 1;
@@ -319,13 +329,34 @@
 .portal-btn-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
+  width: 100%;
 }
 @media (min-width: 640px) {
   .portal-btn-wrapper {
     flex-direction: row;
     align-items: center;
     gap: 20px;
+    width: auto;
+  }
+}
+
+@media (max-width: 639px) {
+  .apply-job-btn,
+  .partner-employer-btn {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 0.75rem 1rem !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+  .apply-job-btn span,
+  .partner-employer-btn span {
+    white-space: normal !important;
+    font-size: 0.8125rem !important;
+    line-height: 1.3 !important;
+    word-break: break-word;
   }
 }
 

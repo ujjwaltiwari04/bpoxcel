@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- =====================================================
+       SEO META TAGS
+       ===================================================== -->
+  <title>Apply for Jobs | BPOXCEL – Recruitment &amp; BPO Workforce Partners</title>
+  <meta name="description" content="Submit your job application with BPOXCEL. Share your profile and our recruitment team will connect you with top career opportunities." />
+  <meta name="keywords" content="BPOXCEL job application, apply BPO jobs, recruitment form, customer support hiring, Delhi NCR jobs" />
+  <meta name="author" content="BPOXCEL" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Apply for Jobs | BPOXCEL – Empowering Talent, Accelerating Growth" />
+  <meta property="og:description" content="Submit your job application with BPOXCEL. Share your details and our recruitment team will connect you with suitable job opportunities." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bpoxcel.com/apply" />
+  <meta property="og:image" content="https://bpoxcel.com/images/logo.webp" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Apply for Jobs | BPOXCEL" />
+  <meta name="twitter:description" content="Submit your job application with BPOXCEL." />
+  <meta name="twitter:image" content="https://bpoxcel.com/images/logo.webp" />
+  <link rel="canonical" href="https://bpoxcel.com/apply" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/webp" href="../images/favicon.webp" />
+  <link rel="shortcut icon" href="../images/favicon.webp" />
+  <link rel="apple-touch-icon" href="../images/favicon.webp" />
+
+  <!-- Google Fonts — Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../css/tailwind.min.css" />
+  <link rel="stylesheet" href="../css/style.min.css" />
+</head>
+<body class="bg-gray-50/50 text-gray-800 antialiased flex flex-col min-h-screen">
+
+  <!-- ============================================================
+       NAVBAR
+       ============================================================ -->
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white transition-shadow duration-300">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-[84px] relative">
+
+      <!-- Logo -->
+      <a href="../index.html" class="flex items-center">
+        <img src="../images/logo.webp" alt="BPOXCEL – Empowering Talent, Accelerating Growth" class="h-16 w-auto object-contain" />
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center gap-8">
+        <a href="../index.html"           class="nav-link text-sm font-medium text-gray-700 hover:text-brand-cyan transition-colors">Home</a>
+        <a href="../services.html"        class="nav-link text-sm font-medium text-gray-700 hover:text-brand-cyan transition-colors">Our Services</a>
+        <a href="../jobs.html"            class="nav-link text-sm font-medium text-gray-700 hover:text-brand-cyan transition-colors">Jobs</a>
+        <a href="../employers.html"       class="nav-link text-sm font-medium text-gray-700 hover:text-brand-cyan transition-colors">For Employers</a>
+        <!-- Dropdown "More" -->
+        <div class="relative group">
+          <button class="nav-link text-sm font-medium text-gray-700 hover:text-brand-cyan transition-colors flex items-center gap-1">
+            <span>More</span>
+            <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="absolute left-0 mt-2 w-60 rounded-2xl bg-white shadow-xl border border-gray-100 p-1.5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+            <a href="../blog.html" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-brand-light hover:text-brand-cyan transition-colors rounded-xl">Blog &amp; Resources</a>
+            <a href="../success-stories.html" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-brand-light hover:text-brand-cyan transition-colors rounded-xl">Success Stories</a>
+          </div>
+        </div>
+        <a href="../contact.html"         class="ml-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-brand-cyan to-brand-blue hover:opacity-90 transition-opacity shadow-sm hover:shadow-md">Contact Us</a>
+      </nav>
+
+      <!-- Hamburger button (mobile) -->
+      <button id="hamburger" aria-label="Toggle menu" class="md:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-gray-100 transition">
+        <span class="block w-6 h-0.5 bg-gray-700 rounded transition-all"></span>
+        <span class="block w-6 h-0.5 bg-gray-700 rounded transition-all"></span>
+        <span class="block w-6 h-0.5 bg-gray-700 rounded transition-all"></span>
+      </button>
+
+      <!-- Mobile Navigation -->
+      <nav id="nav-menu" class="md:hidden" role="navigation" aria-label="Mobile navigation">
+        <a href="../index.html"           class="text-sm font-medium text-gray-700 hover:text-brand-cyan transition-colors py-1">Home</a>
+        <a href="../services.html"        class="text-sm font-medium text-gray-700 hover:text-brand-cyan transition-colors py-1">Our Services</a>
+        <a href="../jobs.html"            class="text-sm font-medium text-gray-700 hover:text-brand-cyan transition-colors py-1">Jobs</a>
+        <a href="../employers.html"       class="text-sm font-medium text-gray-700 hover:text-brand-cyan transition-colors py-1">For Employers</a>
+        <!-- Mobile Dropdown -->
+        <div class="relative w-full">
+          <button class="mobile-more-btn text-sm font-medium text-gray-700 hover:text-brand-cyan transition-colors py-1 w-full text-left flex items-center justify-between">
+            <span>More</span>
+            <svg class="mobile-more-arrow w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="mobile-more-dropdown hidden pl-3 pt-1 space-y-1">
+            <a href="../blog.html" class="block text-sm text-gray-600 hover:text-brand-cyan py-1">Blog &amp; Resources</a>
+            <a href="../success-stories.html" class="block text-sm text-gray-600 hover:text-brand-cyan py-1">Success Stories</a>
+          </div>
+        </div>
+        <a href="../contact.html" class="mt-2 text-center text-sm font-semibold text-white bg-gradient-to-r from-brand-cyan to-brand-blue py-2.5 rounded-full shadow-sm">Contact Us</a>
+      </nav>
+
+    </div>
+  </header>
+
+  <!-- ============================================================
+       MAIN CONTENT
+       ============================================================ -->
+  <main class="flex-grow pt-28 pb-16 lg:pt-32 lg:pb-24">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- HERO SECTION -->
+      <section class="text-center mb-8 sm:mb-10 fade-up">
+        <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-100 text-xs font-semibold text-brand-cyan mb-4">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          Quick Career Application
+        </span>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-blue tracking-tight mb-3">
+          Find Your Next Career Opportunity
+        </h1>
+        <p class="text-sm sm:text-base text-gray-600 max-w-xl mx-auto leading-relaxed">
+          Tell us a little about yourself and our recruitment team will connect you with suitable job opportunities.
+        </p>
+      </section>
+
+      <!-- APPLICATION FORM CARD -->
+      <div id="form-card" class="bg-white rounded-3xl border border-gray-100 shadow-xl shadow-gray-100/80 p-6 sm:p-10 fade-up delay-1">
+        <form id="apply-form" novalidate autocomplete="on" class="space-y-6">
+
+          <!-- 1. Full Name -->
+          <div>
+            <label for="full-name" class="block text-sm font-semibold text-gray-800 mb-1.5">
+              Full Name <span class="text-red-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="full-name" 
+              name="full_name" 
+              placeholder="Enter your full name" 
+              required 
+              autocomplete="name"
+              class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-cyan focus:border-transparent transition text-sm text-gray-800 placeholder-gray-400 bg-white"
+            />
+            <p id="name-err" class="hidden text-xs text-red-500 font-medium mt-1">Please enter your full name</p>
+          </div>
+
+          <!-- 2. Mobile Number -->
+          <div>
+            <label for="mobile-number" class="block text-sm font-semibold text-gray-800 mb-1.5">
+              Mobile Number <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-xs font-semibold text-gray-500 border-r border-gray-200 pr-2.5">
+                🇮🇳 +91
+              </div>
+              <input 
+                type="tel" 
+                id="mobile-number" 
+                name="mobile_number" 
+                placeholder="Enter your mobile number" 
+                required 
+                autocomplete="tel"
+                class="w-full pl-20 pr-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-cyan focus:border-transparent transition text-sm text-gray-800 placeholder-gray-400 bg-white"
+              />
+            </div>
+            <p id="phone-err" class="hidden text-xs text-red-500 font-medium mt-1">Please enter a valid 10-digit Indian mobile number</p>
+          </div>
+
+          <!-- 3. Email Address (OPTIONAL) -->
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="email-address" class="block text-sm font-semibold text-gray-800">
+                Email Address
+              </label>
+              <span class="text-xs text-gray-400 font-normal">Optional</span>
+            </div>
+            <input 
+              type="email" 
+              id="email-address" 
+              name="email_address" 
+              placeholder="Enter your email address" 
+              autocomplete="email"
+              class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-cyan focus:border-transparent transition text-sm text-gray-800 placeholder-gray-400 bg-white"
+            />
+            <p id="email-err" class="hidden text-xs text-red-500 font-medium mt-1">Please enter a valid email address</p>
+          </div>
+
+          <!-- 4. Current Location -->
+          <div>
+            <label for="current-location" class="block text-sm font-semibold text-gray-800 mb-1.5">
+              Current Location <span class="text-red-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="current-location" 
+              name="current_location" 
+              placeholder="Enter your current city/location" 
+              required 
+              autocomplete="address-level2"
+              class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-cyan focus:border-transparent transition text-sm text-gray-800 placeholder-gray-400 bg-white"
+            />
+            <p id="location-err" class="hidden text-xs text-red-500 font-medium mt-1">Please enter your current city/location</p>
+          </div>
+
+          <!-- 5. Any Prior Work Experience? -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-800 mb-2">
+              Any Prior Work Experience? <span class="text-red-500">*</span>
+            </label>
+            <div class="grid grid-cols-2 gap-3">
+              <label class="relative flex items-center justify-center p-3.5 rounded-xl border border-gray-300 hover:border-brand-cyan cursor-pointer transition text-center bg-white group has-[:checked]:border-brand-cyan has-[:checked]:bg-cyan-50/50 has-[:checked]:ring-2 has-[:checked]:ring-brand-cyan/20">
+                <input type="radio" id="exp-yes" name="prior_experience" value="YES" class="sr-only" required />
+                <span class="text-sm font-semibold text-gray-700 group-has-[:checked]:text-brand-cyan">YES</span>
+              </label>
+
+              <label class="relative flex items-center justify-center p-3.5 rounded-xl border border-gray-300 hover:border-brand-cyan cursor-pointer transition text-center bg-white group has-[:checked]:border-brand-cyan has-[:checked]:bg-cyan-50/50 has-[:checked]:ring-2 has-[:checked]:ring-brand-cyan/20">
+                <input type="radio" id="exp-no" name="prior_experience" value="NO" class="sr-only" required />
+                <span class="text-sm font-semibold text-gray-700 group-has-[:checked]:text-brand-cyan">NO</span>
+              </label>
+            </div>
+            <p id="prior-exp-err" class="hidden text-xs text-red-500 font-medium mt-1">Please select if you have prior work experience</p>
+          </div>
+
+          <!-- 6. Total Experience (Conditional: Shown ONLY when Prior Experience is YES) -->
+          <div id="total-exp-container" class="hidden transition-all duration-300">
+            <label for="total-experience" class="block text-sm font-semibold text-gray-800 mb-1.5">
+              Total Experience <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <select 
+                id="total-experience" 
+                name="total_experience" 
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-cyan focus:border-transparent transition text-sm text-gray-800 bg-white appearance-none pr-10"
+              >
+                <option value="" disabled selected>Select total experience</option>
+                <option value="Less than 1 Year">Less than 1 Year</option>
+                <option value="1–2 Years">1–2 Years</option>
+                <option value="2–5 Years">2–5 Years</option>
+                <option value="5+ Years">5+ Years</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none text-gray-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+            <p id="total-exp-err" class="hidden text-xs text-red-500 font-medium mt-1">Please select your total experience</p>
+          </div>
+
+          <!-- 7. Highest Qualification -->
+          <div>
+            <label for="qualification" class="block text-sm font-semibold text-gray-800 mb-1.5">
+              Highest Qualification <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <select 
+                id="qualification" 
+                name="qualification" 
+                required
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-cyan focus:border-transparent transition text-sm text-gray-800 bg-white appearance-none pr-10"
+              >
+                <option value="" disabled selected>Select highest qualification</option>
+                <option value="10th">10th</option>
+                <option value="12th">12th</option>
+                <option value="Graduation">Graduation</option>
+                <option value="Post Graduation">Post Graduation</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none text-gray-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+            <p id="qual-err" class="hidden text-xs text-red-500 font-medium mt-1">Please select your highest qualification</p>
+          </div>
+
+          <!-- 8. Notice Period / Availability -->
+          <div>
+            <label for="notice-period" class="block text-sm font-semibold text-gray-800 mb-1.5">
+              Notice Period / Availability <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <select 
+                id="notice-period" 
+                name="notice_period" 
+                required
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-cyan focus:border-transparent transition text-sm text-gray-800 bg-white appearance-none pr-10"
+              >
+                <option value="" disabled selected>Select notice period / availability</option>
+                <option value="Immediate Joiner">Immediate Joiner</option>
+                <option value="Within 7 Days">Within 7 Days</option>
+                <option value="15 Days">15 Days</option>
+                <option value="30 Days">30 Days</option>
+                <option value="60+ Days">60+ Days</option>
+                <option value="Currently Not Working">Currently Not Working</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none text-gray-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+            <p id="avail-err" class="hidden text-xs text-red-500 font-medium mt-1">Please select your notice period / availability</p>
+          </div>
+
+          <!-- SERVER ERROR BANNER -->
+          <div id="server-error-banner" class="hidden p-4 rounded-2xl bg-red-50 border border-red-200 text-red-600 text-sm font-medium text-center">
+            Unable to submit your application right now. Please try again.
+          </div>
+
+          <!-- SUBMIT BUTTON -->
+          <div class="pt-2">
+            <button 
+              type="submit" 
+              id="submit-btn" 
+              class="w-full py-4 px-6 rounded-2xl font-bold text-white bg-gradient-to-r from-brand-cyan to-brand-blue hover:opacity-95 transition-all duration-200 shadow-lg shadow-cyan-900/10 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
+            >
+              <svg id="submit-btn-spinner" class="hidden animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span id="submit-btn-text">Apply Now</span>
+            </button>
+          </div>
+
+          <p class="text-center text-xs text-gray-400 mt-2">
+            🔒 Your details are protected and shared strictly for recruitment evaluation.
+          </p>
+        </form>
+      </div>
+
+      <!-- SUCCESS STATE CARD (Initially Hidden) -->
+      <div id="success-card" class="hidden bg-white rounded-3xl border border-gray-100 shadow-xl shadow-gray-100/80 p-8 sm:p-12 text-center fade-up">
+        <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-5 text-emerald-600 shadow-inner">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-brand-blue mb-3">
+          Application Received!
+        </h2>
+        <p class="text-sm sm:text-base text-gray-600 max-w-md mx-auto mb-8 leading-relaxed">
+          Thank you for sharing your details with BPOXCEL. Our recruitment team will review your profile and contact you regarding suitable opportunities.
+        </p>
+        <div>
+          <a 
+            href="../jobs.html" 
+            class="inline-flex items-center justify-center px-8 py-3.5 rounded-full font-semibold text-white bg-gradient-to-r from-brand-cyan to-brand-blue hover:opacity-90 transition shadow-md hover:shadow-lg text-sm"
+          >
+            Explore Current Jobs
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="bg-gray-900 text-gray-400 pt-16 pb-12 mt-auto">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+
+        <!-- Company Info -->
+        <div class="space-y-4">
+          <a href="../index.html" class="inline-block">
+            <img src="../images/logo.webp" alt="BPOXCEL Logo" class="h-12 w-auto object-contain brightness-0 invert" />
+          </a>
+          <p class="text-sm text-gray-400 leading-relaxed">
+            Connecting top talent with leading enterprises. Your trusted recruitment &amp; BPO workforce partners.
+          </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h4 class="text-sm font-semibold text-white mb-5">Quick Links</h4>
+          <ul class="space-y-3 text-sm">
+            <li><a href="../index.html" class="hover:text-brand-accent transition-colors">Home</a></li>
+            <li><a href="../services.html" class="hover:text-brand-accent transition-colors">Our Services</a></li>
+            <li><a href="../jobs.html" class="hover:text-brand-accent transition-colors">Jobs</a></li>
+            <li><a href="../employers.html" class="hover:text-brand-accent transition-colors">For Employers</a></li>
+            <li><a href="../blog.html" class="hover:text-brand-accent transition-colors">Blog &amp; Resources</a></li>
+            <li><a href="../success-stories.html" class="hover:text-brand-accent transition-colors">Success Stories</a></li>
+            <li><a href="../contact.html" class="hover:text-brand-accent transition-colors">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <!-- Services -->
+        <div>
+          <h4 class="text-sm font-semibold text-white mb-5">Our Services</h4>
+          <ul class="space-y-3 text-sm">
+            <li><a href="../services.html" class="hover:text-brand-accent transition-colors">End-to-End Recruitment</a></li>
+            <li><a href="../services.html" class="hover:text-brand-accent transition-colors">Hiring Consultancy</a></li>
+            <li><a href="../services.html" class="hover:text-brand-accent transition-colors">Smart Hiring</a></li>
+            <li><a href="../services.html" class="hover:text-brand-accent transition-colors">Outsourcing</a></li>
+            <li><a href="../services.html" class="hover:text-brand-accent transition-colors">AI &amp; Digital Solutions</a></li>
+            <li><a href="../services.html#industries" class="hover:text-brand-accent transition-colors">BPO Staffing</a></li>
+            <li><a href="../services.html#industries" class="hover:text-brand-accent transition-colors">IT Recruitment</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact Info -->
+        <div>
+          <h4 class="text-sm font-semibold text-white mb-5">Contact Info</h4>
+          <ul class="space-y-4 text-sm">
+            <li class="flex items-start gap-3">
+              <svg class="w-4 h-4 text-brand-cyan mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>3rd Floor, Near Passport Office, Sec-18, Gurugram, Haryana, India</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-4 h-4 text-brand-cyan flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+              <a href="tel:8588931044" class="hover:text-brand-accent transition-colors">+91 8588931044</a>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-4 h-4 text-brand-cyan flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <a href="#" data-user="info" data-domain="bpoxcel.com" class="hover:text-brand-accent transition-colors break-all"></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-600">
+        <p>&copy; 2025 BPOXCEL. All rights reserved.</p>
+        <p>Hiring Consultancy &amp; Recruitment Solutions | Gurugram, Delhi NCR, India</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Back to Top Button -->
+  <button id="back-to-top" aria-label="Back to top" class="back-to-top">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7" />
+    </svg>
+  </button>
+
+  <script src="../js/common.min.js" defer></script>
+  <script src="../js/main.min.js" defer></script>
+  <script src="../js/apply.min.js" defer></script>
+</body>
+</html>

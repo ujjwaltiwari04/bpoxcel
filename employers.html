@@ -221,32 +221,30 @@
         </div>
 
         <!-- Quick stats -->
-        <div class="fade-up delay-4 mt-10 flex flex-row flex-nowrap items-start justify-between sm:justify-start gap-2 sm:gap-8">
-          <div>
-            <p class="text-3xl font-bold gradient-text" data-target="1500" data-suffix="+">0+</p>
-            <p class="text-xs tracking-tight sm:tracking-normal text-gray-500 font-medium mt-0.5">Active Candidates</p>
+        <div class="fade-up delay-4 mt-10 grid grid-cols-3 gap-2 sm:gap-8 items-start">
+          <div class="text-center sm:text-left">
+            <p class="text-2xl sm:text-3xl font-bold gradient-text" data-target="1500" data-suffix="+">0+</p>
+            <p class="text-[11px] sm:text-xs text-gray-500 font-medium mt-0.5 leading-tight">Active Candidates</p>
           </div>
-          <div class="w-px bg-gray-200 hidden sm:block"></div>
-          <div>
-            <p class="text-3xl font-bold gradient-text" data-target="25" data-suffix="+">0+</p>
-            <p class="text-xs tracking-tight sm:tracking-normal text-gray-500 font-medium mt-0.5">Client Companies</p>
+          <div class="text-center sm:text-left border-l sm:border-l-0 border-gray-200 pl-1.5 sm:pl-0">
+            <p class="text-2xl sm:text-3xl font-bold gradient-text" data-target="25" data-suffix="+">0+</p>
+            <p class="text-[11px] sm:text-xs text-gray-500 font-medium mt-0.5 leading-tight">Client Companies</p>
           </div>
-          <div class="w-px bg-gray-200 hidden sm:block"></div>
-          <div>
-            <p class="text-3xl font-bold gradient-text" data-target="150" data-suffix="+">0+</p>
-            <p class="text-xs tracking-tight sm:tracking-normal text-gray-500 font-medium mt-0.5">Daily Fresh Leads</p>
+          <div class="text-center sm:text-left border-l sm:border-l-0 border-gray-200 pl-1.5 sm:pl-0">
+            <p class="text-2xl sm:text-3xl font-bold gradient-text" data-target="150" data-suffix="+">0+</p>
+            <p class="text-[11px] sm:text-xs text-gray-500 font-medium mt-0.5 leading-tight">Daily Fresh Leads</p>
           </div>
         </div>
       </div>
 
       <!-- Visual card — mirrors services.html hero illustration -->
       <div class="fade-up delay-2 flex justify-center lg:justify-end">
-        <div class="relative animate-float-slow">
+        <div class="relative animate-float-slow max-w-full">
           <!-- Decorative rings -->
-          <div class="absolute -inset-6 rounded-full border-2 border-brand-cyan/15 animate-spin-slow"></div>
-          <div class="absolute -inset-12 rounded-full border border-brand-blue/8 animate-spin-slow" style="animation-direction: reverse; animation-duration: 20s;"></div>
+          <div class="hidden sm:block absolute -inset-6 rounded-full border-2 border-brand-cyan/15 animate-spin-slow"></div>
+          <div class="hidden sm:block absolute -inset-12 rounded-full border border-brand-blue/8 animate-spin-slow" style="animation-direction: reverse; animation-duration: 20s;"></div>
 
-          <div class="w-64 h-64 sm:w-80 sm:h-80 rounded-3xl bg-gradient-to-br from-brand-light to-white shadow-2xl flex flex-col items-center justify-center p-8 gap-5">
+          <div class="w-64 h-64 sm:w-80 sm:h-80 rounded-3xl bg-gradient-to-br from-brand-light to-white shadow-2xl flex flex-col items-center justify-center p-6 sm:p-8 gap-5 mx-auto">
             <!-- Icon grid representing employer services -->
             <div class="grid grid-cols-2 gap-3 w-full">
               <div class="bg-white rounded-2xl p-3 flex flex-col items-center gap-2 shadow-sm border border-gray-100">
@@ -285,8 +283,8 @@
           </div>
 
           <!-- Floating badge -->
-          <div class="absolute -bottom-4 -left-6 bg-white rounded-2xl shadow-xl px-4 py-3 flex items-center gap-3 border border-gray-100">
-            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+          <div class="absolute -bottom-3 left-0 sm:-bottom-4 sm:-left-6 bg-white rounded-2xl shadow-xl px-3 py-2 sm:px-4 sm:py-3 flex items-center gap-2 sm:gap-3 border border-gray-100 mobile-badge-left">
+            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center shrink-0">
               <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
               </svg>
@@ -296,8 +294,8 @@
               <p class="text-[10px] text-gray-500">Ready to Deploy</p>
             </div>
           </div>
-          <div class="absolute -top-4 -right-6 bg-white rounded-2xl shadow-xl px-4 py-3 flex items-center gap-3 border border-gray-100">
-            <div class="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center">
+          <div class="absolute -top-3 right-0 sm:-top-4 sm:-right-6 bg-white rounded-2xl shadow-xl px-3 py-2 sm:px-4 sm:py-3 flex items-center gap-2 sm:gap-3 border border-gray-100 mobile-badge-right">
+            <div class="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center shrink-0">
               <svg class="w-4 h-4 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>

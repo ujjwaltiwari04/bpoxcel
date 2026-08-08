@@ -199,8 +199,14 @@
       
       <!-- CTA Buttons -->
       <div class="flex flex-wrap justify-center gap-4">
+        <button type="button" class="open-review-modal px-8 py-3.5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-brand-cyan to-brand-blue shadow-md hover:shadow-lg hover:opacity-90 transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center gap-2 cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+          Write a Review
+        </button>
         <a href="jobs.html"
-           class="px-8 py-3.5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-brand-cyan to-brand-blue shadow-md hover:shadow-lg hover:opacity-90 transition-all transform hover:-translate-y-0.5 active:scale-95 animate-fade-in">
+           class="px-8 py-3.5 rounded-full text-sm font-semibold text-gray-200 border border-white/20 hover:bg-white/10 transition-all transform hover:-translate-y-0.5 active:scale-95">
           Apply for Jobs
         </a>
       </div>
@@ -208,7 +214,7 @@
   </section>
 
   <!-- ============================================================
-     SECTION 2: FEATURED SUCCESS STORIES
+     SECTION 2: FEATURED SUCCESS STORIES (WITH CANDIDATE PHOTOS)
   ============================================================ -->
   <section class="py-24 bg-gray-50">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
@@ -229,10 +235,6 @@
         <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-gray-100 flex flex-col transition-all duration-300 transform hover:-translate-y-2 group reveal reveal-up">
           <div class="relative h-64 w-full overflow-hidden bg-gray-100">
             <img src="images/testimonialImages/Sonali.webp" alt="Sonali - Technical Support Executive" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-            <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm text-brand-blue text-[10px] font-semibold px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1.5 border border-brand-cyan/10">
-              <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-              Verified Candidate
-            </div>
           </div>
           <div class="p-6 flex-grow flex flex-col justify-between">
             <div>
@@ -252,10 +254,6 @@
         <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-gray-100 flex flex-col transition-all duration-300 transform hover:-translate-y-2 group reveal reveal-up delay-1">
           <div class="relative h-64 w-full overflow-hidden bg-gray-100">
             <img src="images/testimonialImages/Richa.webp" alt="Richa - Customer Support Executive" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-            <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm text-brand-blue text-[10px] font-semibold px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1.5 border border-brand-cyan/10">
-              <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-              Verified Candidate
-            </div>
           </div>
           <div class="p-6 flex-grow flex flex-col justify-between">
             <div>
@@ -275,10 +273,6 @@
         <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-gray-100 flex flex-col transition-all duration-300 transform hover:-translate-y-2 group reveal reveal-up delay-2">
           <div class="relative h-64 w-full overflow-hidden bg-gray-100">
             <img src="images/testimonialImages/Rohit.webp" alt="Rohit - Sales Executive" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-            <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm text-brand-blue text-[10px] font-semibold px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1.5 border border-brand-cyan/10">
-              <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-              Verified Candidate
-            </div>
           </div>
           <div class="p-6 flex-grow flex flex-col justify-between">
             <div>
@@ -298,10 +292,6 @@
         <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-gray-100 flex flex-col transition-all duration-300 transform hover:-translate-y-2 group reveal reveal-up delay-3">
           <div class="relative h-64 w-full overflow-hidden bg-gray-100">
             <img src="images/testimonialImages/Debasis.webp" alt="Debasis - Process Associate" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-            <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm text-brand-blue text-[10px] font-semibold px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1.5 border border-brand-cyan/10">
-              <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-              Verified Candidate
-            </div>
           </div>
           <div class="p-6 flex-grow flex flex-col justify-between">
             <div>
@@ -321,83 +311,34 @@
   </section>
 
   <!-- ============================================================
-     SECTION 3: MORE CANDIDATE EXPERIENCES (Matches Blog Cards Layout)
+     SECTION 3: CANDIDATE REVIEWS & COMMUNITY FEEDBACK (DYNAMIC)
   ============================================================ -->
-  <section class="py-24 bg-white">
+  <section class="py-24 bg-white border-t border-gray-100">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="text-center max-w-3xl mx-auto mb-16 section-accent">
-        <span class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase bg-brand-light text-brand-cyan mb-3">
-          Candidate Feedback
-        </span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900">
-          BPOXCEL Reviews: More Journeys to Success
-        </h2>
-        <p class="text-gray-600 mt-4">
-          Every job seeker we help has a unique journey. Here are more reviews of BPOXCEL from candidates who found success.
-        </p>
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div>
+          <span class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase bg-brand-light text-brand-cyan mb-3">
+            Candidate Feedback
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900">
+            Candidate Reviews &amp; Community Feedback
+          </h2>
+          <p class="text-gray-600 mt-2 text-sm sm:text-base max-w-2xl">
+            Read reviews from candidates placed across leading companies, or share your own BPOXCEL experience!
+          </p>
+        </div>
+
+        <button type="button" class="open-review-modal self-start md:self-auto px-6 py-3.5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-brand-cyan to-brand-blue hover:opacity-90 shadow-md hover:shadow-lg transition flex items-center gap-2 cursor-pointer flex-shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Write a Review
+        </button>
       </div>
 
-      <!-- Grid layout matching the Blog layout exactly -->
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        <!-- Review 1 -->
-        <article class="bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-full reveal reveal-up">
-          <div class="p-8 flex flex-col flex-grow">
-            <span class="text-xs font-semibold uppercase text-brand-cyan tracking-widest mb-3">BPO Placements</span>
-            <h3 class="font-bold text-gray-900 text-base mb-3">Ankit Sharma</h3>
-            <p class="text-sm text-gray-500 leading-relaxed mb-6 flex-grow italic">
-              "BPOXCEL is an absolute game-changer! I went from endlessly sending resumes to signing an offer letter with a major international BPO in just 72 hours. If you want results, this is the place to be!"
-            </p>
-            <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-50">
-              <span class="text-amber-500 text-xs">★★★★★</span>
-              <span class="text-[10px] text-gray-400 font-medium">Placed in Gurugram</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Review 2 -->
-        <article class="bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-full reveal reveal-up" style="animation-delay: 100ms;">
-          <div class="p-8 flex flex-col flex-grow">
-            <span class="text-xs font-semibold uppercase text-brand-cyan tracking-widest mb-3">MNC Placements</span>
-            <h3 class="font-bold text-gray-900 text-base mb-3">Riya Malhotra</h3>
-            <p class="text-sm text-gray-500 leading-relaxed mb-6 flex-grow italic">
-              "After months of silence from other job boards, BPOXCEL got me three interviews in one week. I felt supported throughout the process. Absolute rockstars!"
-            </p>
-            <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-50">
-              <span class="text-amber-500 text-xs">★★★★★</span>
-              <span class="text-[10px] text-gray-400 font-medium">Placed in Delhi NCR</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Review 3 -->
-        <article class="bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-full reveal reveal-up" style="animation-delay: 200ms;">
-          <div class="p-8 flex flex-col flex-grow">
-            <span class="text-xs font-semibold uppercase text-brand-cyan tracking-widest mb-3">Customer Support</span>
-            <h3 class="font-bold text-gray-900 text-base mb-3">Pooja Choudhary</h3>
-            <p class="text-sm text-gray-500 leading-relaxed mb-6 flex-grow italic">
-              "I loved how transparent and professional the recruitment process was. I landed a Customer Support Executive role in Gurugram within days."
-            </p>
-            <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-50">
-              <span class="text-amber-500 text-xs">★★★★★</span>
-              <span class="text-[10px] text-gray-400 font-medium">Placed in Gurugram</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Review 4 -->
-        <article class="bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-full reveal reveal-up" style="animation-delay: 300ms;">
-          <div class="p-8 flex flex-col flex-grow">
-            <span class="text-xs font-semibold uppercase text-brand-cyan tracking-widest mb-3">Tech Process</span>
-            <h3 class="font-bold text-gray-900 text-base mb-3">Vikram Jeet Singh</h3>
-            <p class="text-sm text-gray-500 leading-relaxed mb-6 flex-grow italic">
-              "The team at BPOXCEL guided me smoothly from resume submission to interview scheduling. Their recruitment process was simple, fast and professional."
-            </p>
-            <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-50">
-              <span class="text-amber-500 text-xs">★★★★★</span>
-              <span class="text-[10px] text-gray-400 font-medium">Placed in Punjab</span>
-            </div>
-          </div>
-        </article>
+      <!-- Dynamic Review Cards Grid -->
+      <div id="reviews-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Rendered dynamically by js/reviews.min.js -->
       </div>
     </div>
   </section>
@@ -676,11 +617,102 @@
   </button>
 
   <!-- ============================================================
+     WRITE A REVIEW MODAL
+  ============================================================ -->
+  <div id="review-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm transition-opacity duration-300">
+    <div class="bg-white rounded-3xl border border-gray-100 shadow-2xl max-w-lg w-full p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
+      
+      <!-- Close Button -->
+      <button type="button" id="close-review-modal" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 p-1.5 rounded-full hover:bg-gray-100 transition" aria-label="Close modal">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <div class="mb-6">
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase bg-cyan-50 text-brand-cyan mb-2">Candidate Feedback</span>
+        <h3 class="text-2xl font-extrabold text-brand-blue">Share Your Review</h3>
+        <p class="text-xs sm:text-sm text-gray-500 mt-1">Tell us about your experience with BPOXCEL and how we helped your career.</p>
+      </div>
+
+      <form id="review-form" novalidate class="space-y-4">
+        
+        <!-- 1. Rating Selector -->
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-2">Overall Rating <span class="text-red-500">*</span></label>
+          <div class="flex items-center gap-2">
+            <input type="hidden" id="review-rating-input" name="rating" value="5" />
+            <button type="button" class="star-btn p-1 text-2xl focus:outline-none transition transform hover:scale-110" data-star="1">
+              <span class="star-icon text-amber-400">★</span>
+            </button>
+            <button type="button" class="star-btn p-1 text-2xl focus:outline-none transition transform hover:scale-110" data-star="2">
+              <span class="star-icon text-amber-400">★</span>
+            </button>
+            <button type="button" class="star-btn p-1 text-2xl focus:outline-none transition transform hover:scale-110" data-star="3">
+              <span class="star-icon text-amber-400">★</span>
+            </button>
+            <button type="button" class="star-btn p-1 text-2xl focus:outline-none transition transform hover:scale-110" data-star="4">
+              <span class="star-icon text-amber-400">★</span>
+            </button>
+            <button type="button" class="star-btn p-1 text-2xl focus:outline-none transition transform hover:scale-110" data-star="5">
+              <span class="star-icon text-amber-400">★</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Full Name -->
+        <div>
+          <label for="review-name" class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Your Full Name <span class="text-red-500">*</span></label>
+          <input type="text" id="review-name" required placeholder="e.g. Amit Kumar" class="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-cyan transition" />
+          <p id="rev-name-err" class="hidden text-xs text-red-500 mt-1">Please enter your name</p>
+        </div>
+
+        <!-- 3. Role / Position -->
+        <div>
+          <label for="review-role" class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Role / Profile <span class="text-red-500">*</span></label>
+          <input type="text" id="review-role" required placeholder="e.g. Customer Support Executive" class="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-cyan transition" />
+          <p id="rev-role-err" class="hidden text-xs text-red-500 mt-1">Please enter your role</p>
+        </div>
+
+        <!-- 4. Location -->
+        <div>
+          <label for="review-location" class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Location <span class="text-red-500">*</span></label>
+          <input type="text" id="review-location" required placeholder="e.g. Gurugram / Delhi NCR" class="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-cyan transition" />
+          <p id="rev-location-err" class="hidden text-xs text-red-500 mt-1">Please enter your location</p>
+        </div>
+
+        <!-- 5. Review Text -->
+        <div>
+          <label for="review-message" class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Your Review / Story <span class="text-red-500">*</span></label>
+          <textarea id="review-message" rows="3" required placeholder="Share details about your placement experience, interview guidance, or support..." class="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-cyan transition"></textarea>
+          <p id="rev-msg-err" class="hidden text-xs text-red-500 mt-1">Please enter a review of at least 10 characters</p>
+        </div>
+
+        <div class="pt-2 flex items-center gap-3">
+          <button type="submit" class="flex-1 py-3 px-5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-brand-cyan to-brand-blue hover:opacity-90 transition shadow-md cursor-pointer">
+            Submit Review
+          </button>
+          <button type="button" id="cancel-review-modal" class="px-5 py-3 rounded-full text-sm font-semibold text-gray-600 hover:bg-gray-100 transition cursor-pointer">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="review-toast" class="hidden fixed bottom-6 right-6 z-50 bg-gray-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 border border-gray-800">
+    <span class="text-emerald-400 text-lg">✓</span>
+    <p class="text-xs sm:text-sm font-medium">Thank you! Your review is now live on the website.</p>
+  </div>
+
+  <!-- ============================================================
      JAVASCRIPT
   ============================================================ -->
   <script src="js/common.min.js" defer></script>
   <script src="js/main.min.js" defer></script>
   <script src="js/popup.min.js?v=2" defer></script>
+  <script src="js/reviews.min.js" defer></script>
 
 </body>
 
