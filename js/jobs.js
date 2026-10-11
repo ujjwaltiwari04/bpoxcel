@@ -9,9 +9,16 @@ function escapeHTML(str) {
     .replace(/'/g, '&#39;');
 }
 
+function allowWrap(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/\/(?!\s)/g, '/\u200B')
+    .replace(/,(?!\s)/g, ',\u200B');
+}
+
 // Format job description safely by escaping HTML and converting newlines to <br>
 function formatDesc(desc) {
-  return escapeHTML(desc).replace(/\n/g, '<br>');
+  return escapeHTML(allowWrap(desc)).replace(/\n/g, '<br>');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -54,27 +61,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Read More / Read Less Click Delegate
+  // Open unique Job Role Details when clicking anywhere on a job card
   document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('read-more-btn')) {
-      const btn = e.target;
-      const card = btn.closest('article');
-      if (!card) return;
-      const descText = card.querySelector('.job-desc-text');
-      if (!descText) return;
+    const card = e.target.closest('.job-card');
+    if (!card) return;
 
-      const isExpanded = btn.getAttribute('data-expanded') === 'true';
-      if (isExpanded) {
-        // Collapse description
-        descText.classList.add('line-clamp-3');
-        btn.textContent = 'Read More';
-        btn.setAttribute('data-expanded', 'false');
-      } else {
-        // Expand description
-        descText.classList.remove('line-clamp-3');
-        btn.textContent = 'Read Less';
-        btn.setAttribute('data-expanded', 'true');
-      }
+    // If clicking a link, button, or form control directly, let native/button behavior handle it
+    const interactive = e.target.closest('a, button, input, textarea, select');
+    if (interactive) return;
+
+    // Otherwise, find the card's job details link and open in a new window/tab
+    const link = card.querySelector('a[href*="job-details"]');
+    if (link && link.href) {
+      window.open(link.href, '_blank', 'noopener,noreferrer');
     }
   });
 
@@ -122,8 +121,8 @@ const CSV_URL        = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}
  */
 function getValue(job, key, defaultValue = '') {
   if (!job) return defaultValue;
-  const targetKey = key.toLowerCase();
-  const actualKey = Object.keys(job).find(k => k.toLowerCase() === targetKey);
+  const targetKey = key.toLowerCase().replace(/[\s\-_.]/g, '');
+  const actualKey = Object.keys(job).find(k => k.toLowerCase().replace(/[\s\-_.]/g, '') === targetKey);
   if (actualKey !== undefined && job[actualKey] !== undefined) {
     const val = job[actualKey];
     return typeof val === 'string' ? val.trim() : val;
@@ -356,6 +355,12 @@ function applyFilters() {
                role.includes('it') || role.includes('developer') || role.includes('software') || role.includes('tech') || role.includes('engineer') ||
                desc.includes('it') || desc.includes('developer') || desc.includes('software') || desc.includes('tech') || desc.includes('engineer');
       }
+      if (currentFilter === 'engineering') {
+        return (industry && (industry.includes('engineer') || industry.includes('water') || industry.includes('cad') || industry.includes('tech') || industry.includes('mechanical') || industry.includes('civil') || industry.includes('design'))) ||
+               category.includes('engineer') || category.includes('water') || category.includes('cad') || category.includes('design') ||
+               role.includes('engineer') || role.includes('cad') || role.includes('design') || role.includes('water') ||
+               desc.includes('cad') || desc.includes('autocad') || desc.includes('water treatment');
+      }
       if (currentFilter === 'fresher') {
         const fromLevel = expLevel ? (expLevel.includes('fresher') || expLevel.includes('entry') || expLevel.includes('0')) : false;
         if (expLevel) return fromLevel;
@@ -434,10 +439,10 @@ function applyFilters() {
       } else {
         // Default empty page fallback
         noJobs.innerHTML = `
-          <p class="text-gray-400 text-sm">No openings at the moment. Check back soon or send your CV on WhatsApp.</p>
-          <a href="https://wa.me/918588931044?text=Hi%20BPOXCEL%2C%20I%20want%20to%20share%20my%20CV%20for%20future%20openings."
+          <p class="text-gray-400 text-sm">No openings at the moment. Check back soon for future openings.</p>
+          <a href="contact.html"
              class="mt-4 inline-block px-6 py-3 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-brand-cyan to-brand-blue">
-            Send CV on WhatsApp
+            Contact Recruitment Team
           </a>
         `;
       }
@@ -553,7 +558,19 @@ function parseCSV(csvText) {
     });
     return obj;
   });
-}function createJobCard(job, index = 0) {
+}
+
+function formatSalary(salary) {
+  if (!salary) return 'Best in Industry';
+  let s = String(salary).trim();
+  s = s.replace(/^\?+/, '₹').replace(/\s*\?+/g, ' ₹').replace(/\?/g, '₹');
+  if (!s.includes('₹') && !/inr|rs/i.test(s) && /\d/.test(s)) {
+    s = '₹' + s;
+  }
+  return s;
+}
+
+function createJobCard(job, index = 0) {
   const status = getValue(job, 'Status', '').trim().toLowerCase();
   let badgeClass = 'badge-open';
   let badgeText  = 'Open';
@@ -574,13 +591,12 @@ function parseCSV(csvText) {
   }
   
   // Fallbacks for missing data
-  let jobNo      = getValue(job, 'JobNo', 'N/A').trim();
-  if (!jobNo || jobNo.toLowerCase() === 'n/a') {
-    jobNo = 'N/A';
-  }
+  let rawJobNo   = (getValue(job, 'JobNo') || getValue(job, 'Job No') || getValue(job, 'Job ID') || '').trim();
+  let jobNo      = (rawJobNo && rawJobNo.toLowerCase() !== 'n/a') ? rawJobNo : 'N/A';
   const role     = getValue(job, 'Role', 'Job Opportunity').trim();
   const loc      = getValue(job, 'Location', 'Gurugram, Haryana').trim();
-  const salary   = getValue(job, 'Salary', 'Best in Industry').trim();
+  let salary     = getValue(job, 'Salary', 'Best in Industry').trim();
+  salary         = formatSalary(salary);
   const exp      = getValue(job, 'Experience', 'Freshers / Experienced').trim();
   const desc     = getValue(job, 'Description', 'Please contact us for full job details and requirements.').trim();
   
@@ -590,26 +606,23 @@ function parseCSV(csvText) {
     category = 'BPO / Call Centre';
   }
 
-  // Application Link Validation
-  let applyLink = getValue(job, 'ApplyLink', '').trim();
-  if (!/^https?:\/\//i.test(applyLink)) {
-    // Fallback to Google Form link
-    applyLink = 'https://docs.google.com/forms/d/e/1FAIpQLScvWwDRqwFsx1uA7blOgJTVqWMBRrrnx7HmEdhITNDSM8NQlA/viewform';
-  }
-
+  // Always use unique JobNo as primary query parameter, fallback to role
+  const targetParam = (jobNo && jobNo !== 'N/A') ? jobNo : role;
+  const encodedParam = encodeURIComponent(targetParam);
+  const jobDetailsUrl = `job-details.html?id=${encodedParam}`;
   const delayClass = `delay-${((index % 2) + 1) * 100}`;
 
   // Escape variables for XSS protection
   const escapedJobNo = escapeHTML(jobNo);
   const escapedRole = escapeHTML(role);
-  const escapedLoc = escapeHTML(loc);
-  const escapedSalary = escapeHTML(salary);
-  const escapedExp = escapeHTML(exp);
-  const escapedCategory = escapeHTML(category);
-  const escapedApplyLink = escapeHTML(applyLink);
+  const wrappedRole = escapeHTML(allowWrap(role));
+  const escapedLoc = escapeHTML(allowWrap(loc));
+  const escapedSalary = escapeHTML(allowWrap(salary));
+  const escapedExp = escapeHTML(allowWrap(exp));
+  const escapedCategory = escapeHTML(allowWrap(category));
 
   return `
-    <article class="job-card bg-white rounded-2xl border border-gray-100 shadow-sm card-hover overflow-hidden flex flex-col h-full">
+    <article class="job-card bg-white rounded-2xl border border-gray-100 shadow-sm card-hover overflow-hidden flex flex-col h-full cursor-pointer" data-job-id="${escapedJobNo}" data-role="${escapedRole}">
       <div class="h-1 w-full bg-gradient-to-r from-brand-cyan to-brand-blue"></div>
       <div class="p-7 flex flex-col h-full">
         <div class="flex items-center justify-between mb-5">
@@ -621,47 +634,52 @@ function parseCSV(csvText) {
             ${badgeText}
           </span>
         </div>
-        <h3 class="text-lg font-bold text-gray-900 mb-3">${escapedRole}</h3>
+        <h3 class="text-lg font-bold text-gray-900 mb-3 break-words" style="overflow-wrap: anywhere; word-break: break-word;">
+          <a href="${jobDetailsUrl}" target="_blank" rel="noopener noreferrer" class="hover:text-brand-cyan transition-colors">
+            ${wrappedRole}
+          </a>
+        </h3>
         <div class="grid grid-cols-2 gap-3 mb-5">
-          <div class="flex items-center gap-2 text-xs text-gray-500">
-            <svg class="w-4 h-4 text-brand-cyan flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-            <span class="truncate">${escapedLoc}</span>
+          <div class="flex items-start gap-2 text-xs text-gray-500 min-w-0">
+            <svg class="w-4 h-4 text-brand-cyan flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <span class="break-words leading-snug min-w-0" style="overflow-wrap: anywhere; word-break: break-word;">${escapedLoc}</span>
           </div>
-          <div class="flex items-center gap-2 text-xs text-gray-500">
-            <svg class="w-4 h-4 text-brand-cyan flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            <span class="truncate">${escapedSalary}</span>
+          <div class="flex items-start gap-2 text-xs text-gray-500 min-w-0">
+            <svg class="w-4 h-4 text-brand-cyan flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span class="break-words leading-snug min-w-0" style="overflow-wrap: anywhere; word-break: break-word;">${escapedSalary}</span>
           </div>
-          <div class="flex items-center gap-2 text-xs text-gray-500">
-            <svg class="w-4 h-4 text-brand-cyan flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-            <span class="truncate">${escapedExp}</span>
+          <div class="flex items-start gap-2 text-xs text-gray-500 min-w-0">
+            <svg class="w-4 h-4 text-brand-cyan flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            <span class="break-words leading-snug min-w-0" style="overflow-wrap: anywhere; word-break: break-word;">${escapedExp}</span>
           </div>
-          <div class="flex items-center gap-2 text-xs text-gray-500">
-            <svg class="w-4 h-4 text-brand-cyan flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-            <span class="truncate">${escapedCategory}</span>
+          <div class="flex items-start gap-2 text-xs text-gray-500 min-w-0">
+            <svg class="w-4 h-4 text-brand-cyan flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            <span class="break-words leading-snug min-w-0" style="overflow-wrap: anywhere; word-break: break-word;">${escapedCategory}</span>
           </div>
         </div>
         ${desc.length > 150 ? `
-          <p class="text-sm text-gray-500 leading-relaxed mb-1 line-clamp-3 job-desc-text">
+          <p class="text-sm text-gray-500 leading-relaxed mb-1 line-clamp-3 job-desc-text break-words" style="overflow-wrap: anywhere; word-break: break-word;">
             ${formatDesc(desc)}
           </p>
-          <button class="read-more-btn text-xs font-semibold text-brand-cyan hover:text-brand-blue mb-5 focus:outline-none transition-colors" data-expanded="false">
-            Read More
-          </button>
+          <a href="${jobDetailsUrl}" target="_blank" rel="noopener noreferrer" class="view-details-link text-xs font-semibold text-brand-cyan hover:text-brand-blue mb-5 inline-block focus:outline-none transition-colors">
+            View Details &amp; Apply &rarr;
+          </a>
         ` : `
-          <p class="text-sm text-gray-500 leading-relaxed mb-6">
+          <p class="text-sm text-gray-500 leading-relaxed mb-6 break-words" style="overflow-wrap: anywhere; word-break: break-word;">
             ${formatDesc(desc)}
           </p>
         `}
         <div class="mt-auto">
-          <a href="${escapedApplyLink}"
+          <a href="${jobDetailsUrl}"
              target="_blank" rel="noopener noreferrer"
-             class="apply-btn w-full flex items-center justify-center gap-2 py-3 rounded-xl text-white text-sm font-semibold shadow-sm">
+             class="apply-btn w-full flex items-center justify-center gap-2 py-3 rounded-xl text-white text-sm font-semibold shadow-sm hover:opacity-95 transition-all">
             Apply Now
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </a>
         </div>
+      </div>
     </article>
   `;
 }
@@ -837,14 +855,92 @@ if (document.readyState === 'loading') {
   var PHONE_REGEX = /^[\+]?[\d\s\-\(\)]{7,15}$/;
   var EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+  var SUBMISSION_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days (1 week)
+  var COOKIE_NAME = 'bpoxcel_lead_submitted';
+  var STORAGE_KEY = 'bpoxcelLeadSubmitted';
+  var STORAGE_TIME_KEY = 'bpoxcelLeadSubmittedAt';
+
+  function getScopedKeys(jobKey) {
+    var suffix = (jobKey ? String(jobKey).trim().toLowerCase().replace(/[^a-z0-9_-]/g, '_') : 'general') || 'general';
+    return {
+      key: 'bpoxcelJobSubmitted_' + suffix,
+      timeKey: 'bpoxcelJobSubmittedAt_' + suffix
+    };
+  }
+
+  function hasAlreadySubmitted(jobKey) {
+    var scoped = getScopedKeys(jobKey);
+    try {
+      var submitted = localStorage.getItem(scoped.key) || sessionStorage.getItem(scoped.key);
+      var submittedAt = parseInt(localStorage.getItem(scoped.timeKey) || sessionStorage.getItem(scoped.timeKey) || '0', 10);
+      if (submitted === 'true') {
+        if (submittedAt > 0) {
+          if (Date.now() - submittedAt < SUBMISSION_TTL_MS) {
+            return true;
+          } else {
+            localStorage.removeItem(scoped.key);
+            localStorage.removeItem(scoped.timeKey);
+            sessionStorage.removeItem(scoped.key);
+            sessionStorage.removeItem(scoped.timeKey);
+            return false;
+          }
+        } else {
+          var nowStr = String(Date.now());
+          localStorage.setItem(scoped.timeKey, nowStr);
+          sessionStorage.setItem(scoped.timeKey, nowStr);
+          return true;
+        }
+      }
+    } catch (e) {}
+
+    return false;
+  }
+
+  function markAsSubmitted(jobKey) {
+    var now = Date.now();
+    var scoped = getScopedKeys(jobKey);
+    try {
+      var expires = new Date(now + SUBMISSION_TTL_MS).toUTCString();
+      document.cookie = COOKIE_NAME + '=true; expires=' + expires + '; max-age=604800; path=/; SameSite=Lax';
+    } catch (e) {}
+    try {
+      sessionStorage.setItem(STORAGE_KEY, 'true');
+      sessionStorage.setItem(STORAGE_TIME_KEY, String(now));
+      sessionStorage.setItem(scoped.key, 'true');
+      sessionStorage.setItem(scoped.timeKey, String(now));
+    } catch (e) {}
+    try {
+      localStorage.setItem(STORAGE_KEY, 'true');
+      localStorage.setItem(STORAGE_TIME_KEY, String(now));
+      localStorage.setItem(scoped.key, 'true');
+      localStorage.setItem(scoped.timeKey, String(now));
+    } catch (e) {}
+  }
+
+  function persistSelectedJob(el) {
+    try {
+      var card = el.closest('.job-card');
+      var jId = card ? (card.getAttribute('data-job-id') || card.getAttribute('data-role')) : '';
+      if (jId && jId !== 'N/A') {
+        sessionStorage.setItem('bpoxcel_selected_job_id', jId);
+        localStorage.setItem('bpoxcel_selected_job_id', jId);
+        localStorage.setItem('bpoxcel_selected_job_time', String(Date.now()));
+      }
+    } catch (err) {}
+  }
+
   // Intercept apply-btn clicks
   document.addEventListener('click', function (e) {
     var btn = e.target.closest('.apply-btn');
     if (!btn) return;
-
     var url = btn.getAttribute('href');
-    // Only intercept if it's a Google Form application link or we are on a jobs page
-    if (url && (url.includes('docs.google.com/forms') || window.location.pathname.includes('jobs'))) {
+    // If the button points to a job-details page, allow regular navigation!
+    if (url && (url.includes('job-details') || url.includes('job.html'))) {
+      persistSelectedJob(btn);
+      return;
+    }
+    // Only intercept if it's an explicit Google Form application link
+    if (url && url.includes('docs.google.com/forms')) {
       e.preventDefault();
 
       // Dynamically load CSS if not present
@@ -852,8 +948,8 @@ if (document.readyState === 'loading') {
         var link = document.createElement('link');
         link.id = 'bpx-popup-css-link';
         link.rel = 'stylesheet';
-        var isBlog = window.location.pathname.includes('/blog/');
-        link.href = isBlog ? '../css/popup.min.css' : 'css/popup.min.css';
+        var isSubdir = /\/(blog|apply|job)\//.test(window.location.pathname);
+        link.href = isSubdir ? '../css/popup.min.css' : 'css/popup.min.css';
         document.head.appendChild(link);
       }
 
@@ -873,6 +969,14 @@ if (document.readyState === 'loading') {
       }
 
       openApplyPopup(jobNo);
+    }
+  });
+
+  // Preserve job selection in both sessionStorage & localStorage on any link click
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href*="job-details"], a[href*="job.html"], .read-more-btn, .view-details-link');
+    if (a) {
+      persistSelectedJob(a);
     }
   });
 
@@ -933,14 +1037,17 @@ if (document.readyState === 'loading') {
             '<!-- Looking For -->' +
             '<div class="bpx-field">' +
               '<label class="bpx-label" for="bpx-job-looking">Looking For <span class="bpx-required">*</span></label>' +
-              '<input type="text" class="bpx-input" id="bpx-job-looking" name="looking_for" value="' + jobNo + '" readonly style="background:#f1f5f9;color:#64748b;font-weight:600;cursor:not-allowed;" />' +
+              '<input type="text" class="bpx-input" id="bpx-job-looking" name="looking_for" value="' + escapeHTML(jobNo) + '" readonly style="background:#f1f5f9;color:#64748b;font-weight:600;cursor:not-allowed;" />' +
             '</div>' +
 
             '<!-- Error Banner -->' +
             '<div class="bpx-form-error" id="bpx-job-form-error" role="alert">Something went wrong. Please try again.</div>' +
 
             '<!-- Privacy notice -->' +
-            '<p style="text-align:center;font-size:11px;color:#94a3b8;margin:0;">🔒 Your information is secure and will only be used for recruitment purposes.</p>' +
+            '<p style="text-align:center;font-size:11px;color:#94a3b8;margin:0;display:flex;align-items:center;justify-content:center;gap:5px;">' +
+              '<svg style="width:14px;height:14px;color:#0891b2;flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>' +
+              'Your information is secure and will only be used for recruitment purposes.' +
+            '</p>' +
 
             '<!-- Submit -->' +
             '<button type="submit" class="bpx-submit-btn" id="bpx-job-submit-btn">Submit Application</button>' +
@@ -950,7 +1057,11 @@ if (document.readyState === 'loading') {
         '<!-- Success View -->' +
         '<div id="bpx-job-success-view" style="display:none;">' +
           '<div class="bpx-success">' +
-            '<div class="bpx-success-icon">✅</div>' +
+            '<div class="bpx-success-icon">' +
+              '<div style="width:56px;height:56px;border-radius:50%;background:#ecfeff;border:1.5px solid #cffafe;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;color:#0891b2;box-shadow:0 4px 12px rgba(8,145,178,0.15);">' +
+                '<svg style="width:28px;height:28px;stroke:#0891b2;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>' +
+              '</div>' +
+            '</div>' +
             '<h3 class="bpx-success-title">Application Submitted!</h3>' +
             '<p class="bpx-success-text">' +
               'Thank you for applying.<br>' +
@@ -1041,6 +1152,23 @@ if (document.readyState === 'loading') {
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span class="bpx-spinner"></span> Submitting\u2026';
 
+      function handleSuccess(skipMark) {
+        document.getElementById('bpx-job-form-view').style.display = 'none';
+        document.getElementById('bpx-job-success-view').style.display = 'block';
+        if (skipMark !== true) {
+          markAsSubmitted(jobNo);
+        }
+
+        var successCloseBtn = document.getElementById('bpx-job-close-success-btn');
+        successCloseBtn.focus();
+        successCloseBtn.addEventListener('click', closePopup);
+      }
+
+      if (hasAlreadySubmitted(jobNo)) {
+        setTimeout(function () { handleSuccess(true); }, 400);
+        return;
+      }
+
       var payload = {
         name: nameEl.value.trim(),
         location: locEl.value.trim(),
@@ -1057,14 +1185,7 @@ if (document.readyState === 'loading') {
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
       })
-        .then(function () {
-          document.getElementById('bpx-job-form-view').style.display = 'none';
-          document.getElementById('bpx-job-success-view').style.display = 'block';
-
-          var successCloseBtn = document.getElementById('bpx-job-close-success-btn');
-          successCloseBtn.focus();
-          successCloseBtn.addEventListener('click', closePopup);
-        })
+        .then(handleSuccess)
         .catch(function () {
           formError.classList.add('bpx-show');
           submitBtn.disabled = false;

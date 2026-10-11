@@ -1,0 +1,20 @@
+{
+  "cleanUrls": false,
+  "rewrites": [
+    { "source": "/jobs", "destination": "/jobs.html" },
+    { "source": "/job-details", "destination": "/job-details.html" },
+    { "source": "/job", "destination": "/job.html" },
+    { "source": "/apply", "destination": "/apply.html" },
+    { "source": "/services", "destination": "/services.html" },
+    { "source": "/employers", "destination": "/employers.html" },
+    { "source": "/blog", "destination": "/blog.html" },
+    { "source": "/success-stories", "destination": "/success-stories.html" },
+    { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/jobs-delhi", "destination": "/jobs-delhi.html" },
+    { "source": "/jobs-noida", "destination": "/jobs-noida.html" },
+    { "source": "/jobs-gurugram", "destination": "/jobs-gurugram.html" },
+    { "source": "/jobs-faridabad", "destination": "/jobs-faridabad.html" },
+    { "source": "/jobs-ghaziabad", "destination": "/jobs-ghaziabad.html" },
+    { "source": "/jobs-punjab", "destination": "/jobs-punjab.html" }
+  ]
+}

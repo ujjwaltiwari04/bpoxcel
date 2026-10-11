@@ -167,14 +167,86 @@ document.addEventListener('DOMContentLoaded', () => {
   var PHONE_REGEX = /^[\+]?[\d\s\-\(\)]{7,15}$/;
   var EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+  var SUBMISSION_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days (1 week)
+  var COOKIE_NAME = 'bpoxcel_lead_submitted';
+  var STORAGE_KEY = 'bpoxcelLeadSubmitted';
+  var STORAGE_TIME_KEY = 'bpoxcelLeadSubmittedAt';
+
+  function escapeAttr(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function getScopedKeys(jobKey) {
+    var suffix = (jobKey ? String(jobKey).trim().toLowerCase().replace(/[^a-z0-9_-]/g, '_') : 'general') || 'general';
+    return {
+      key: 'bpoxcelJobSubmitted_' + suffix,
+      timeKey: 'bpoxcelJobSubmittedAt_' + suffix
+    };
+  }
+
+  function hasAlreadySubmitted(jobKey) {
+    var scoped = getScopedKeys(jobKey);
+    try {
+      var submitted = localStorage.getItem(scoped.key) || sessionStorage.getItem(scoped.key);
+      var submittedAt = parseInt(localStorage.getItem(scoped.timeKey) || sessionStorage.getItem(scoped.timeKey) || '0', 10);
+      if (submitted === 'true') {
+        if (submittedAt > 0) {
+          if (Date.now() - submittedAt < SUBMISSION_TTL_MS) {
+            return true;
+          } else {
+            localStorage.removeItem(scoped.key);
+            localStorage.removeItem(scoped.timeKey);
+            sessionStorage.removeItem(scoped.key);
+            sessionStorage.removeItem(scoped.timeKey);
+            return false;
+          }
+        } else {
+          var nowStr = String(Date.now());
+          localStorage.setItem(scoped.timeKey, nowStr);
+          sessionStorage.setItem(scoped.timeKey, nowStr);
+          return true;
+        }
+      }
+    } catch (e) {}
+
+    return false;
+  }
+
+  function markAsSubmitted(jobKey) {
+    var now = Date.now();
+    var scoped = getScopedKeys(jobKey);
+    try {
+      var expires = new Date(now + SUBMISSION_TTL_MS).toUTCString();
+      document.cookie = COOKIE_NAME + '=true; expires=' + expires + '; max-age=604800; path=/; SameSite=Lax';
+    } catch (e) {}
+    try {
+      sessionStorage.setItem(STORAGE_KEY, 'true');
+      sessionStorage.setItem(STORAGE_TIME_KEY, String(now));
+      sessionStorage.setItem(scoped.key, 'true');
+      sessionStorage.setItem(scoped.timeKey, String(now));
+    } catch (e) {}
+    try {
+      localStorage.setItem(STORAGE_KEY, 'true');
+      localStorage.setItem(STORAGE_TIME_KEY, String(now));
+      localStorage.setItem(scoped.key, 'true');
+      localStorage.setItem(scoped.timeKey, String(now));
+    } catch (e) {}
+  }
+
   // Intercept apply-btn clicks
   document.addEventListener('click', function (e) {
     var btn = e.target.closest('.apply-btn');
     if (!btn) return;
 
     var url = btn.getAttribute('href');
-    // Only intercept if it's a Google Form application link or we are on a jobs page
-    if (url && (url.includes('docs.google.com/forms') || window.location.pathname.includes('jobs'))) {
+    // Only intercept legacy Google Form links; allow job-details.html navigation to proceed naturally
+    if (url && url.includes('docs.google.com/forms')) {
       e.preventDefault();
 
       // Dynamically load CSS if not present
@@ -182,8 +254,8 @@ document.addEventListener('DOMContentLoaded', () => {
         var link = document.createElement('link');
         link.id = 'bpx-popup-css-link';
         link.rel = 'stylesheet';
-        var isBlog = window.location.pathname.includes('/blog/');
-        link.href = isBlog ? '../css/popup.min.css' : 'css/popup.min.css';
+        var isSubdir = /\/(blog|apply|job)\//.test(window.location.pathname);
+        link.href = isSubdir ? '../css/popup.min.css' : 'css/popup.min.css';
         document.head.appendChild(link);
       }
 
@@ -263,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
             '<!-- Looking For -->' +
             '<div class="bpx-field">' +
               '<label class="bpx-label" for="bpx-job-looking">Looking For <span class="bpx-required">*</span></label>' +
-              '<input type="text" class="bpx-input" id="bpx-job-looking" name="looking_for" value="' + jobNo + '" readonly style="background:#f1f5f9;color:#64748b;font-weight:600;cursor:not-allowed;" />' +
+              '<input type="text" class="bpx-input" id="bpx-job-looking" name="looking_for" value="' + escapeAttr(jobNo) + '" readonly style="background:#f1f5f9;color:#64748b;font-weight:600;cursor:not-allowed;" />' +
             '</div>' +
 
             '<!-- Error Banner -->' +
@@ -371,6 +443,23 @@ document.addEventListener('DOMContentLoaded', () => {
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span class="bpx-spinner"></span> Submitting\u2026';
 
+      function handleSuccess(skipMark) {
+        document.getElementById('bpx-job-form-view').style.display = 'none';
+        document.getElementById('bpx-job-success-view').style.display = 'block';
+        if (skipMark !== true) {
+          markAsSubmitted(jobNo);
+        }
+
+        var successCloseBtn = document.getElementById('bpx-job-close-success-btn');
+        successCloseBtn.focus();
+        successCloseBtn.addEventListener('click', closePopup);
+      }
+
+      if (hasAlreadySubmitted(jobNo)) {
+        setTimeout(function () { handleSuccess(true); }, 400);
+        return;
+      }
+
       var payload = {
         name: nameEl.value.trim(),
         location: locEl.value.trim(),
@@ -387,14 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
       })
-        .then(function () {
-          document.getElementById('bpx-job-form-view').style.display = 'none';
-          document.getElementById('bpx-job-success-view').style.display = 'block';
-
-          var successCloseBtn = document.getElementById('bpx-job-close-success-btn');
-          successCloseBtn.focus();
-          successCloseBtn.addEventListener('click', closePopup);
-        })
+        .then(handleSuccess)
         .catch(function () {
           formError.classList.add('bpx-show');
           submitBtn.disabled = false;

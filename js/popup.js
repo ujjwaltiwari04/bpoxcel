@@ -5,10 +5,70 @@
 (function () {
   'use strict';
 
+  // ── 7-Day Submission Cache & Cookie Helpers ──
+  var SUBMISSION_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days (1 week)
+  var COOKIE_NAME = 'bpoxcel_lead_submitted';
+  var STORAGE_KEY = 'bpoxcelLeadSubmitted';
+  var STORAGE_TIME_KEY = 'bpoxcelLeadSubmittedAt';
+
+  function hasAlreadySubmitted() {
+    try {
+      if (document.cookie && document.cookie.split(';').some(function (c) {
+        return c.trim().indexOf(COOKIE_NAME + '=true') === 0;
+      })) {
+        return true;
+      }
+    } catch (e) {}
+
+    try {
+      var submitted = localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY);
+      var submittedAt = parseInt(localStorage.getItem(STORAGE_TIME_KEY) || sessionStorage.getItem(STORAGE_TIME_KEY) || '0', 10);
+      if (submitted === 'true') {
+        if (submittedAt > 0) {
+          if (Date.now() - submittedAt < SUBMISSION_TTL_MS) {
+            return true;
+          } else {
+            localStorage.removeItem(STORAGE_KEY);
+            localStorage.removeItem(STORAGE_TIME_KEY);
+            sessionStorage.removeItem(STORAGE_KEY);
+            sessionStorage.removeItem(STORAGE_TIME_KEY);
+            return false;
+          }
+        } else {
+          var nowStr = String(Date.now());
+          localStorage.setItem(STORAGE_TIME_KEY, nowStr);
+          sessionStorage.setItem(STORAGE_TIME_KEY, nowStr);
+          return true;
+        }
+      }
+    } catch (e) {}
+
+    return false;
+  }
+
+  function markAsSubmitted() {
+    var now = Date.now();
+    try {
+      var expires = new Date(now + SUBMISSION_TTL_MS).toUTCString();
+      document.cookie = COOKIE_NAME + '=true; expires=' + expires + '; max-age=604800; path=/; SameSite=Lax';
+    } catch (e) {}
+    try {
+      sessionStorage.setItem(STORAGE_KEY, 'true');
+      sessionStorage.setItem(STORAGE_TIME_KEY, String(now));
+    } catch (e) {}
+    try {
+      localStorage.setItem(STORAGE_KEY, 'true');
+      localStorage.setItem(STORAGE_TIME_KEY, String(now));
+    } catch (e) {}
+  }
+
   // ── Guard: only run on homepage (index.html or root /) ──
-  // Skip if popup was already dismissed this session or lead already submitted
+  var path = window.location.pathname;
+  if (path !== '/' && path !== '/index.html' && !path.endsWith('/index.html')) return;
+
+  // Skip if popup was already dismissed this session or lead/application already submitted within 7 days
   if (sessionStorage.getItem('bpoxcelPopupClosed')) return;
-  if (localStorage.getItem('bpoxcelLeadSubmitted')) return;
+  if (hasAlreadySubmitted()) return;
 
   // ── Constants ──
   var POPUP_DELAY = 3000; // 3 seconds
@@ -273,6 +333,25 @@
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span class="bpx-spinner"></span> Submitting\u2026';
 
+      function handleSuccess(skipMark) {
+        document.getElementById('bpx-form-view').style.display = 'none';
+        document.getElementById('bpx-success-view').style.display = 'block';
+
+        // Persist in cookie & cache for 7 days so popup/backend never triggers again within a week
+        if (skipMark !== true) {
+          markAsSubmitted();
+        }
+
+        // Focus the jobs button for accessibility
+        var jobsBtn = document.getElementById('bpx-jobs-btn');
+        if (jobsBtn) jobsBtn.focus();
+      }
+
+      if (hasAlreadySubmitted()) {
+        setTimeout(function () { handleSuccess(true); }, 400);
+        return;
+      }
+
       var payload = {
         name: nameEl.value.trim(),
         location: locEl.value.trim(),
@@ -289,17 +368,7 @@
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
       })
-        .then(function () {
-          document.getElementById('bpx-form-view').style.display = 'none';
-          document.getElementById('bpx-success-view').style.display = 'block';
-
-          // Persist so popup never appears again after successful submission
-          localStorage.setItem('bpoxcelLeadSubmitted', 'true');
-
-          // Focus the jobs button for accessibility
-          var jobsBtn = document.getElementById('bpx-jobs-btn');
-          if (jobsBtn) jobsBtn.focus();
-        })
+        .then(handleSuccess)
         .catch(function () {
           formError.classList.add('bpx-show');
           submitBtn.disabled = false;

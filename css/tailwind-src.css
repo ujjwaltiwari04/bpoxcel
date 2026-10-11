@@ -3,4 +3,6 @@
 @source "../index.html";
 @source "../*.html";
 @source "../blog/**/*.html";
+@source "../apply/**/*.html";
+@source "../job/**/*.html";
 @source "../js/**/*.js";

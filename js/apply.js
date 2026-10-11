@@ -9,6 +9,69 @@
   // ── Google Apps Script Endpoint ──
   var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx_dlmeAX09S_oPBKwmZIj-bVHqBzIBy6ZDwjSiaV4LYeWUXamMUzoMT2PP3ynkmIHb/exec';
 
+  // ── 7-Day Submission Cache & Cookie Helpers ──
+  var SUBMISSION_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days (1 week)
+  var COOKIE_NAME = 'bpoxcel_lead_submitted';
+  var STORAGE_KEY = 'bpoxcelLeadSubmitted';
+  var STORAGE_TIME_KEY = 'bpoxcelLeadSubmittedAt';
+
+  function getScopedKeys(jobKey) {
+    var suffix = (jobKey ? String(jobKey).trim().toLowerCase().replace(/[^a-z0-9_-]/g, '_') : 'general') || 'general';
+    return {
+      key: 'bpoxcelApplySubmitted_' + suffix,
+      timeKey: 'bpoxcelApplySubmittedAt_' + suffix
+    };
+  }
+
+  function hasAlreadySubmitted(jobKey) {
+    var scoped = getScopedKeys(jobKey);
+    try {
+      var submitted = localStorage.getItem(scoped.key) || sessionStorage.getItem(scoped.key);
+      var submittedAt = parseInt(localStorage.getItem(scoped.timeKey) || sessionStorage.getItem(scoped.timeKey) || '0', 10);
+      if (submitted === 'true') {
+        if (submittedAt > 0) {
+          if (Date.now() - submittedAt < SUBMISSION_TTL_MS) {
+            return true;
+          } else {
+            localStorage.removeItem(scoped.key);
+            localStorage.removeItem(scoped.timeKey);
+            sessionStorage.removeItem(scoped.key);
+            sessionStorage.removeItem(scoped.timeKey);
+            return false;
+          }
+        } else {
+          var nowStr = String(Date.now());
+          localStorage.setItem(scoped.timeKey, nowStr);
+          sessionStorage.setItem(scoped.timeKey, nowStr);
+          return true;
+        }
+      }
+    } catch (e) {}
+
+    return false;
+  }
+
+  function markAsSubmitted(jobKey) {
+    var now = Date.now();
+    var scoped = getScopedKeys(jobKey);
+    try {
+      var expires = new Date(now + SUBMISSION_TTL_MS).toUTCString();
+      document.cookie = COOKIE_NAME + '=true; expires=' + expires + '; max-age=604800; path=/; SameSite=Lax';
+    } catch (e) {}
+    try {
+      sessionStorage.setItem(STORAGE_KEY, 'true');
+      sessionStorage.setItem(STORAGE_TIME_KEY, String(now));
+      sessionStorage.setItem(scoped.key, 'true');
+      sessionStorage.setItem(scoped.timeKey, String(now));
+    } catch (e) {}
+    try {
+      localStorage.setItem(STORAGE_KEY, 'true');
+      localStorage.setItem(STORAGE_TIME_KEY, String(now));
+      localStorage.setItem(scoped.key, 'true');
+      localStorage.setItem(scoped.timeKey, String(now));
+    } catch (e) {}
+  }
+
   // ── Source & Job URL Parameter Parsing ──
   function getUrlParams() {
     var searchParams = new URLSearchParams(window.location.search);
@@ -282,11 +345,23 @@
         if (submitBtnText) submitBtnText.textContent = 'Submitting Application...';
         if (submitBtnSpinner) submitBtnSpinner.classList.remove('hidden');
 
+        if (hasAlreadySubmitted(params.job)) {
+          setTimeout(function () {
+            if (formCard) formCard.classList.add('hidden');
+            if (successCard) {
+              successCard.classList.remove('hidden');
+              successCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }, 400);
+          return;
+        }
+
         try {
           // If APPS_SCRIPT_URL is not set yet, fallback gracefully for local testing
           if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
             console.warn('Apps Script URL is not configured yet. Simulating success for local preview.', applicationData);
             setTimeout(function () {
+              markAsSubmitted(params.job);
               if (formCard) formCard.classList.add('hidden');
               if (successCard) {
                 successCard.classList.remove('hidden');
@@ -313,6 +388,7 @@
           }
 
           if (result && result.success) {
+            markAsSubmitted(params.job);
             if (formCard) formCard.classList.add('hidden');
             if (successCard) {
               successCard.classList.remove('hidden');

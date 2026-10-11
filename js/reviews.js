@@ -101,11 +101,26 @@
     return starsHTML;
   }
 
+  // Escape HTML special characters to prevent XSS
+  function escapeHTML(str) {
+    if (!str && str !== 0) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
   // Build HTML card string for a review
   function createReviewCardHTML(rev) {
-    var initials = getInitials(rev.name);
+    var initials = escapeHTML(getInitials(rev.name));
     var stars = renderStarsHTML(rev.rating);
-    var avatarBg = rev.avatarBg || 'from-brand-cyan to-brand-blue';
+    var avatarBg = escapeHTML(rev.avatarBg || 'from-brand-cyan to-brand-blue');
+    var safeName = escapeHTML(rev.name);
+    var safeRole = escapeHTML(rev.role || 'Candidate');
+    var safeLocation = rev.location ? 'Placed in ' + escapeHTML(rev.location) : 'Delhi NCR';
+    var safeReview = escapeHTML(rev.review);
 
     return (
       '<article class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-gray-100 flex flex-col transition-all duration-300 transform hover:-translate-y-1 group reveal active reveal-up">' +
@@ -116,18 +131,18 @@
                 initials +
               '</div>' +
               '<div class="min-w-0">' +
-                '<h3 class="text-base font-bold text-gray-900 truncate" title="' + rev.name + '">' + rev.name + '</h3>' +
-                '<p class="text-xs font-semibold text-brand-cyan uppercase tracking-wider truncate">' + (rev.role || 'Candidate') + '</p>' +
+                '<h3 class="text-base font-bold text-gray-900 truncate" title="' + safeName + '">' + safeName + '</h3>' +
+                '<p class="text-xs font-semibold text-brand-cyan uppercase tracking-wider truncate">' + safeRole + '</p>' +
               '</div>' +
             '</div>' +
 
             '<div class="flex items-center justify-between mb-3">' +
               '<div class="flex items-center gap-1 text-sm">' + stars + '</div>' +
-              '<span class="text-[11px] text-gray-400 font-medium">' + (rev.location ? 'Placed in ' + rev.location : 'Delhi NCR') + '</span>' +
+              '<span class="text-[11px] text-gray-400 font-medium">' + safeLocation + '</span>' +
             '</div>' +
 
             '<p class="text-gray-600 text-xs sm:text-sm leading-relaxed italic bg-gray-50/60 p-3.5 rounded-2xl border border-gray-100/60">' +
-              '"' + rev.review + '"' +
+              '"' + safeReview + '"' +
             '</p>' +
           '</div>' +
         '</div>' +

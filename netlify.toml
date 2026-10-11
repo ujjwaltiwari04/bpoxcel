@@ -1,0 +1,120 @@
+# =====================================================
+# Netlify Configuration — BPOXCEL (https://bpoxcel.com)
+# Enforces HTTPS, canonical domain redirects, and security headers
+# =====================================================
+
+[build]
+  publish = "."
+
+# ── Global Security & HTTPS Headers ──
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Strictly enforce HTTPS for 2 years across domain and subdomains
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    # Automatically upgrade any http:// requests to https:// and prevent clickjacking
+    Content-Security-Policy = "upgrade-insecure-requests; frame-ancestors 'self'"
+    # Prevent MIME-type sniffing
+    X-Content-Type-Options = "nosniff"
+    # Prevent unauthorized iframe embedding
+    X-Frame-Options = "SAMEORIGIN"
+    # Protect referrer privacy while preserving origin for analytics
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    # Disable unused sensitive browser APIs
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# ── Force HTTPS & Canonical Apex Domain (bpoxcel.com) ──
+[[redirects]]
+  from = "http://bpoxcel.com/*"
+  to = "https://bpoxcel.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.bpoxcel.com/*"
+  to = "https://bpoxcel.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.bpoxcel.com/*"
+  to = "https://bpoxcel.com/:splat"
+  status = 301
+  force = true
+
+# ── Clean URL Rewrites (parity with serve.json) ──
+[[redirects]]
+  from = "/jobs"
+  to = "/jobs.html"
+  status = 200
+
+[[redirects]]
+  from = "/job-details"
+  to = "/job-details.html"
+  status = 200
+
+[[redirects]]
+  from = "/job"
+  to = "/job.html"
+  status = 200
+
+[[redirects]]
+  from = "/apply"
+  to = "/apply.html"
+  status = 200
+
+[[redirects]]
+  from = "/services"
+  to = "/services.html"
+  status = 200
+
+[[redirects]]
+  from = "/employers"
+  to = "/employers.html"
+  status = 200
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog.html"
+  status = 200
+
+[[redirects]]
+  from = "/success-stories"
+  to = "/success-stories.html"
+  status = 200
+
+[[redirects]]
+  from = "/contact"
+  to = "/contact.html"
+  status = 200
+
+[[redirects]]
+  from = "/jobs-delhi"
+  to = "/jobs-delhi.html"
+  status = 200
+
+[[redirects]]
+  from = "/jobs-noida"
+  to = "/jobs-noida.html"
+  status = 200
+
+[[redirects]]
+  from = "/jobs-gurugram"
+  to = "/jobs-gurugram.html"
+  status = 200
+
+[[redirects]]
+  from = "/jobs-faridabad"
+  to = "/jobs-faridabad.html"
+  status = 200
+
+[[redirects]]
+  from = "/jobs-ghaziabad"
+  to = "/jobs-ghaziabad.html"
+  status = 200
+
+[[redirects]]
+  from = "/jobs-punjab"
+  to = "/jobs-punjab.html"
+  status = 200
+

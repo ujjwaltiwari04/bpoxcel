@@ -72,11 +72,11 @@ html, body {
 }
 
 .fade-up { animation: fadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) both; }
-.delay-1 { animation-delay: 0.12s; }
-.delay-2 { animation-delay: 0.24s; }
-.delay-3 { animation-delay: 0.36s; }
-.delay-4 { animation-delay: 0.48s; }
-.delay-5 { animation-delay: 0.60s; }
+.delay-1 { animation-delay: 0.12s; transition-delay: 0.12s; }
+.delay-2 { animation-delay: 0.24s; transition-delay: 0.24s; }
+.delay-3 { animation-delay: 0.36s; transition-delay: 0.36s; }
+.delay-4 { animation-delay: 0.48s; transition-delay: 0.48s; }
+.delay-5 { animation-delay: 0.60s; transition-delay: 0.60s; }
 
 /* Hero logo entrance spin — single 360° Y-axis rotation on load */
 @keyframes heroLogoIn {
@@ -142,6 +142,7 @@ html, body {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-8px); }
   }
+  .animate-float,
   .animate-float-slow {
     animation: floatSlow 6s ease-in-out infinite;
   }
@@ -335,9 +336,14 @@ html, body {
 @media (min-width: 640px) {
   .portal-btn-wrapper {
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 20px;
+    gap: 16px;
     width: auto;
+  }
+  .portal-btn-wrapper .apply-job-btn,
+  .portal-btn-wrapper .partner-employer-btn {
+    width: auto !important;
   }
 }
 
@@ -453,6 +459,47 @@ html, body {
 @keyframes shimmer {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+
+/* Blog Prose Typography */
+.prose p {
+  margin-bottom: 1.25rem;
+  line-height: 1.75;
+}
+.prose h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+.prose h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+.prose ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.prose ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.prose li {
+  margin-bottom: 0.5rem;
+}
+.prose strong {
+  font-weight: 600;
+  color: #111827;
+}
+.prose a:not(.inline-block) {
+  color: #0891b2;
+  text-decoration: underline;
 }
 
 /* Accessibility / prefers-reduced-motion */

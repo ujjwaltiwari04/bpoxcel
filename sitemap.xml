@@ -21,9 +21,25 @@
   <!-- Careers Page -->
   <url>
     <loc>https://bpoxcel.com/jobs.html</loc>
-    <lastmod>2026-07-14</lastmod>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
+  </url>
+
+  <!-- Job Details Universal Page -->
+  <url>
+    <loc>https://bpoxcel.com/job-details.html</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Quick Apply Page -->
+  <url>
+    <loc>https://bpoxcel.com/apply.html</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
   </url>
 
   <!-- Location Pages -->
@@ -103,9 +119,9 @@
   <!-- Employers Page -->
   <url>
     <loc>https://bpoxcel.com/employers.html</loc>
-    <lastmod>2026-07-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
 
   <!-- Success Stories Page -->

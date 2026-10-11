@@ -282,8 +282,12 @@ body.bpx-no-scroll {
 
 .bpx-success-icon {
   font-size: 40px;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   line-height: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #0891b2;
 }
 
 .bpx-success-title {
