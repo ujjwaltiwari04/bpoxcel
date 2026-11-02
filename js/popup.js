@@ -72,7 +72,7 @@
 
   // ── Constants ──
   var POPUP_DELAY = 3000; // 3 seconds
-  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl6JxvEgx2ACSnGp3FmKYTzqD5GVbVTI73LDLeZ9hcLKj47vX4tKCWmk8fOFnpA8_i/exec';
+  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxXs-pwyKdEkpdBa65--luJEXLkddX7AM0C_VwT75aH_qUvQ4Sn21K-83qiLakf3a0E/exec';
   var PHONE_REGEX = /^[\+]?[\d\s\-\(\)]{7,15}$/;
   var EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

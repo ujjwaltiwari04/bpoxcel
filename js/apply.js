@@ -7,53 +7,78 @@
   'use strict';
 
   // ── Google Apps Script Endpoint ──
-  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx_dlmeAX09S_oPBKwmZIj-bVHqBzIBy6ZDwjSiaV4LYeWUXamMUzoMT2PP3ynkmIHb/exec';
+  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxXs-pwyKdEkpdBa65--luJEXLkddX7AM0C_VwT75aH_qUvQ4Sn21K-83qiLakf3a0E/exec';
 
   // ── 7-Day Submission Cache & Cookie Helpers ──
   var SUBMISSION_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days (1 week)
   var COOKIE_NAME = 'bpoxcel_lead_submitted';
   var STORAGE_KEY = 'bpoxcelLeadSubmitted';
   var STORAGE_TIME_KEY = 'bpoxcelLeadSubmittedAt';
+  var STORAGE_PHONES_KEY = 'bpoxcelSubmittedPhones';
 
-  function getScopedKeys(jobKey) {
-    var suffix = (jobKey ? String(jobKey).trim().toLowerCase().replace(/[^a-z0-9_-]/g, '_') : 'general') || 'general';
-    return {
-      key: 'bpoxcelApplySubmitted_' + suffix,
-      timeKey: 'bpoxcelApplySubmittedAt_' + suffix
-    };
+  function normalizePhone(phoneStr) {
+    if (!phoneStr) return '';
+    var digits = String(phoneStr).replace(/\D/g, '');
+    return digits.length > 10 ? digits.slice(-10) : digits;
   }
 
-  function hasAlreadySubmitted(jobKey) {
-    var scoped = getScopedKeys(jobKey);
+  function hasAlreadySubmitted(candidatePhone) {
+    var now = Date.now();
+
+    // 1. Check 7-day cookie
     try {
-      var submitted = localStorage.getItem(scoped.key) || sessionStorage.getItem(scoped.key);
-      var submittedAt = parseInt(localStorage.getItem(scoped.timeKey) || sessionStorage.getItem(scoped.timeKey) || '0', 10);
+      if (document.cookie && document.cookie.split(';').some(function (c) {
+        return c.trim().indexOf(COOKIE_NAME + '=true') === 0;
+      })) {
+        return true;
+      }
+    } catch (e) {}
+
+    // 2. Check global 7-day submission timestamp in localStorage & sessionStorage
+    try {
+      var submitted = localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY);
+      var submittedAt = parseInt(localStorage.getItem(STORAGE_TIME_KEY) || sessionStorage.getItem(STORAGE_TIME_KEY) || '0', 10);
       if (submitted === 'true') {
         if (submittedAt > 0) {
-          if (Date.now() - submittedAt < SUBMISSION_TTL_MS) {
+          if (now - submittedAt < SUBMISSION_TTL_MS) {
             return true;
           } else {
-            localStorage.removeItem(scoped.key);
-            localStorage.removeItem(scoped.timeKey);
-            sessionStorage.removeItem(scoped.key);
-            sessionStorage.removeItem(scoped.timeKey);
-            return false;
+            // Expired after 1 week - clear so candidate can apply again
+            localStorage.removeItem(STORAGE_KEY);
+            localStorage.removeItem(STORAGE_TIME_KEY);
+            sessionStorage.removeItem(STORAGE_KEY);
+            sessionStorage.removeItem(STORAGE_TIME_KEY);
           }
         } else {
-          var nowStr = String(Date.now());
-          localStorage.setItem(scoped.timeKey, nowStr);
-          sessionStorage.setItem(scoped.timeKey, nowStr);
           return true;
         }
       }
     } catch (e) {}
 
+    // 3. Check candidate phone against previously submitted phone numbers
+    if (candidatePhone) {
+      var cleanPhone = normalizePhone(candidatePhone);
+      if (cleanPhone) {
+        try {
+          var phonesMap = JSON.parse(localStorage.getItem(STORAGE_PHONES_KEY) || '{}');
+          if (phonesMap[cleanPhone]) {
+            var phoneSubmittedAt = parseInt(phonesMap[cleanPhone], 10);
+            if (now - phoneSubmittedAt < SUBMISSION_TTL_MS) {
+              return true;
+            } else {
+              delete phonesMap[cleanPhone];
+              localStorage.setItem(STORAGE_PHONES_KEY, JSON.stringify(phonesMap));
+            }
+          }
+        } catch (e) {}
+      }
+    }
+
     return false;
   }
 
-  function markAsSubmitted(jobKey) {
+  function markAsSubmitted(candidatePhone) {
     var now = Date.now();
-    var scoped = getScopedKeys(jobKey);
     try {
       var expires = new Date(now + SUBMISSION_TTL_MS).toUTCString();
       document.cookie = COOKIE_NAME + '=true; expires=' + expires + '; max-age=604800; path=/; SameSite=Lax';
@@ -61,15 +86,19 @@
     try {
       sessionStorage.setItem(STORAGE_KEY, 'true');
       sessionStorage.setItem(STORAGE_TIME_KEY, String(now));
-      sessionStorage.setItem(scoped.key, 'true');
-      sessionStorage.setItem(scoped.timeKey, String(now));
-    } catch (e) {}
-    try {
       localStorage.setItem(STORAGE_KEY, 'true');
       localStorage.setItem(STORAGE_TIME_KEY, String(now));
-      localStorage.setItem(scoped.key, 'true');
-      localStorage.setItem(scoped.timeKey, String(now));
     } catch (e) {}
+    if (candidatePhone) {
+      var cleanPhone = normalizePhone(candidatePhone);
+      if (cleanPhone) {
+        try {
+          var phonesMap = JSON.parse(localStorage.getItem(STORAGE_PHONES_KEY) || '{}');
+          phonesMap[cleanPhone] = now;
+          localStorage.setItem(STORAGE_PHONES_KEY, JSON.stringify(phonesMap));
+        } catch (e) {}
+      }
+    }
   }
 
   // ── Source & Job URL Parameter Parsing ──
@@ -371,7 +400,10 @@
           qualification: qualVal,
           availability: availVal,
           source: params.source,
-          job: params.job
+          job: params.job,
+          lookingFor: params.job || 'Dedicated Job Application',
+          looking_for: params.job || 'Dedicated Job Application',
+          sourcePage: 'Apply Page - ' + (params.source || 'Website')
         };
 
         // Visual loading state
@@ -379,7 +411,9 @@
         if (submitBtnText) submitBtnText.textContent = 'Submitting Application...';
         if (submitBtnSpinner) submitBtnSpinner.classList.remove('hidden');
 
-        if (hasAlreadySubmitted(params.job)) {
+        // If user has already submitted ANY job application within 1-week tenure:
+        // Show application submitted success screen immediately without triggering Google Sheet!
+        if (hasAlreadySubmitted(phoneVal)) {
           setTimeout(function () {
             if (formCard) formCard.classList.add('hidden');
             if (successCard) {
@@ -395,7 +429,7 @@
           if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
             console.warn('Apps Script URL is not configured yet. Simulating success for local preview.', applicationData);
             setTimeout(function () {
-              markAsSubmitted(params.job);
+              markAsSubmitted(phoneVal);
               if (formCard) formCard.classList.add('hidden');
               if (successCard) {
                 successCard.classList.remove('hidden');
@@ -422,7 +456,7 @@
           }
 
           if (result && result.success) {
-            markAsSubmitted(params.job);
+            markAsSubmitted(phoneVal);
             if (formCard) formCard.classList.add('hidden');
             if (successCard) {
               successCard.classList.remove('hidden');

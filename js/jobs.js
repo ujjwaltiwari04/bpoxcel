@@ -18,7 +18,9 @@ function allowWrap(str) {
 
 // Format job description safely by escaping HTML and converting newlines to <br>
 function formatDesc(desc) {
-  return escapeHTML(allowWrap(desc)).replace(/\n/g, '<br>');
+  if (!desc) return '';
+  const cleaned = String(desc).replace(/\?(\d)/g, '₹$1');
+  return escapeHTML(allowWrap(cleaned)).replace(/\n/g, '<br>');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -103,7 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Browse other Jobs Click Delegate
   document.addEventListener('click', (e) => {
-    if (e.target.id === 'browse-all-jobs-btn') {
+    const browseBtn = e.target.closest('#browse-all-jobs-btn');
+    if (browseBtn) {
       const searchInput = document.getElementById('job-search-input');
       const clearBtn = document.getElementById('clear-search-btn');
       
@@ -401,6 +404,7 @@ function applyFilters() {
         if (/\b(sales|business development|bdm|bde|marketing)\b/i.test(category)) return true;
         if (/\b(sales|business development|presales|insurance|b2b sales)\b/i.test(industry)) return true;
         if (/\b(sales|business development|bdm|bde|sdr|account executive|telesales|inside sales|relationship manager|client acquisition)\b/i.test(role)) return true;
+        if (/\b(secondary sales|opportunities for sale|to sell the products)\b/i.test(desc)) return true;
         return false;
       }
 
@@ -430,6 +434,9 @@ function applyFilters() {
 
   // 2. Filter by search query (currentSearchQuery)
   if (currentSearchQuery) {
+    const isGurgaonSearch = currentSearchQuery === 'gurgaon' || currentSearchQuery === 'gurugram';
+    const isNcrSearch = currentSearchQuery === 'ncr' || currentSearchQuery === 'delhi ncr';
+
     filtered = filtered.filter(job => {
       const role = getValue(job, 'Role', '').toLowerCase();
       const desc = getValue(job, 'Description', '').toLowerCase();
@@ -441,10 +448,15 @@ function applyFilters() {
       const salary = getValue(job, 'Salary', '').toLowerCase();
       const jobNo = getValue(job, 'Job No', '').toLowerCase();
 
+      const locMatch = isGurgaonSearch
+        ? (loc.includes('gurgaon') || loc.includes('gurugram') || locDup.includes('gurgaon') || locDup.includes('gurugram'))
+        : isNcrSearch
+          ? (loc.includes('delhi') || loc.includes('gurgaon') || loc.includes('gurugram') || loc.includes('noida') || loc.includes('faridabad') || loc.includes('ghaziabad'))
+          : (loc.includes(currentSearchQuery) || locDup.includes(currentSearchQuery));
+
       return role.includes(currentSearchQuery) ||
              desc.includes(currentSearchQuery) ||
-             loc.includes(currentSearchQuery) ||
-             locDup.includes(currentSearchQuery) ||
+             locMatch ||
              category.includes(currentSearchQuery) ||
              industry.includes(currentSearchQuery) ||
              exp.includes(currentSearchQuery) ||
@@ -456,7 +468,7 @@ function applyFilters() {
   // Update counter dynamically
   const counter = document.getElementById('job-count');
   if (counter) {
-    counter.textContent = `${filtered.length}+`;
+    counter.textContent = filtered.length === 0 ? '0' : `${filtered.length}+`;
   }
 
   if (filtered.length === 0) {
@@ -884,7 +896,7 @@ if (document.readyState === 'loading') {
 (function () {
   'use strict';
 
-  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl6JxvEgx2ACSnGp3FmKYTzqD5GVbVTI73LDLeZ9hcLKj47vX4tKCWmk8fOFnpA8_i/exec';
+  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxXs-pwyKdEkpdBa65--luJEXLkddX7AM0C_VwT75aH_qUvQ4Sn21K-83qiLakf3a0E/exec';
   var PHONE_REGEX = /^[\+]?[\d\s\-\(\)]{7,15}$/;
   var EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -892,46 +904,71 @@ if (document.readyState === 'loading') {
   var COOKIE_NAME = 'bpoxcel_lead_submitted';
   var STORAGE_KEY = 'bpoxcelLeadSubmitted';
   var STORAGE_TIME_KEY = 'bpoxcelLeadSubmittedAt';
+  var STORAGE_PHONES_KEY = 'bpoxcelSubmittedPhones';
 
-  function getScopedKeys(jobKey) {
-    var suffix = (jobKey ? String(jobKey).trim().toLowerCase().replace(/[^a-z0-9_-]/g, '_') : 'general') || 'general';
-    return {
-      key: 'bpoxcelJobSubmitted_' + suffix,
-      timeKey: 'bpoxcelJobSubmittedAt_' + suffix
-    };
+  function normalizePhone(phoneStr) {
+    if (!phoneStr) return '';
+    var digits = String(phoneStr).replace(/\D/g, '');
+    return digits.length > 10 ? digits.slice(-10) : digits;
   }
 
-  function hasAlreadySubmitted(jobKey) {
-    var scoped = getScopedKeys(jobKey);
+  function hasAlreadySubmitted(candidatePhone) {
+    var now = Date.now();
+
+    // 1. Check 7-day cookie
     try {
-      var submitted = localStorage.getItem(scoped.key) || sessionStorage.getItem(scoped.key);
-      var submittedAt = parseInt(localStorage.getItem(scoped.timeKey) || sessionStorage.getItem(scoped.timeKey) || '0', 10);
+      if (document.cookie && document.cookie.split(';').some(function (c) {
+        return c.trim().indexOf(COOKIE_NAME + '=true') === 0;
+      })) {
+        return true;
+      }
+    } catch (e) {}
+
+    // 2. Check global 7-day submission timestamp in localStorage & sessionStorage
+    try {
+      var submitted = localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY);
+      var submittedAt = parseInt(localStorage.getItem(STORAGE_TIME_KEY) || sessionStorage.getItem(STORAGE_TIME_KEY) || '0', 10);
       if (submitted === 'true') {
         if (submittedAt > 0) {
-          if (Date.now() - submittedAt < SUBMISSION_TTL_MS) {
+          if (now - submittedAt < SUBMISSION_TTL_MS) {
             return true;
           } else {
-            localStorage.removeItem(scoped.key);
-            localStorage.removeItem(scoped.timeKey);
-            sessionStorage.removeItem(scoped.key);
-            sessionStorage.removeItem(scoped.timeKey);
-            return false;
+            // Expired after 1 week - clear so candidate can apply again
+            localStorage.removeItem(STORAGE_KEY);
+            localStorage.removeItem(STORAGE_TIME_KEY);
+            sessionStorage.removeItem(STORAGE_KEY);
+            sessionStorage.removeItem(STORAGE_TIME_KEY);
           }
         } else {
-          var nowStr = String(Date.now());
-          localStorage.setItem(scoped.timeKey, nowStr);
-          sessionStorage.setItem(scoped.timeKey, nowStr);
           return true;
         }
       }
     } catch (e) {}
 
+    // 3. Check candidate phone against previously submitted phone numbers
+    if (candidatePhone) {
+      var cleanPhone = normalizePhone(candidatePhone);
+      if (cleanPhone) {
+        try {
+          var phonesMap = JSON.parse(localStorage.getItem(STORAGE_PHONES_KEY) || '{}');
+          if (phonesMap[cleanPhone]) {
+            var phoneSubmittedAt = parseInt(phonesMap[cleanPhone], 10);
+            if (now - phoneSubmittedAt < SUBMISSION_TTL_MS) {
+              return true;
+            } else {
+              delete phonesMap[cleanPhone];
+              localStorage.setItem(STORAGE_PHONES_KEY, JSON.stringify(phonesMap));
+            }
+          }
+        } catch (e) {}
+      }
+    }
+
     return false;
   }
 
-  function markAsSubmitted(jobKey) {
+  function markAsSubmitted(candidatePhone) {
     var now = Date.now();
-    var scoped = getScopedKeys(jobKey);
     try {
       var expires = new Date(now + SUBMISSION_TTL_MS).toUTCString();
       document.cookie = COOKIE_NAME + '=true; expires=' + expires + '; max-age=604800; path=/; SameSite=Lax';
@@ -939,15 +976,19 @@ if (document.readyState === 'loading') {
     try {
       sessionStorage.setItem(STORAGE_KEY, 'true');
       sessionStorage.setItem(STORAGE_TIME_KEY, String(now));
-      sessionStorage.setItem(scoped.key, 'true');
-      sessionStorage.setItem(scoped.timeKey, String(now));
-    } catch (e) {}
-    try {
       localStorage.setItem(STORAGE_KEY, 'true');
       localStorage.setItem(STORAGE_TIME_KEY, String(now));
-      localStorage.setItem(scoped.key, 'true');
-      localStorage.setItem(scoped.timeKey, String(now));
     } catch (e) {}
+    if (candidatePhone) {
+      var cleanPhone = normalizePhone(candidatePhone);
+      if (cleanPhone) {
+        try {
+          var phonesMap = JSON.parse(localStorage.getItem(STORAGE_PHONES_KEY) || '{}');
+          phonesMap[cleanPhone] = now;
+          localStorage.setItem(STORAGE_PHONES_KEY, JSON.stringify(phonesMap));
+        } catch (e) {}
+      }
+    }
   }
 
   function persistSelectedJob(el) {
@@ -1212,19 +1253,25 @@ if (document.readyState === 'loading') {
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span class="bpx-spinner"></span> Submitting\u2026';
 
+      var candidatePhone = phoneEl.value.trim();
+
       function handleSuccess(skipMark) {
         document.getElementById('bpx-job-form-view').style.display = 'none';
         document.getElementById('bpx-job-success-view').style.display = 'block';
         if (skipMark !== true) {
-          markAsSubmitted(jobNo);
+          markAsSubmitted(candidatePhone);
         }
 
         var successCloseBtn = document.getElementById('bpx-job-close-success-btn');
-        successCloseBtn.focus();
-        successCloseBtn.addEventListener('click', closePopup);
+        if (successCloseBtn) {
+          successCloseBtn.focus();
+          successCloseBtn.addEventListener('click', closePopup);
+        }
       }
 
-      if (hasAlreadySubmitted(jobNo)) {
+      // If user has already submitted ANY job application within 1-week tenure:
+      // Show application submitted success screen immediately without triggering Google Sheet!
+      if (hasAlreadySubmitted(candidatePhone)) {
         setTimeout(function () { handleSuccess(true); }, 400);
         return;
       }
