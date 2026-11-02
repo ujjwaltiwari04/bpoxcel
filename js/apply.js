@@ -126,6 +126,31 @@
     var locationInput = document.getElementById('current-location');
     var qualSelect = document.getElementById('qualification');
     var availSelect = document.getElementById('notice-period');
+    var agreeCheckbox = document.getElementById('apply-agree-assistance');
+    var agreeErr = document.getElementById('agree-assistance-err');
+
+    function updateSubmitButtonState() {
+      if (!submitBtn) return;
+      if (agreeCheckbox && agreeCheckbox.checked) {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        submitBtn.classList.add('cursor-pointer', 'hover:opacity-95', 'active:scale-[0.99]');
+      } else {
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        submitBtn.classList.remove('cursor-pointer', 'hover:opacity-95', 'active:scale-[0.99]');
+      }
+    }
+
+    if (agreeCheckbox) {
+      updateSubmitButtonState();
+      agreeCheckbox.addEventListener('change', function () {
+        updateSubmitButtonState();
+        if (this.checked && agreeErr) {
+          agreeErr.classList.add('hidden');
+        }
+      });
+    }
 
     // ── Conditional Experience Field Handler ──
     function toggleExperienceField() {
@@ -317,6 +342,15 @@
           if (!firstErrorField) firstErrorField = availSelect;
         } else {
           clearFieldError(availSelect, 'avail-err');
+        }
+
+        // 9. Assistance Agreement Checkbox
+        if (!agreeCheckbox || !agreeCheckbox.checked) {
+          if (agreeErr) agreeErr.classList.remove('hidden');
+          isValid = false;
+          if (!firstErrorField && agreeCheckbox) firstErrorField = agreeCheckbox;
+        } else {
+          if (agreeErr) agreeErr.classList.add('hidden');
         }
 
         if (!isValid) {

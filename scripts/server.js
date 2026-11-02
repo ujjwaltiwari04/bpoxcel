@@ -122,10 +122,35 @@ const server = http.createServer((req, res) => {
   });
 });
 
+let currentPort = PORT;
+
+function startServer(port) {
+  server.listen(port, '0.0.0.0', () => {
+    console.log(`BPOXCEL server running at http://localhost:${port}`);
+  });
+}
+
 server.on('error', (err) => {
-  console.error('Server error:', err);
+  if (err.code === 'EADDRINUSE') {
+    console.warn(`Port ${currentPort} is already in use. Trying port ${currentPort + 1}...`);
+    currentPort += 1;
+    startServer(currentPort);
+  } else {
+    console.error('Server error:', err);
+  }
 });
 
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`BPOXCEL server running at http://localhost:${PORT}`);
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
 });
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+// Keep process active
+const keepAlive = setInterval(() => {}, 1000 * 60 * 60);
+keepAlive.unref();
+
+startServer(currentPort);
+

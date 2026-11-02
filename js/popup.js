@@ -144,11 +144,18 @@
             '<!-- Error Banner -->' +
             '<div class="bpx-form-error" id="bpx-form-error" role="alert">Something went wrong. Please try again.</div>' +
 
+            '<!-- Alignment Agreement Checkbox -->' +
+            '<div class="bpx-checkbox-field">' +
+              '<input type="checkbox" id="bpx-lead-agree" class="bpx-checkbox-input" required />' +
+              '<label for="bpx-lead-agree" class="bpx-checkbox-label">By applying you agree to recieve assistance for further alignments.</label>' +
+            '</div>' +
+            '<span class="bpx-error-msg" id="bpx-lead-agree-err">Please agree to proceed.</span>' +
+
             '<!-- Privacy notice -->' +
             '<p style="text-align:center;font-size:11px;color:#94a3b8;margin:0;">\ud83d\udd12 Your information is secure and will only be used for recruitment purposes.</p>' +
 
             '<!-- Submit -->' +
-            '<button type="submit" class="bpx-submit-btn" id="bpx-submit-btn">Submit Details</button>' +
+            '<button type="submit" class="bpx-submit-btn" id="bpx-submit-btn" disabled>Submit Details</button>' +
           '</form>' +
         '</div>' +
 
@@ -267,11 +274,23 @@
     var form = document.getElementById('bpx-lead-form');
     var submitBtn = document.getElementById('bpx-submit-btn');
     var formError = document.getElementById('bpx-form-error');
+    var agreeCb = document.getElementById('bpx-lead-agree');
+    var agreeErr = document.getElementById('bpx-lead-agree-err');
 
     if (!form) return;
 
+    if (agreeCb && submitBtn) {
+      submitBtn.disabled = !agreeCb.checked;
+      agreeCb.addEventListener('change', function () {
+        submitBtn.disabled = !this.checked;
+        if (this.checked && agreeErr) {
+          agreeErr.classList.remove('bpx-show');
+        }
+      });
+    }
+
     // Clear error on input
-    var inputs = form.querySelectorAll('input, select');
+    var inputs = form.querySelectorAll('input:not([type="checkbox"]), select');
     for (var i = 0; i < inputs.length; i++) {
       (function (el) {
         var evtType = el.tagName === 'SELECT' ? 'change' : 'input';
@@ -325,6 +344,14 @@
       if (!lookingEl.value) {
         showFieldError(lookingEl, 'bpx-looking-err');
         valid = false;
+      }
+
+      // Alignment Agreement Checkbox
+      if (!agreeCb || !agreeCb.checked) {
+        if (agreeErr) agreeErr.classList.add('bpx-show');
+        valid = false;
+      } else {
+        if (agreeErr) agreeErr.classList.remove('bpx-show');
       }
 
       if (!valid) return;

@@ -472,12 +472,19 @@
           <!-- Server Error Banner -->
           <div class="bpx-form-error" id="bpx-modal-error" role="alert">Something went wrong. Please try again.</div>
 
+          <!-- Alignment Agreement Checkbox -->
+          <div class="bpx-checkbox-field">
+            <input type="checkbox" id="bpx-modal-agree" class="bpx-checkbox-input" required />
+            <label for="bpx-modal-agree" class="bpx-checkbox-label">By applying you agree to recieve assistance for further alignments.</label>
+          </div>
+          <span class="bpx-error-msg" id="bpx-modal-agree-err">Please agree to proceed.</span>
+
           <p style="text-align:center;font-size:11px;color:#94a3b8;margin:0;display:flex;align-items:center;justify-content:center;gap:5px;">
             <svg class="w-3.5 h-3.5 text-brand-cyan inline-block flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
             Your information is secure and will only be used for recruitment purposes.
           </p>
 
-          <button type="submit" class="bpx-submit-btn" id="bpx-modal-submit-btn">Submit Application</button>
+          <button type="submit" class="bpx-submit-btn" id="bpx-modal-submit-btn" disabled>Submit Application</button>
         </form>
       </div>
 

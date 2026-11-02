@@ -801,9 +801,16 @@
     if (successView) successView.style.display = 'none';
     if (errorBanner) errorBanner.classList.remove('bpx-show');
 
+    var agreeCheckbox = document.getElementById('bpx-modal-agree');
+    if (agreeCheckbox) {
+      agreeCheckbox.checked = false;
+    }
+    var agreeErr = document.getElementById('bpx-modal-agree-err');
+    if (agreeErr) agreeErr.classList.remove('bpx-show');
+
     var submitBtn = document.getElementById('bpx-modal-submit-btn');
     if (submitBtn) {
-      submitBtn.disabled = false;
+      submitBtn.disabled = true;
       submitBtn.textContent = 'Submit Application';
     }
 
@@ -871,6 +878,20 @@
 
     // Modal Form Submission
     var form = document.getElementById('bpx-modal-form');
+    var agreeCheckbox = document.getElementById('bpx-modal-agree');
+    var agreeErr = document.getElementById('bpx-modal-agree-err');
+    var modalSubmitBtn = document.getElementById('bpx-modal-submit-btn');
+
+    if (agreeCheckbox && modalSubmitBtn) {
+      modalSubmitBtn.disabled = !agreeCheckbox.checked;
+      agreeCheckbox.addEventListener('change', function () {
+        modalSubmitBtn.disabled = !this.checked;
+        if (this.checked && agreeErr) {
+          agreeErr.classList.remove('bpx-show');
+        }
+      });
+    }
+
     if (form) {
       form.addEventListener('submit', function (e) {
         e.preventDefault();
@@ -905,6 +926,13 @@
         if (emailEl && emailEl.value.trim() && !EMAIL_REGEX.test(emailEl.value.trim())) {
           showFieldError(emailEl, 'bpx-modal-email-err');
           valid = false;
+        }
+
+        if (!agreeCheckbox || !agreeCheckbox.checked) {
+          if (agreeErr) agreeErr.classList.add('bpx-show');
+          valid = false;
+        } else {
+          if (agreeErr) agreeErr.classList.remove('bpx-show');
         }
 
         if (!valid) return;

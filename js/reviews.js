@@ -216,8 +216,40 @@
     });
 
     // Modal Control Functions
+    var reviewAgree = document.getElementById('review-agree');
+    var reviewAgreeErr = document.getElementById('rev-agree-err');
+    var reviewSubmitBtn = document.getElementById('review-submit-btn');
+
+    function updateReviewBtnState() {
+      if (!reviewSubmitBtn) return;
+      if (reviewAgree && reviewAgree.checked) {
+        reviewSubmitBtn.disabled = false;
+        reviewSubmitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        reviewSubmitBtn.classList.add('hover:opacity-90', 'cursor-pointer');
+      } else {
+        reviewSubmitBtn.disabled = true;
+        reviewSubmitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        reviewSubmitBtn.classList.remove('hover:opacity-90', 'cursor-pointer');
+      }
+    }
+
+    if (reviewAgree) {
+      updateReviewBtnState();
+      reviewAgree.addEventListener('change', function () {
+        updateReviewBtnState();
+        if (reviewAgree.checked && reviewAgreeErr) {
+          reviewAgreeErr.classList.add('hidden');
+        }
+      });
+    }
+
     function openModal() {
       if (modal) {
+        if (reviewAgree) {
+          reviewAgree.checked = false;
+          updateReviewBtnState();
+        }
+        if (reviewAgreeErr) reviewAgreeErr.classList.add('hidden');
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
       }
@@ -289,6 +321,13 @@
           document.getElementById('rev-msg-err').classList.add('hidden');
         }
 
+        if (!reviewAgree || !reviewAgree.checked) {
+          if (reviewAgreeErr) reviewAgreeErr.classList.remove('hidden');
+          isValid = false;
+        } else {
+          if (reviewAgreeErr) reviewAgreeErr.classList.add('hidden');
+        }
+
         if (!isValid) return;
 
         // Build new review object
@@ -311,6 +350,10 @@
 
         // Reset & Close Modal
         reviewForm.reset();
+        if (reviewAgree) {
+          reviewAgree.checked = false;
+          updateReviewBtnState();
+        }
         selectedRating = 5;
         updateStarsDisplay(5);
         closeModal();

@@ -50,11 +50,36 @@ const form = document.getElementById('contact-form');
 const success = document.getElementById('form-success');
 const errorBanner = document.getElementById('form-error');
 const btn = document.getElementById('submit-btn');
+const contactAgree = document.getElementById('contact-agree');
+const contactAgreeErr = document.getElementById('contact-agree-err');
+
+function updateContactBtnState() {
+  if (!btn) return;
+  if (contactAgree && contactAgree.checked) {
+    btn.disabled = false;
+    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+    btn.classList.add('hover:opacity-90', 'hover:shadow-lg');
+  } else {
+    btn.disabled = true;
+    btn.classList.add('opacity-50', 'cursor-not-allowed');
+    btn.classList.remove('hover:opacity-90', 'hover:shadow-lg');
+  }
+}
+
+if (contactAgree) {
+  updateContactBtnState();
+  contactAgree.addEventListener('change', () => {
+    updateContactBtnState();
+    if (contactAgree.checked && contactAgreeErr) {
+      contactAgreeErr.classList.add('hidden');
+    }
+  });
+}
 
 if (form) {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const required = form.querySelectorAll('[required]');
+    const required = form.querySelectorAll('[required]:not([type="checkbox"])');
     let valid = true;
     
     // Check required fields
@@ -79,6 +104,14 @@ if (form) {
       }
     }
 
+    // Validate agreement checkbox
+    if (contactAgree && !contactAgree.checked) {
+      if (contactAgreeErr) contactAgreeErr.classList.remove('hidden');
+      valid = false;
+    } else if (contactAgreeErr) {
+      contactAgreeErr.classList.add('hidden');
+    }
+
     if (!valid) return;
 
     // Reset status banners
@@ -97,6 +130,9 @@ if (form) {
       });
       if (res.ok) {
         form.reset();
+        if (contactAgree) {
+          contactAgree.checked = false;
+        }
         if (success) {
           success.classList.remove('hidden');
           success.style.display = 'flex';
@@ -120,7 +156,7 @@ if (form) {
     }
 
     btn.textContent = 'Send Message';
-    btn.disabled = false;
+    updateContactBtnState();
   });
 
   form.querySelectorAll('input,textarea').forEach(el => {
@@ -341,11 +377,18 @@ document.addEventListener('DOMContentLoaded', () => {
             '<!-- Error Banner -->' +
             '<div class="bpx-form-error" id="bpx-job-form-error" role="alert">Something went wrong. Please try again.</div>' +
 
+            '<!-- Agreement Checkbox -->' +
+            '<div class="bpx-checkbox-field">' +
+              '<input type="checkbox" id="bpx-job-agree" class="bpx-checkbox-input" required />' +
+              '<label for="bpx-job-agree" class="bpx-checkbox-label">By applying you agree to recieve assistance for further alignments.</label>' +
+            '</div>' +
+            '<span class="bpx-error-msg" id="bpx-job-agree-err">Please agree to proceed.</span>' +
+
             '<!-- Privacy notice -->' +
             '<p style="text-align:center;font-size:11px;color:#94a3b8;margin:0;">🔒 Your information is secure and will only be used for recruitment purposes.</p>' +
 
             '<!-- Submit -->' +
-            '<button type="submit" class="bpx-submit-btn" id="bpx-job-submit-btn">Submit Application</button>' +
+            '<button type="submit" class="bpx-submit-btn" id="bpx-job-submit-btn" disabled>Submit Application</button>' +
           '</form>' +
         '</div>' +
 
@@ -390,9 +433,21 @@ document.addEventListener('DOMContentLoaded', () => {
     var form = document.getElementById('bpx-job-form');
     var submitBtn = document.getElementById('bpx-job-submit-btn');
     var formError = document.getElementById('bpx-job-form-error');
+    var agreeCb = document.getElementById('bpx-job-agree');
+    var agreeErr = document.getElementById('bpx-job-agree-err');
+
+    if (agreeCb && submitBtn) {
+      submitBtn.disabled = !agreeCb.checked;
+      agreeCb.addEventListener('change', function () {
+        submitBtn.disabled = !this.checked;
+        if (this.checked && agreeErr) {
+          agreeErr.classList.remove('bpx-show');
+        }
+      });
+    }
 
     // Clear errors on input
-    var inputs = form.querySelectorAll('input');
+    var inputs = form.querySelectorAll('input:not([type="checkbox"])');
     for (var i = 0; i < inputs.length; i++) {
       (function (inputEl) {
         inputEl.addEventListener('input', function () {
@@ -435,6 +490,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (emailEl.value.trim() && !EMAIL_REGEX.test(emailEl.value.trim())) {
         showFieldError(emailEl, 'bpx-job-email-err');
         valid = false;
+      }
+
+      // Validate Agreement Checkbox
+      if (!agreeCb || !agreeCb.checked) {
+        if (agreeErr) agreeErr.classList.add('bpx-show');
+        valid = false;
+      } else {
+        if (agreeErr) agreeErr.classList.remove('bpx-show');
       }
 
       if (!valid) return;

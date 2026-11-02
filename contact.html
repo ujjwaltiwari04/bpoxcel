@@ -227,7 +227,24 @@
               An error occurred while sending your message. Please try again.
             </div>
 
-            <button type="submit" id="submit-btn" class="w-full py-3.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-brand-cyan to-brand-blue hover:opacity-90 transition-opacity shadow-md hover:shadow-lg">
+            <!-- Agreement Checkbox -->
+            <div class="pt-1">
+              <label for="contact-agree" class="flex items-start gap-2.5 cursor-pointer select-none group">
+                <input 
+                  type="checkbox" 
+                  id="contact-agree" 
+                  name="agree_assistance" 
+                  required 
+                  class="mt-1 h-4 w-4 rounded border-gray-300 text-brand-cyan focus:ring-brand-cyan accent-brand-cyan cursor-pointer flex-shrink-0"
+                />
+                <span class="text-xs text-gray-600 group-hover:text-gray-900 transition-colors">
+                  By applying you agree to recieve assistance for further alignments.
+                </span>
+              </label>
+              <p id="contact-agree-err" class="hidden text-xs text-red-500 font-medium mt-1">Please agree to receive assistance for further alignments to proceed.</p>
+            </div>
+
+            <button type="submit" id="submit-btn" disabled class="w-full py-3.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-brand-cyan to-brand-blue opacity-50 cursor-not-allowed transition-all duration-200 shadow-md">
               Send Message
             </button>
           </form>

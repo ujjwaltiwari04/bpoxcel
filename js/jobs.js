@@ -22,10 +22,34 @@ function formatDesc(desc) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Check for URL filter query param (e.g. ?filter=it or ?category=bpo)
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialFilter = urlParams.get('filter') || urlParams.get('category') || urlParams.get('type');
+    if (initialFilter) {
+      const normalized = initialFilter.toLowerCase().trim();
+      const validFilters = ['all', 'bpo', 'it', 'engineering', 'sales', 'fresher', 'experienced'];
+      if (validFilters.includes(normalized)) {
+        currentFilter = normalized;
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(btn => {
+          if (btn.getAttribute('data-filter') === normalized) {
+            btn.className = 'filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-gradient-to-r from-brand-cyan to-brand-blue text-white shadow-sm hover:shadow-md transition-all cursor-pointer';
+          } else {
+            btn.className = 'filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-white border border-gray-200 text-gray-600 hover:border-brand-cyan hover:text-brand-cyan transition-all cursor-pointer';
+          }
+        });
+      }
+    }
+  } catch (e) {
+    // ignore query parsing errors
+  }
+
   // Careers Filtering Click Delegate
   document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('filter-btn')) {
-      const filter = e.target.getAttribute('data-filter');
+    const btn = e.target.closest('.filter-btn');
+    if (btn) {
+      const filter = btn.getAttribute('data-filter');
       applyJobFilter(filter);
     }
   });
@@ -96,9 +120,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const filterButtons = document.querySelectorAll('.filter-btn');
       filterButtons.forEach(btn => {
         if (btn.getAttribute('data-filter') === 'all') {
-          btn.className = 'filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-gradient-to-r from-brand-cyan to-brand-blue text-white shadow-sm hover:shadow-md transition-all';
+          btn.className = 'filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-gradient-to-r from-brand-cyan to-brand-blue text-white shadow-sm hover:shadow-md transition-all cursor-pointer';
         } else {
-          btn.className = 'filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-white border border-gray-200 text-gray-600 hover:border-brand-cyan hover:text-brand-cyan transition-all';
+          btn.className = 'filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-white border border-gray-200 text-gray-600 hover:border-brand-cyan hover:text-brand-cyan transition-all cursor-pointer';
         }
       });
       currentFilter = 'all';
@@ -317,9 +341,9 @@ function applyJobFilter(filterType) {
   const filterButtons = document.querySelectorAll('.filter-btn');
   filterButtons.forEach(btn => {
     if (btn.getAttribute('data-filter') === filterType) {
-      btn.className = 'filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-gradient-to-r from-brand-cyan to-brand-blue text-white shadow-sm hover:shadow-md transition-all';
+      btn.className = 'filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-gradient-to-r from-brand-cyan to-brand-blue text-white shadow-sm hover:shadow-md transition-all cursor-pointer';
     } else {
-      btn.className = 'filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-white border border-gray-200 text-gray-600 hover:border-brand-cyan hover:text-brand-cyan transition-all';
+      btn.className = 'filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-white border border-gray-200 text-gray-600 hover:border-brand-cyan hover:text-brand-cyan transition-all cursor-pointer';
     }
   });
 
@@ -336,61 +360,70 @@ function applyFilters() {
   let filtered = allJobsList;
   if (currentFilter !== 'all') {
     filtered = allJobsList.filter(job => {
-      const role = getValue(job, 'Role', '').toLowerCase();
-      const desc = getValue(job, 'Description', '').toLowerCase();
-      const exp = getValue(job, 'Experience', '').toLowerCase();
-      const category = getValue(job, 'Category', '').toLowerCase();
-      const industry = getValue(job, 'Industry', '').toLowerCase();
-      const expLevel = getValue(job, 'Experience Level', '').toLowerCase();
+      const jobNo = (getValue(job, 'Job No') || getValue(job, 'JobNo') || getValue(job, 'Job Id') || '').trim().toUpperCase();
+      const role = (getValue(job, 'Role') || getValue(job, 'Job Title') || getValue(job, 'Title') || '').toLowerCase();
+      const desc = (getValue(job, 'Description') || getValue(job, 'Job Description') || '').toLowerCase();
+      const exp = (getValue(job, 'Experience') || getValue(job, 'Work Experience') || '').toLowerCase();
+      const category = (getValue(job, 'Category') || getValue(job, 'Job Category') || '').toLowerCase();
+      const industry = (getValue(job, 'Industry') || getValue(job, 'Sector') || '').toLowerCase();
+      const expLevel = (getValue(job, 'Experience Level') || getValue(job, 'Exp Level') || '').toLowerCase();
 
       if (currentFilter === 'bpo') {
-        return (industry && (industry.includes('bpo') || industry.includes('call') || industry.includes('voice') || industry.includes('sales'))) ||
-               category.includes('bpo') || category.includes('call') || category.includes('voice') || category.includes('sales') ||
-               role.includes('bpo') || role.includes('voice') || role.includes('customer') || role.includes('support') || role.includes('telecaller') || role.includes('back office') || role.includes('sales') ||
-               desc.includes('bpo') || desc.includes('voice') || desc.includes('customer') || desc.includes('support') || desc.includes('telecaller') || desc.includes('sales');
+        if (jobNo.startsWith('BP')) return true;
+        if (/\bbpo\b/i.test(industry) || /\bbpo\b/i.test(category)) return true;
+        if (/\b(call cent(er|re)|customer support|customer service|customer care|voice process|telecaller|telecalling|telesales|chat support|email support|inbound|outbound|back office|process associate)\b/i.test(role) &&
+            !/\b(desktop|interior|water treatment|cad)\b/i.test(role) &&
+            !/\b(it|interior designers|engineering)\b/i.test(industry)) {
+          return true;
+        }
+        return false;
       }
+
       if (currentFilter === 'it') {
-        return (industry && (industry.includes('it') || industry.includes('tech') || industry.includes('software'))) ||
-               category.includes('it') || category.includes('tech') || category.includes('software') ||
-               role.includes('it') || role.includes('developer') || role.includes('software') || role.includes('tech') || role.includes('engineer') ||
-               desc.includes('it') || desc.includes('developer') || desc.includes('software') || desc.includes('tech') || desc.includes('engineer');
+        if (jobNo.startsWith('IT')) return true;
+        if (/\b(it|information technology|software|tech|developer|web development)\b/i.test(category) && !category.includes('interior')) return true;
+        if (/\b(it|information technology|software|tech support|it services)\b/i.test(industry) && !industry.includes('interior')) return true;
+        if (/\b(it|desktop engineer|it support|software developer|software engineer|system admin|network engineer|full stack|frontend|backend|devops|database admin|programmer|coder|qa engineer|test engineer|cloud|cybersecurity)\b/i.test(role)) return true;
+        if (/\b(desktop support|desktop engineer|hardware & networking|it technician)\b/i.test(desc)) return true;
+        return false;
       }
+
       if (currentFilter === 'engineering') {
-        return (industry && (industry.includes('engineer') || industry.includes('water') || industry.includes('cad') || industry.includes('tech') || industry.includes('mechanical') || industry.includes('civil') || industry.includes('design'))) ||
-               category.includes('engineer') || category.includes('water') || category.includes('cad') || category.includes('design') ||
-               role.includes('engineer') || role.includes('cad') || role.includes('design') || role.includes('water') ||
-               desc.includes('cad') || desc.includes('autocad') || desc.includes('water treatment');
+        if (jobNo.startsWith('EN')) return true;
+        if (/\b(engineering|mechanical|civil|electrical|electronic|chemical|cad)\b/i.test(category)) return true;
+        if (/\b(engineering|water treatment|cad engineer|civil engineer|mechanical engineer|electrical engineer)\b/i.test(industry)) return true;
+        if (/\b(cad|autocad|draftsman|water treatment plant|2d\/3d design|civil engineer|mechanical engineer|electrical engineer|site engineer|structural engineer)\b/i.test(role) && !industry.includes('interior')) return true;
+        return false;
       }
+
+      if (currentFilter === 'sales') {
+        if (jobNo.startsWith('SA') || jobNo.startsWith('BU') || jobNo.startsWith('PR')) return true;
+        if (/\b(sales|business development|bdm|bde|marketing)\b/i.test(category)) return true;
+        if (/\b(sales|business development|presales|insurance|b2b sales)\b/i.test(industry)) return true;
+        if (/\b(sales|business development|bdm|bde|sdr|account executive|telesales|inside sales|relationship manager|client acquisition)\b/i.test(role)) return true;
+        return false;
+      }
+
       if (currentFilter === 'fresher') {
-        const fromLevel = expLevel ? (expLevel.includes('fresher') || expLevel.includes('entry') || expLevel.includes('0')) : false;
-        if (expLevel) return fromLevel;
-        
-        const cleanExp = exp.trim();
-        if (!cleanExp) return false;
-        
-        if (/\b(fresher|entry|no experience|0)\b/i.test(cleanExp)) return true;
-        if (/^0\s*(?:-|to)\s*\d+/i.test(cleanExp)) return true;
-        
-        const match = cleanExp.match(/\d+/);
-        if (match && parseInt(match[0], 10) === 0) return true;
-        
-        if (cleanExp.toLowerCase().includes('fresher')) return true;
+        if (/\b(fresher|entry|intern|trainee|no experience)\b/i.test(expLevel)) return true;
+        if (/\b(fresher|entry|intern|trainee|no experience)\b/i.test(exp)) return true;
+        if (/\b(fresher|trainee|intern)\b/i.test(role)) return true;
+        if (/^0\b|^0\s*(year|yr|month|–|-|—|\/|to|&)/i.test(exp.trim())) return true;
+        if (/\bfreshers?\s+(can|are|welcome|eligible|encouraged)\b/i.test(desc)) return true;
         return false;
       }
+
       if (currentFilter === 'experienced') {
-        const fromLevel = expLevel ? (expLevel.includes('experienced') || expLevel.includes('experience') || (expLevel.includes('exp') && !expLevel.includes('no'))) : false;
-        if (expLevel) return fromLevel;
-        
+        if (/\b(experienced|experience)\b/i.test(expLevel)) return true;
         const cleanExp = exp.trim();
-        if (!cleanExp) return false;
-        
-        if (/\b(experienced|experience)\b/i.test(cleanExp) && !/no\s+experience/i.test(cleanExp)) return true;
-        
-        const match = cleanExp.match(/\d+/);
-        if (match && parseInt(match[0], 10) > 0) return true;
-        
+        if (/\b([1-9]|1[0-9])\s*(year|yr)/i.test(cleanExp) && !cleanExp.startsWith('0')) return true;
+        if (/0\s*(?:-|–|—|to)\s*([1-9]\d*)\s*(?:year|yr)/i.test(cleanExp)) return true;
+        if (/\b(6|12)\s*month/i.test(cleanExp) && !cleanExp.startsWith('0')) return true;
+        if (/0\s*months?\s*(?:-|–|—|to)\s*([1-9]\d*)\s*(?:year|yr)/i.test(cleanExp)) return true;
+        if (/\bexperienced\b/i.test(cleanExp)) return true;
         return false;
       }
+
       return true;
     });
   }
@@ -1043,6 +1076,13 @@ if (document.readyState === 'loading') {
             '<!-- Error Banner -->' +
             '<div class="bpx-form-error" id="bpx-job-form-error" role="alert">Something went wrong. Please try again.</div>' +
 
+            '<!-- Agreement Checkbox -->' +
+            '<div class="bpx-checkbox-field">' +
+              '<input type="checkbox" id="bpx-job-agree" class="bpx-checkbox-input" required />' +
+              '<label for="bpx-job-agree" class="bpx-checkbox-label">By applying you agree to recieve assistance for further alignments.</label>' +
+            '</div>' +
+            '<span class="bpx-error-msg" id="bpx-job-agree-err">Please agree to proceed.</span>' +
+
             '<!-- Privacy notice -->' +
             '<p style="text-align:center;font-size:11px;color:#94a3b8;margin:0;display:flex;align-items:center;justify-content:center;gap:5px;">' +
               '<svg style="width:14px;height:14px;color:#0891b2;flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>' +
@@ -1050,7 +1090,7 @@ if (document.readyState === 'loading') {
             '</p>' +
 
             '<!-- Submit -->' +
-            '<button type="submit" class="bpx-submit-btn" id="bpx-job-submit-btn">Submit Application</button>' +
+            '<button type="submit" class="bpx-submit-btn" id="bpx-job-submit-btn" disabled>Submit Application</button>' +
           '</form>' +
         '</div>' +
 
@@ -1099,9 +1139,21 @@ if (document.readyState === 'loading') {
     var form = document.getElementById('bpx-job-form');
     var submitBtn = document.getElementById('bpx-job-submit-btn');
     var formError = document.getElementById('bpx-job-form-error');
+    var agreeCb = document.getElementById('bpx-job-agree');
+    var agreeErr = document.getElementById('bpx-job-agree-err');
+
+    if (agreeCb && submitBtn) {
+      submitBtn.disabled = !agreeCb.checked;
+      agreeCb.addEventListener('change', function () {
+        submitBtn.disabled = !this.checked;
+        if (this.checked && agreeErr) {
+          agreeErr.classList.remove('bpx-show');
+        }
+      });
+    }
 
     // Clear errors on input
-    var inputs = form.querySelectorAll('input');
+    var inputs = form.querySelectorAll('input:not([type="checkbox"])');
     for (var i = 0; i < inputs.length; i++) {
       (function (inputEl) {
         inputEl.addEventListener('input', function () {
@@ -1144,6 +1196,14 @@ if (document.readyState === 'loading') {
       if (emailEl.value.trim() && !EMAIL_REGEX.test(emailEl.value.trim())) {
         showFieldError(emailEl, 'bpx-job-email-err');
         valid = false;
+      }
+
+      // Validate Agreement Checkbox
+      if (!agreeCb || !agreeCb.checked) {
+        if (agreeErr) agreeErr.classList.add('bpx-show');
+        valid = false;
+      } else {
+        if (agreeErr) agreeErr.classList.remove('bpx-show');
       }
 
       if (!valid) return;

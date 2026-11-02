@@ -242,6 +242,29 @@ body.bpx-no-scroll {
   box-shadow: 0 4px 14px rgba(8, 145, 178, 0.25);
   margin-top: 2px;
 }
+.bpx-checkbox-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 12px 0 6px;
+  cursor: pointer;
+  text-align: left;
+}
+.bpx-checkbox-input {
+  margin-top: 2px;
+  width: 15px;
+  height: 15px;
+  accent-color: #0891b2;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.bpx-checkbox-label {
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: #475569;
+  cursor: pointer;
+  user-select: none;
+}
 .bpx-submit-btn:hover:not(:disabled) {
   opacity: 0.92;
   box-shadow: 0 8px 24px rgba(8, 145, 178, 0.35);
@@ -252,8 +275,10 @@ body.bpx-no-scroll {
   transition-duration: 0.1s;
 }
 .bpx-submit-btn:disabled {
-  opacity: 0.7;
+  opacity: 0.55;
   cursor: not-allowed;
+  box-shadow: none;
+  transform: none !important;
 }
 .bpx-submit-btn:focus-visible {
   outline: 2px solid #0891b2;
